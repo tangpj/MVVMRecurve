@@ -136,8 +136,8 @@ build_versions.build_tools = "28.0.0-rc1"
 ext.build_versions = build_versions
 
 def app_versions = [:]
-app_versions.code = 3
-app_versions.name = "1.0.2"
+app_versions.code = 4
+app_versions.name = "1.0.3"
 ext.app_versions = app_versions
 
 def db_versions = [:]
