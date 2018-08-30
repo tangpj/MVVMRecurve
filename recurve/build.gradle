@@ -5,7 +5,6 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion build_versions.compile_sdk
-    buildToolsVersion build_versions.build_tools
 
     defaultConfig {
         minSdkVersion build_versions.min_sdk
@@ -38,7 +37,7 @@ android {
     }
 
 }
-group = "com.github.Tangpj"
+group = "com.github.tangpj"
 
 dependencies {
     api deps.kotlin.stdlib_jdk8
