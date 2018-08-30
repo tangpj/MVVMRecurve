@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.build_tools
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode app_versions.code
+        versionName app_versions.name
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding{
+        enabled true
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    api deps.kotlin.stdlib_jdk8
+
+    implementation deps.support.app_compat
+    implementation deps.support.recyclerview
+    implementation deps.support.customtabs
+    implementation deps.room.runtime
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.extensions
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+
+    implementation deps.timber
+
+    implementation deps.room.rxjava2
+
+    implementation deps.glide
+    implementation deps.glide_transformations
+
+    // RxJava
+    implementation deps.rx_android
+    implementation deps.rxjava2
+
+    kapt deps.room.compiler
+    kapt deps.lifecycle.compiler
+
+    kapt deps.databinding_compiler
+}
