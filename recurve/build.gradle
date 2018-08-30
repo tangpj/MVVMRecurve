@@ -42,25 +42,25 @@ group = "com.github.tangpj"
 dependencies {
     api deps.kotlin.stdlib_jdk8
 
-    implementation deps.support.app_compat
-    implementation deps.support.recyclerview
-    implementation deps.support.customtabs
-    implementation deps.room.runtime
-    implementation deps.lifecycle.runtime
-    implementation deps.lifecycle.extensions
-    implementation deps.retrofit.runtime
-    implementation deps.retrofit.gson
+    api deps.support.app_compat
+    api deps.support.recyclerview
+    api deps.support.customtabs
+    api deps.room.runtime
+    api deps.lifecycle.runtime
+    api deps.lifecycle.extensions
+    api deps.retrofit.runtime
+    api deps.retrofit.gson
 
-    implementation deps.timber
+    api deps.timber
 
-    implementation deps.room.rxjava2
+    api deps.room.rxjava2
 
-    implementation deps.glide
-    implementation deps.glide_transformations
+    api deps.glide
+    api deps.glide_transformations
 
     // RxJava
-    implementation deps.rx_android
-    implementation deps.rxjava2
+    api deps.rx_android
+    api deps.rxjava2
 
     kapt deps.room.compiler
     kapt deps.lifecycle.compiler
