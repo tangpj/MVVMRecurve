@@ -15,9 +15,9 @@
  */
 package tang.com.recurve.widget
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by tang on 2018/3/15.

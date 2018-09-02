@@ -16,7 +16,7 @@
 package tang.com.recurve.binding
 
 import android.databinding.BindingAdapter
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by tang on 2018/3/25.

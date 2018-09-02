@@ -16,11 +16,10 @@
 
 package tang.com.recurve.resource
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.LiveData
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
-import io.reactivex.FlowableSubscriber
+import androidx.lifecycle.MediatorLiveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -43,6 +42,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
         result.value = Resource.loading(null)
         @Suppress("LeakingThis")
         val dbSource = loadFromDb()
+
         result.addSource(dbSource) { data ->
             result.removeSource(dbSource)
             if (shouldFetch(data)) {
@@ -78,21 +78,21 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                             .subscribeOn(Schedulers.io())
                             .map { saveCallResult(processResponse(it)) }
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                        result.addSource(loadFromDb()) { newData
-                                            -> setValue(Resource.success(newData))
-                                        }
-                                    })
+                            .subscribe {
+                                result.addSource(loadFromDb()) { newData
+                                    -> setValue(Resource.success(newData))
+                                }
+                            }
                 }
                 is ApiEmptyResponse -> {
 
                     Observable.fromArray(response)
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
+                            .subscribe {
                                 result.addSource(loadFromDb()) { newData
                                     -> setValue(Resource.success(newData))
                                 }
-                            })
+                            }
                 }
                 is ApiErrorResponse -> {
                     onFetchFailed()

@@ -15,8 +15,9 @@
  */
 package tang.com.recurve.util
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+
 
 /**
  * Created by tang on 2018/3/5.
@@ -29,11 +30,8 @@ class AutoClearedValue<out T>(fragment: Fragment, private var value: T?) {
         val fragmentManager = fragment.fragmentManager
         fragmentManager?.registerFragmentLifecycleCallbacks(
                 object : FragmentManager.FragmentLifecycleCallbacks() {
-                    override fun onFragmentViewDestroyed(fm: FragmentManager?, f: Fragment?) {
-                        if (f === fragment) {
-                            this@AutoClearedValue.value = null
-                            fragmentManager.unregisterFragmentLifecycleCallbacks(this)
-                        }
+                    override fun onFragmentViewDestroyed(fm: FragmentManager, f: Fragment) {
+
                     }
                 }, false)
     }

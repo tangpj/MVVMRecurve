@@ -40,23 +40,31 @@ android {
 group = "com.github.tangpj"
 
 dependencies {
+    api deps.support.appcompat
     api deps.kotlin.stdlib_jdk8
+    api deps.kotlin.ktx
 
-    api deps.support.app_compat
-    api deps.support.recyclerview
+    api deps.support.material
     api deps.support.customtabs
     api deps.room.runtime
+    api deps.room.rxjava2
+
     api deps.lifecycle.runtime
     api deps.lifecycle.extensions
+    api deps.lifecycle.viewmodel
+    api deps.lifecycle.livedata
+
     api deps.retrofit.runtime
     api deps.retrofit.gson
 
     api deps.timber
 
-    api deps.room.rxjava2
-
-    api deps.glide
-    api deps.glide_transformations
+    api (deps.glide){
+        exclude group: 'com.android.support'
+    }
+    api (deps.glide_transformations){
+        exclude group: 'com.android.support'
+    }
 
     // RxJava
     api deps.rx_android
