@@ -15,8 +15,8 @@
  */
 package tang.com.recurve.binding
 
-import android.databinding.BindingAdapter
 import android.view.View
+import androidx.databinding.BindingAdapter
 
 /**
  * Created by tang on 2018/3/7.

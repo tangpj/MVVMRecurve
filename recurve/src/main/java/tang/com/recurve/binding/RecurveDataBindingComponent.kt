@@ -15,7 +15,7 @@
  */
 package tang.com.recurve.binding
 
-import android.databinding.DataBindingComponent
+import androidx.databinding.DataBindingComponent
 import com.bumptech.glide.RequestManager
 
 /**

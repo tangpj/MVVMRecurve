@@ -41,6 +41,7 @@ group = "com.github.tangpj"
 
 dependencies {
     api deps.support.appcompat
+    api deps.support.recyclerView
     api deps.kotlin.stdlib_jdk8
     api deps.kotlin.ktx
 
@@ -74,4 +75,7 @@ dependencies {
     kapt deps.lifecycle.compiler
 
     kapt deps.databinding_compiler
+    configurations {
+        all*.exclude group: 'com.android.support'
+    }
 }

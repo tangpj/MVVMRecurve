@@ -17,8 +17,8 @@
 package tang.com.recurve.resource
 
 import androidx.lifecycle.LiveData
-import android.support.annotation.MainThread
-import android.support.annotation.WorkerThread
+import androidx.annotation.MainThread
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.MediatorLiveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

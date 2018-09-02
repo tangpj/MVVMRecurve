@@ -15,8 +15,8 @@
  */
 package tang.com.recurve.binding
 
-import android.databinding.BindingAdapter
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import tang.com.recurve.util.circle

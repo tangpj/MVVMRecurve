@@ -15,7 +15,7 @@
  */
 package tang.com.recurve.binding
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 /**
