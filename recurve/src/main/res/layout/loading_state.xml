@@ -18,10 +18,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="tang.com.recurve.resource.Resource"/>
-        <import type="tang.com.recurve.resource.Status"/>
+        <import type="com.tangpj.recurve.resource.Resource"/>
+        <import type="com.tangpj.recurve.resource.Status"/>
         <variable name="resource" type="Resource"/>
-        <variable name="callback" type="tang.com.recurve.common.RetryCallback"/>
+        <variable name="callback" type="com.tangpj.recurve.common.RetryCallback"/>
     </data>
     <LinearLayout android:orientation="vertical"
         app:visibleGone="@{resource.data == null}"
