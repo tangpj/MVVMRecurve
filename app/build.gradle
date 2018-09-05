@@ -21,7 +21,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api deps.constraint_layout
-    api deps.support.appcompat
+    api deps.androidx.appcompat
     api deps.atsl.runner
     api deps.espresso.core
 }

@@ -40,13 +40,13 @@ android {
 group = "com.github.tangpj"
 
 dependencies {
-    api deps.support.appcompat
-    api deps.support.recyclerView
+    api deps.androidx.appcompat
+    api deps.androidx.recyclerView
     api deps.kotlin.stdlib_jdk8
     api deps.kotlin.ktx
 
-    api deps.support.material
-    api deps.support.customtabs
+    api deps.androidx.material
+    api deps.androidx.customtabs
     api deps.room.runtime
     api deps.room.rxjava2
 
