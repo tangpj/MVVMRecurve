@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion build_versions.compile_sdk
@@ -55,6 +54,11 @@ dependencies {
     api deps.lifecycle.viewmodel
     api deps.lifecycle.livedata
 
+    api deps.dagger.runtime
+    api deps.dagger.android
+    api deps.dagger.android_support
+
+
     api deps.retrofit.runtime
     api deps.retrofit.gson
 
@@ -71,10 +75,14 @@ dependencies {
     api deps.rx_android
     api deps.rxjava2
 
+    kapt deps.dagger.android_support_compiler
+    kapt deps.dagger.compiler
+
     kapt deps.room.compiler
     kapt deps.lifecycle.compiler
 
     kapt deps.databinding_compiler
+
     configurations {
         all*.exclude group: 'com.android.support'
     }

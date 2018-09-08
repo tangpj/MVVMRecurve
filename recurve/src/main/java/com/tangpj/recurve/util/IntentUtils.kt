@@ -10,19 +10,22 @@ import androidx.browser.customtabs.CustomTabsIntent
 import com.tangpj.recurve.R
 import java.util.*
 
-fun openInCustomTabOrBrowser(context: Context, uri: Uri) {
-    val pkg = CustomTabsHelper.getPackageNameToUse(context)
-    if (pkg != null) {
-        val color = UiUtils.resolveColor(context, R.attr.colorPrimary)
-        val i = CustomTabsIntent.Builder()
-                .setToolbarColor(color)
-                .build()
-        i.intent.`package` = pkg
-        i.intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        i.launchUrl(context, uri)
-    } else {
-        launchBrowser(context, uri, Intent.FLAG_ACTIVITY_NEW_TASK)
+fun openInCustomTabOrBrowser(context: Context?, uri: Uri) {
+    context?.let {
+        val pkg = CustomTabsHelper.getPackageNameToUse(it)
+        if (pkg != null) {
+            val color = UiUtils.resolveColor(it, R.attr.colorPrimary)
+            val i = CustomTabsIntent.Builder()
+                    .setToolbarColor(color)
+                    .build()
+            i.intent.`package` = pkg
+            i.intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            i.launchUrl(it, uri)
+        } else {
+            launchBrowser(it, uri, Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
     }
+
 }
 
 fun launchBrowser(context: Context, uri: Uri?, flags: Int) {

@@ -12,7 +12,7 @@ versions.room = "2.0.0-rc01"
 versions.paging = "2.0.0-rc01"
 versions.lifecycle = "2.0.0-rc01"
 versions.androidx = "1.0.0-alpha1"
-versions.dagger = "2.17"
+versions.dagger = "2.16"
 versions.junit = "4.12"
 versions.espresso = "3.1.0-alpha1"
 versions.retrofit = "2.4.0"
@@ -37,7 +37,7 @@ versions.ktx = "1.0.0-rc02"
 versions.navigation = "1.0.0-alpha04"
 versions.app_code = 1
 versions.app_name = "1.0"
-versions.databinding_compiler = "3.2.0-alpha11"
+versions.databinding_compiler = "3.3.0-alpha08"
 versions.apollo = "1.0.0-alpha2"
 versions.apollo_converter = "0.1.0"
 deps.version = versions
@@ -112,6 +112,16 @@ kotlin.ktx = "androidx.core:core-ktx:$versions.ktx"
 kotlin.allopen = "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin"
 deps.kotlin = kotlin
 
+def navigation = [:]
+navigation.runtime = "android.arch.navigation:navigation-runtime:$versions.navigation"
+navigation.runtime_ktx = "android.arch.navigation:navigation-runtime-ktx:$versions.navigation"
+navigation.fragment = "android.arch.navigation:navigation-fragment:$versions.navigation"
+navigation.fragment_ktx = "android.arch.navigation:navigation-fragment-ktx:$versions.navigation"
+navigation.safe_args_plugin = "android.arch.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
+navigation.testing_ktx = "android.arch.navigation:navigation-testing-ktx:$versions.navigation"
+deps.navigation = navigation
+
+
 def apollo = [:]
 apollo.runtime = "com.apollographql.apollo:apollo-runtime:$versions.apollo"
 apollo.plugin = "com.apollographql.apollo:apollo-gradle-plugin:$versions.apollo"
@@ -131,13 +141,13 @@ deps.rxjava2 = "io.reactivex.rxjava2:rxjava:$versions.rxjava2"
 deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
-deps.databinding_compiler = "androidx.databinding:compiler:$versions.databinding_compiler"
+deps.databinding_compiler = "androidx.databinding:databinding-compiler:$versions.databinding_compiler"
 ext.deps = deps
 
 def build_versions = [:]
 build_versions.min_sdk = 15
 build_versions.compile_sdk = 28
-build_versions.build_tools = "28.0.0-rc1"
+build_versions.build_tools = "28.0.7"
 ext.build_versions = build_versions
 
 def app_versions = [:]

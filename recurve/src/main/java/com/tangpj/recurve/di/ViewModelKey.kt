@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tang
+ * Copyright (C) 2018 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.binding
 
-import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
+package com.tangpj.recurve.di
 
-/**
- * Created by tang on 2018/3/25.
- */
+import androidx.lifecycle.ViewModel
+import dagger.MapKey
+import kotlin.reflect.KClass
 
-object RecyclerBindingAdapters{
-
-    @BindingAdapter("bind:layoutManager")
-    @JvmStatic
-    fun setLayoutManager(recyclerView: RecyclerView, layoutManager: RecyclerView.LayoutManager){
-        recyclerView.layoutManager = layoutManager
-    }
-}
+@MustBeDocumented
+@Target(
+        AnnotationTarget.FUNCTION,
+        AnnotationTarget.PROPERTY_GETTER,
+        AnnotationTarget.PROPERTY_SETTER
+)
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey
+annotation class ViewModelKey(val value: KClass<out ViewModel>)
