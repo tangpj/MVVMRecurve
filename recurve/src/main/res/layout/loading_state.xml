@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="com.tangpj.recurve.retrofit2.Resource"/>
-        <import type="com.tangpj.recurve.retrofit2.Status"/>
+        <import type="com.tangpj.recurve.resource.Status"/>
         <variable name="resource" type="com.tangpj.recurve.retrofit2.Resource"/>
         <variable name="callback" type="com.tangpj.recurve.common.RetryCallback"/>
     </data>

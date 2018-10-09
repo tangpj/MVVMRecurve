@@ -40,4 +40,5 @@ dependencies {
 
     implementation deps.rx_android
     implementation deps.rxjava2
+    implementation project(":recurve")
 }
