@@ -15,7 +15,7 @@
  */
 
 
-package com.tangpj.recurve.resource
+package com.tangpj.recurve.retrofit2
 
 /**
  * Status of a resource that is provided to the UI.

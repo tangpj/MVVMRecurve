@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.resource
+package com.tangpj.recurve.retrofit2
 
 import retrofit2.Response
 import java.util.regex.Pattern

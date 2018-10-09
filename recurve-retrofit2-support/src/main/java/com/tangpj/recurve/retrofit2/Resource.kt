@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tangpj.recurve.resource
+package com.tangpj.recurve.retrofit2
 
 
 /**
