@@ -20,6 +20,9 @@ import androidx.lifecycle.LiveData
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MediatorLiveData
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  *
@@ -30,7 +33,7 @@ import androidx.lifecycle.MediatorLiveData
  * @param <ResultType>
  * @param <RequestType>
 </RequestType></ResultType> */
-abstract class AbstractNetWorkBoundResource<ResultType, RequestType>
+abstract class NetWorkBoundResource<ResultType, RequestType>
 @MainThread constructor() {
 
     protected val result = MediatorLiveData<Resource<ResultType>>()
@@ -58,13 +61,54 @@ abstract class AbstractNetWorkBoundResource<ResultType, RequestType>
             result.value = newValue
         }
     }
+    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
+        val apiResponse = createCall()
+        // we re-attach dbSource as a new source, it will dispatch its latest value quickly
+        result.addSource(dbSource) { newData ->
+            setValue(Resource.loading(newData))
+        }
+        result.addSource(apiResponse) { response ->
+            result.removeSource(apiResponse)
+            result.removeSource(dbSource)
+            when (response) {
+                is ApiSuccessResponse -> {
 
+                    Observable.fromArray(response)
+                            .subscribeOn(Schedulers.io())
+                            .map { saveCallResult(processResponse(it)) }
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                result.addSource(loadFromDb()) { newData
+                                    -> setValue(Resource.success(newData))
+                                }
+                            }
+                }
+                is ApiEmptyResponse -> {
 
+                    Observable.fromArray(response)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                result.addSource(loadFromDb()) { newData
+                                    -> setValue(Resource.success(newData))
+                                }
+                            }
+                }
+                is ApiErrorResponse -> {
+                    onFetchFailed()
+                    result.addSource(dbSource) { newData ->
+                        setValue(Resource.error(response.errorMessage, newData))
+                    }
+                }
+            }
+        }
+    }
 
     protected open fun onFetchFailed() {}
 
     fun asLiveData() = result as LiveData<Resource<ResultType>>
 
+    @WorkerThread
+    protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body
 
     @WorkerThread
     protected abstract fun saveCallResult(item: RequestType)
@@ -75,7 +119,6 @@ abstract class AbstractNetWorkBoundResource<ResultType, RequestType>
     @MainThread
     protected abstract fun loadFromDb(): LiveData<ResultType>
 
-    protected abstract fun fetchFromNetwork(dbSource: LiveData<ResultType>)
-
-
+    @MainThread
+    protected abstract fun createCall(): LiveData<ApiResponse<RequestType>>
 }

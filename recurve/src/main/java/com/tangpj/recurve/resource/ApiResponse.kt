@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.retrofit2
+package com.tangpj.recurve.resource
 
-import retrofit2.Response
 import java.util.regex.Pattern
 
 /**
@@ -29,31 +28,6 @@ sealed class ApiResponse<T> {
         @JvmStatic
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
             return ApiErrorResponse(error.message ?: "unknown error")
-        }
-
-        @JvmStatic
-        @JvmOverloads
-        fun <T> create(response: Response<T>, nextPageStrategy: NextPageStrategy? = null): ApiResponse<T> {
-            return if (response.isSuccessful) {
-                val body = response.body()
-                if (body == null || response.code() == 204) {
-                    ApiEmptyResponse()
-                } else {
-                    ApiSuccessResponse(
-                            body = body,
-                            linkHeader = response.headers()?.get("link"),
-                            nextPageStrategy = nextPageStrategy
-                    )
-                }
-            } else {
-                val msg = response.errorBody()?.string()
-                val errorMsg = if (msg.isNullOrEmpty()) {
-                    response.message()
-                } else {
-                    msg
-                }
-                ApiErrorResponse(errorMsg ?: "unknown error")
-            }
         }
     }
 }

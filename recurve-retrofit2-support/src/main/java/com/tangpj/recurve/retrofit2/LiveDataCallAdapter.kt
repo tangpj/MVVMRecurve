@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tangpj.recurve.util
+package com.tangpj.recurve.retrofit2
 
 
 import androidx.lifecycle.LiveData
@@ -34,28 +34,28 @@ import com.tangpj.recurve.resource.NextPageStrategy
  * @param <R>
 </R> */
 class LiveDataCallAdapter<R> @JvmOverloads constructor(private val responseType: Type
-                             , val nextPageStrategy: NextPageStrategy? = null)
+                                                       , val nextPageStrategy: NextPageStrategy? = null)
     : CallAdapter<R, LiveData<ApiResponse<R>>> {
 
     override fun responseType(): Type = responseType
 
-    override fun adapt(call: Call<R>): LiveData<ApiResponse<R>> {
-        return object : LiveData<ApiResponse<R>>() {
-            var started = AtomicBoolean(false)
-            override fun onActive() {
-                super.onActive()
-                if (started.compareAndSet(false, true)) {
-                    call.enqueue(object : Callback<R> {
-                        override fun onResponse(call: Call<R>, response: Response<R>) {
-                            postValue(ApiResponse.create(response = response
-                                    , nextPageStrategy = nextPageStrategy))
-                        }
-                        override fun onFailure(call: Call<R>, throwable: Throwable) {
-                            postValue(ApiResponse.create(throwable))
-                        }
-                    })
+    override fun adapt(call: Call<R>): LiveData<ApiResponse<R>> =
+            object : LiveData<ApiResponse<R>>() {
+                var started = AtomicBoolean(false)
+                override fun onActive() {
+                    super.onActive()
+                    if (started.compareAndSet(false, true)) {
+                        call.enqueue(object : Callback<R> {
+                            override fun onResponse(call: Call<R>, response: Response<R>) {
+                                postValue(create(response = response
+                                        , nextPageStrategy = nextPageStrategy))
+                            }
+                            override fun onFailure(call: Call<R>, throwable: Throwable) {
+                                postValue(ApiResponse.create(throwable))
+                            }
+                        })
+                    }
                 }
             }
-        }
-    }
+
 }

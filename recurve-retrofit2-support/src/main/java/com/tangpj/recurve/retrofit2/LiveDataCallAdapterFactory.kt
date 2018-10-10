@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tangpj.recurve.util
+package com.tangpj.recurve.retrofit2
 
 import androidx.lifecycle.LiveData
 import retrofit2.CallAdapter

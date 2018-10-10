@@ -1,1 +1,1 @@
-include ':app',':recurve', ':recurve-retrofit2-support'
+include ':app',':recurve', ':recurve-retrofit2-support', ':recurve_apollo_support'
