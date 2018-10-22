@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion build_versions.compile_sdk
@@ -35,6 +36,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kapt {
+        generateStubs = true
+    }
+
 }
 group = "com.github.tangpj"
 
@@ -57,6 +62,7 @@ dependencies {
     api deps.dagger.runtime
     api deps.dagger.android
     api deps.dagger.android_support
+
 
 
     api deps.retrofit.runtime
@@ -82,6 +88,8 @@ dependencies {
     kapt deps.lifecycle.compiler
 
     kapt deps.databinding_compiler
+
+    api "com.squareup:javapoet:1.11.1"
 
     configurations {
         all*.exclude group: 'com.android.support'
