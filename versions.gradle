@@ -7,12 +7,12 @@ ext.deps = [:]
 def deps = [:]
 
 def versions = [:]
-versions.arch_core = "2.0.0"
-versions.room = "2.0.0"
-versions.paging = "2.0.0"
-versions.lifecycle = "2.0.0"
-versions.androidx = "1.0.0"
-versions.dagger = "2.18"
+versions.arch_core = "2.0.0-alpha1"
+versions.room = "2.0.0-rc01"
+versions.paging = "2.0.0-rc01"
+versions.lifecycle = "2.0.0-rc01"
+versions.androidx = "1.0.0-alpha1"
+versions.dagger = "2.16"
 versions.junit = "4.12"
 versions.espresso = "3.1.0-alpha1"
 versions.retrofit = "2.4.0"
@@ -23,10 +23,10 @@ versions.mockito = "2.8.47"
 versions.mockito_all = "1.10.19"
 versions.dexmaker = "2.2.0"
 versions.constraint_layout = "1.1.0"
-versions.glide = "4.7.1"
+versions.glide = "4.8.0"
 versions.glide_transformations = "3.3.0"
 versions.timber = "4.7.1"
-versions.android_gradle_plugin = '3.4.0-alpha01'
+versions.android_gradle_plugin = '3.3.0-alpha08'
 versions.rxjava2 = "2.2.1"
 versions.rx_android = "2.1.0"
 versions.atsl_runner = "1.1.0-alpha1"
@@ -34,12 +34,13 @@ versions.atsl_rules = "1.0.1"
 versions.hamcrest = "1.3"
 versions.kotlin = "1.2.71"
 versions.ktx = "1.0.0-rc02"
-versions.navigation = "1.0.0-alpha04"
+versions.navigation = "1.0.0-alpha06"
 versions.app_code = 1
 versions.app_name = "1.0"
-versions.databinding_compiler = "3.4.0-alpha01"
+versions.databinding_compiler = "3.3.0-alpha08"
 versions.apollo = "1.0.0-alpha2"
 versions.apollo_converter = "0.1.0"
+versions.jetifier = "1.0.0-beta02"
 deps.version = versions
 
 def androidx = [:]
@@ -125,6 +126,7 @@ deps.navigation = navigation
 def apollo = [:]
 apollo.runtime = "com.apollographql.apollo:apollo-runtime:$versions.apollo"
 apollo.plugin = "com.apollographql.apollo:apollo-gradle-plugin:$versions.apollo"
+apollo.android_support = "com.apollographql.apollo:apollo-android-support:$versions.apollo"
 apollo.converter = "com.apollographql.android:converter-pojo:$versions.apollo_converter"
 
 deps.apollo = apollo
@@ -142,6 +144,7 @@ deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.databinding_compiler = "androidx.databinding:databinding-compiler:$versions.databinding_compiler"
+deps.jetifier = "com.android.tools.build.jetifier:jetifier-processor:$versions.jetifier"
 ext.deps = deps
 
 def build_versions = [:]
@@ -156,7 +159,7 @@ app_versions.name = "1.0"
 ext.app_versions = app_versions
 
 def db_versions = [:]
-db_versions.github = "1"
+db_versions.github = "2"
 ext.db_versions = db_versions
 
 
