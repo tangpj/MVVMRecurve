@@ -18,7 +18,7 @@ package com.tangpj.recurve.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class ViewModelFactory  constructor(
+class RecurevViewModelFactory  constructor(
         private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards ViewModel>)
     :ViewModelProvider.Factory {
 

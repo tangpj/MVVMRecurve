@@ -56,7 +56,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     api deps.kotlin.stdlib_jdk8
     implementation project(":recurve")
     implementation deps.dagger.runtime
@@ -66,5 +65,4 @@ dependencies {
     kapt deps.dagger.compiler
     kapt deps.dagger.android_support_compiler
 
-    implementation group: 'com.google.errorprone', name: 'error_prone_annotations', version: '2.3.2'
 }

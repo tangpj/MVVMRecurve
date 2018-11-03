@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tangpj.recurve.dagger
+package com.tangpj.recurve.dagger2
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey
