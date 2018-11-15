@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 object RecyclerBindingAdapters{
 
-    @BindingAdapter("bind:layoutManager")
+    @BindingAdapter("layoutManager")
     @JvmStatic
     fun setLayoutManager(recyclerView: RecyclerView, layoutManager: RecyclerView.LayoutManager){
         recyclerView.layoutManager = layoutManager
