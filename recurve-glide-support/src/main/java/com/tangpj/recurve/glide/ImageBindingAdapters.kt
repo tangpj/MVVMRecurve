@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.binding
+package com.tangpj.recurve.glide
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
-import com.tangpj.recurve.util.circle
-import com.tangpj.recurve.util.default
-import com.tangpj.recurve.util.rounded
-import com.tangpj.recurve.util.square
 
 
 /**
  * Created by tang on 2018/3/7.
  * Binding adapters that work with a fragment instance.
  */
-class ImageBindingAdapters constructor(private val requestManager: RequestManager
-                                                             , private val placeholderRes: Int = 0
-                                                             , private val fallbackRes: Int = 0
-                                                             , private val errorRes: Int = 0) {
+class ImageBindingAdapters constructor(
+        private val requestManager: RequestManager
+        , private val placeholderRes: Int = 0
+        , private val fallbackRes: Int = 0
+        , private val errorRes: Int = 0) {
 
     @BindingAdapter("imageUrl")
     fun bindImage(imageView: ImageView, url: String) {

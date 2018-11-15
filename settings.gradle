@@ -1,4 +1,4 @@
-include ':recurve-dagger2-support'
+include ':recurve-dagger2-support', ':recurve-glide-support'
 include':app'
 include':recurve'
 include':recurve-retrofit2-support'

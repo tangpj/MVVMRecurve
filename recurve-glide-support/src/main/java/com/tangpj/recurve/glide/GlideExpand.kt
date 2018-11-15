@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.util
+package com.tangpj.recurve.glide
 import android.annotation.SuppressLint
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.CropSquareTransformation
