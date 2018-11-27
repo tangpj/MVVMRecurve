@@ -1,0 +1,18 @@
+apply from: "../support.gradle"
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    dataBinding{
+        enabled true
+    }
+}
+
+dependencies {
+    api (deps.glide){
+        exclude group: 'com.android.support'
+    }
+    api (deps.glide_transformations){
+        exclude group: 'com.android.support'
+    }
+}

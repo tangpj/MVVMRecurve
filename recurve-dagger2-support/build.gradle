@@ -13,51 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+apply from: "../support.gradle"
 apply plugin: 'kotlin-kapt'
 
-android {
-    compileSdkVersion build_versions.compile_sdk
-
-    defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
-        versionCode app_versions.code
-        versionName app_versions.name
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    dataBinding{
-        enabled true
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
-
-    compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
-    }
-
-}
-
-
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api deps.kotlin.stdlib_jdk8
-    implementation project(":recurve")
+
     implementation deps.dagger.runtime
     implementation deps.dagger.android
     implementation deps.dagger.android_support

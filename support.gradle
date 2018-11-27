@@ -1,7 +1,20 @@
+/*
+ * Copyright 2018, The TangPJ
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion build_versions.compile_sdk
@@ -14,12 +27,6 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
-            }
-        }
-
     }
 
     buildTypes {
@@ -29,13 +36,10 @@ android {
         }
     }
 
-    dataBinding{
-        enabled true
-    }
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
 
     compileOptions {
         sourceCompatibility 1.8
@@ -43,33 +47,13 @@ android {
     }
 
 }
-group = "com.github.tangpj"
+
 
 dependencies {
-    api deps.androidx.appcompat
-    api deps.androidx.recyclerView
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     api deps.kotlin.stdlib_jdk8
-    api deps.kotlin.ktx
-
-    api deps.androidx.material
-    api deps.androidx.customtabs
-    api deps.androidx.annotations
-    api deps.room.runtime
-    api deps.room.rxjava2
-
-    api deps.lifecycle.runtime
-    api deps.lifecycle.extensions
-    api deps.lifecycle.viewmodel
-    api deps.lifecycle.livedata
-
-    api deps.timber
-
-    // RxJava
-    api deps.rx_android
-    api deps.rxjava2
-
-    kapt deps.room.compiler
-    kapt deps.lifecycle.compiler
+    implementation project(":recurve")
 
 
 }

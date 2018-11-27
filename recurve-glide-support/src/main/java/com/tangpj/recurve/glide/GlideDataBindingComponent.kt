@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.binding
+package com.tangpj.recurve.glide
 
 import androidx.databinding.DataBindingComponent
 import com.bumptech.glide.RequestManager
@@ -23,13 +23,13 @@ import com.bumptech.glide.RequestManager
  * A Data Binding Component implementation for recurve.
  * RequestManager created by Glide.with()
  */
-class RecurveDataBindingComponent(private val requestManager: RequestManager
-                                  , private var placeholderRes: Int = 0
-                                  , private var fallbackRes: Int = 0
-                                  , private var errorRes: Int = 0): DataBindingComponent {
+class GlideDataBindingComponent(private val requestManager: RequestManager
+                                , private var placeholderRes: Int = 0
+                                , private var fallbackRes: Int = 0
+                                , private var errorRes: Int = 0): DataBindingComponent {
 
     override fun getImageBindingAdapters(): ImageBindingAdapters =
-            ImageBindingAdapters(requestManager,placeholderRes,fallbackRes,errorRes)
+            ImageBindingAdapters(requestManager, placeholderRes, fallbackRes, errorRes)
 
 
 }
