@@ -1,16 +1,16 @@
-package com.tangpj.recurve.ui.activity
+package com.tangpj.recurve.dagger2
 
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
 import com.tangpj.recurve.ui.CollapsingContentCreator
+import dagger.android.support.DaggerAppCompatActivity
 
-abstract class RecurveActivity : AppCompatActivity(), CollapsingContentCreator {
+abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), CollapsingContentCreator {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
 
