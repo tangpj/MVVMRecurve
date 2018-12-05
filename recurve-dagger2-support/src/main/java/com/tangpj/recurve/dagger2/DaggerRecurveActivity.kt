@@ -7,10 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
-import com.tangpj.recurve.ui.CollapsingContentCreator
+import com.tangpj.recurve.ui.AppbarCreator
 import dagger.android.support.DaggerAppCompatActivity
 
-abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), CollapsingContentCreator {
+abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), AppbarCreator {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
 
@@ -18,6 +18,7 @@ abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), CollapsingConte
         super.onCreate(savedInstanceState)
         activityRecurveBinding = DataBindingUtil
                 .setContentView(this, R.layout.activity_recurve)
+
 
     }
 

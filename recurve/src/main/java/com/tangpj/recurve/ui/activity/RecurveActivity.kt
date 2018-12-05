@@ -8,9 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
-import com.tangpj.recurve.ui.CollapsingContentCreator
+import com.tangpj.recurve.ui.AppbarCreator
 
-abstract class RecurveActivity : AppCompatActivity(), CollapsingContentCreator {
+abstract class RecurveActivity : AppCompatActivity(), AppbarCreator {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
 
