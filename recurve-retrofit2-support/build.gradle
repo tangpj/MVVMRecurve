@@ -1,5 +1,8 @@
 apply from: "../support.gradle"
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 dependencies {
     api deps.retrofit.runtime
 }
+

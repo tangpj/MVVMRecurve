@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 apply from: "../support.gradle"
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 dependencies {
     api deps.apollo.converter
     api deps.apollo.runtime
     api deps.apollo.android_support
+}
+repositories {
+    mavenCentral()
 }

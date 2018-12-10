@@ -1,6 +1,7 @@
 package com.tangpj.recurve.dagger2
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
@@ -25,7 +26,7 @@ abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), AppbarCreator {
     fun <T: ViewDataBinding> setRecurveContent(@LayoutRes layoutId: Int): T
             = DataBindingUtil.setContentView(this, layoutId)
 
-    override fun creatorCollapsingView(creator: () -> View) {
+    override fun creatorCollapsingView(collapsingCreator: ((LayoutInflater) -> View)?) {
         activityRecurveBinding.collapsingToolbarLayout.addView(creator.invoke())
     }
 

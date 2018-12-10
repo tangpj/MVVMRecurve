@@ -73,3 +73,6 @@ dependencies {
 
 
 }
+repositories {
+    mavenCentral()
+}

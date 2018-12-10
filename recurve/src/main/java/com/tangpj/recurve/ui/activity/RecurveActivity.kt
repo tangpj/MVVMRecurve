@@ -10,7 +10,7 @@ import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
 import com.tangpj.recurve.ui.AppbarCreator
 
-abstract class RecurveActivity : AppCompatActivity(), AppbarCreator {
+abstract class RecurveActivity : AppCompatActivity() {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
 
@@ -24,8 +24,5 @@ abstract class RecurveActivity : AppCompatActivity(), AppbarCreator {
     fun <T: ViewDataBinding> setRecurveContent(@LayoutRes layoutId: Int): T
             = DataBindingUtil.setContentView(this, layoutId)
 
-    override fun creatorCollapsingView(creator: () -> View) {
-        activityRecurveBinding.collapsingToolbarLayout.addView(creator.invoke())
-    }
 
 }
