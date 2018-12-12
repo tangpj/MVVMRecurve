@@ -12,7 +12,7 @@ import com.tangpj.recurve.databinding.ToolbarRecurveBinding
 import com.tangpj.recurve.ui.creator.AppbarCreator
 import dagger.android.support.DaggerAppCompatActivity
 
-abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), AppbarCreator {
+abstract class DaggerRecurveActivity: DaggerAppCompatActivity() {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
 
@@ -29,14 +29,5 @@ abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), AppbarCreator {
 
 
 
-    override fun creatorToolbar(collapsingCreator: ((LayoutInflater) -> View)?) {
-        val inflater = LayoutInflater.from(activityRecurveBinding.appBarLayout.context)
-        val toolbarBinding = ToolbarRecurveBinding.inflate(inflater)
-        activityRecurveBinding.appBarLayout.addView(toolbarBinding.root)
-        collapsingCreator?.let {
-            it.invoke(inflater)
-
-        }
-    }
 
 }

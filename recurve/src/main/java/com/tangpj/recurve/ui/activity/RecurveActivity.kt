@@ -13,10 +13,15 @@ import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
 import com.tangpj.recurve.ui.creator.AppbarCreator
 import com.tangpj.recurve.ui.creator.RecurveAppbarCreator
+import com.tangpj.recurve.ui.init.ActivityInit
+import com.tangpj.recurve.ui.init.RecurveActivityInit
 
-abstract class RecurveActivity : AppCompatActivity(), AppbarCreator {
+abstract class RecurveActivity:
+        AppCompatActivity(), AppbarCreator, ActivityInit{
 
     private lateinit var appbarCreator: AppbarCreator
+
+    private lateinit var contentInit: ActivityInit
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
 
@@ -25,15 +30,16 @@ abstract class RecurveActivity : AppCompatActivity(), AppbarCreator {
         activityRecurveBinding = DataBindingUtil
                 .setContentView(this, R.layout.activity_recurve)
         appbarCreator = RecurveAppbarCreator(activityRecurveBinding)
+        contentInit = RecurveActivityInit(activityRecurveBinding)
 
     }
-
 
     override fun creatorToolbar(title: String?, collapsingCreator: ((
             inflater: LayoutInflater,
             CollapsingToolbarLayout,
-            Toolbar) -> View)?) {
+            Toolbar) -> View)?)
+            = appbarCreator.creatorToolbar(title, collapsingCreator)
 
-        appbarCreator.creatorToolbar(title, collapsingCreator)
-    }
+    override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
+            = contentInit.initContentBinding(layoutId)
 }
