@@ -1,4 +1,4 @@
-package com.tangpj.recurve.ui.init
+package com.tangpj.recurve.ui.creator
 
 import android.view.LayoutInflater
 import androidx.annotation.LayoutRes
@@ -6,14 +6,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
 
-class RecurveActivityInit(
-        private val activityRecurveBinding: ActivityRecurveBinding) : ActivityInit{
+class RecurveContentCreate(var activityRecurveBinding: ActivityRecurveBinding) : ContentCreate {
 
     override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding {
-        val inflater = LayoutInflater.from(activityRecurveBinding.content.context)
+        val parent = activityRecurveBinding.content
+        val inflater = LayoutInflater.from(parent.context)
         val binding: Binding = DataBindingUtil
-                .inflate(inflater, layoutId, activityRecurveBinding.content, false)
-        activityRecurveBinding.content.addView(binding.root)
+                .inflate(inflater, layoutId, parent, false)
+
+        parent.addView(binding.root)
         return binding
 
     }

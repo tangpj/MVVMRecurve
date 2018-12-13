@@ -1,9 +1,9 @@
-package com.tangpj.recurve.ui.init
+package com.tangpj.recurve.ui.creator
 
 import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 
-interface ActivityInit{
+interface ContentCreate{
 
     fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
 

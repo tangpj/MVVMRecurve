@@ -38,3 +38,4 @@ interface ArrayDataOperator<E>{
     fun removedItemAt(position: Int):E?
 
 }
+
