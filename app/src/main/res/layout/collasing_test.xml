@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <View
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:background="#ff0000"
+        android:layout_height="200dp"
+        app:layout_collapseMode="parallax"
+        >
+
+    </View>
+
+</layout>
