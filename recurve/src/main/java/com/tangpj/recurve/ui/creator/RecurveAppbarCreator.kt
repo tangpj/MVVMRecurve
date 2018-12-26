@@ -1,10 +1,8 @@
 package com.tangpj.recurve.ui.creator
 
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.google.android.material.appbar.AppBarLayout
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
 import com.tangpj.recurve.databinding.ToolbarCollapsingRecurveBinding
@@ -15,7 +13,7 @@ import com.tangpj.recurve.ui.creator.ext.ToolbarExt
 
 class RecurveAppbarCreator(
         private val activity: AppCompatActivity,
-        var activityRecurveBinding: ActivityRecurveBinding): AppbarCreator {
+        private var activityRecurveBinding: ActivityRecurveBinding): AppbarCreator {
 
     override fun appbar(init: AppbarExt.() -> Unit): AppBarLayout {
 
@@ -75,6 +73,10 @@ class RecurveAppbarCreator(
         collapsingToolbarLayoutExt.toolbarExt?.let {
             toolbar.title = it.title
         }
+        if (collapsingToolbarLayoutExt.contentScrimColor != -1){
+            collapsingBinding.collapsingToolbarLayout
+                    .setContentScrimColor(collapsingToolbarLayoutExt.contentScrimColor)
+        }
         activity.setSupportActionBar(toolbar)
 
         collapsingCreator?.let{
@@ -96,7 +98,7 @@ class RecurveAppbarCreator(
         appbarExt.scrollFlags?.let {
             val flags = it.trim().split("|")
             flags.forEach { flag ->
-                result = result or when(flag.toLowerCase()){
+                result = result or when(flag){
                     "scroll" -> AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                     "exitUntilCollapsed" -> AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
                     "enterAlways" -> AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS

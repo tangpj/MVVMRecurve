@@ -7,6 +7,7 @@
         android:background="#ff0000"
         android:layout_height="200dp"
         app:layout_collapseMode="parallax"
+        app:layout_collapseParallaxMultiplier="0.7"
         >
 
     </View>

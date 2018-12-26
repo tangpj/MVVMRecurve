@@ -9,9 +9,9 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 class CollapsingToolbarLayoutExt{
 
     @DrawableRes
-    var contentScrimDrawableRes: Int = -1
+    var contentScrimDrawable: Int = -1
 
-    var contentScrimColorRes: Int = -1
+    var contentScrimColor: Int = -1
 
     var toolbarExt: ToolbarExt? = null
 
@@ -19,12 +19,12 @@ class CollapsingToolbarLayoutExt{
             : ((inflater: LayoutInflater, CollapsingToolbarLayout) -> View)? = null
 
 
-    fun contentScrimColor(@ColorInt contentScrimColorRes: Int){
-        this.contentScrimColorRes = contentScrimColorRes
+    fun contentScrimColor(@ColorInt contentScrimColor: Int){
+        this.contentScrimColor = contentScrimColor
     }
 
-    fun contentScrimDrawable(@DrawableRes contentScrimDrawableRes: Int){
-        this.contentScrimDrawableRes  = contentScrimDrawableRes
+    fun contentScrimDrawable(@DrawableRes contentScrimDrawable: Int){
+        this.contentScrimDrawable  = contentScrimDrawable
     }
 
 
