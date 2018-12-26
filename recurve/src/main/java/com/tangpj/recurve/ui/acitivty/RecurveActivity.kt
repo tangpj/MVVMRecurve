@@ -27,7 +27,7 @@ abstract class RecurveActivity:
         activityRecurveBinding = DataBindingUtil
                 .setContentView(this, R.layout.activity_recurve)
         contentCreate = RecurveContentCreate(activityRecurveBinding)
-        appbarCreator = RecurveAppbarCreator(activityRecurveBinding)
+        appbarCreator = RecurveAppbarCreator(this, activityRecurveBinding)
     }
 
     override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
@@ -35,5 +35,6 @@ abstract class RecurveActivity:
 
     fun appbar(init: AppbarExt.() -> Unit){
         appbar(appbarCreator, init)
+
     }
 }

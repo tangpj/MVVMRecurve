@@ -11,14 +11,9 @@ class MainActivity: RecurveActivity(){
         super.onCreate(savedInstanceState)
         val binding = initContentBinding<ContentTestBinding>(R.layout.content_test)
         appbar {
-            collapsingToolbar {
-                toolBar {
-                    title = "测试测试"
-                }
-                collapsingContent { inflater, collapsingToolbarLayout ->
-                    val content = CollasingTestBinding.inflate(inflater, collapsingToolbarLayout, false)
-                    content.root
-                }
+            scrollEnable = false
+            toolBar {
+                title = "测试测试"
             }
         }
     }

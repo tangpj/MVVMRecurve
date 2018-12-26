@@ -1,11 +1,11 @@
 package com.tangpj.recurve.ui.creator
 
+import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
 import com.tangpj.recurve.databinding.ToolbarCollapsingRecurveBinding
 import com.tangpj.recurve.databinding.ToolbarRecurveBinding
@@ -13,45 +13,59 @@ import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import com.tangpj.recurve.ui.creator.ext.CollapsingToolbarLayoutExt
 import com.tangpj.recurve.ui.creator.ext.ToolbarExt
 
-class RecurveAppbarCreator(var activityRecurveBinding: ActivityRecurveBinding): AppbarCreator {
+class RecurveAppbarCreator(
+        private val activity: AppCompatActivity,
+        var activityRecurveBinding: ActivityRecurveBinding): AppbarCreator {
 
     override fun appbar(init: AppbarExt.() -> Unit): AppBarLayout {
 
-        val context = activityRecurveBinding.appBarLayout.context
-        val appbar = AppbarExt(context)
-        init.invoke(appbar)
+        val context = activityRecurveBinding.appbarLayout.context
+        val appbarExt = AppbarExt(context)
+        init.invoke(appbarExt)
         val inflater = LayoutInflater.from(context)
 
-
-        appbar.toolbarExt?.let {
-            createToolbar(it, inflater, activityRecurveBinding.appBarLayout )
-            return@appbar activityRecurveBinding.appBarLayout
+        val toolbarBinding = appbarExt.toolbarExt?.let {
+            createToolbar(it, inflater, activityRecurveBinding.appbarLayout )
+        }
+        if (toolbarBinding == null){
+            appbarExt.collapsingToolbarExt?.let {
+                createCollapsingToolbarLayout(it, inflater, activityRecurveBinding.appbarLayout)
+            }
+        }
+        val scrollFlag = if(appbarExt.scrollEnable) {
+            getScrollFlag(appbarExt)
+        } else {
+            0
+        }
+        val appbarChild = activityRecurveBinding.appbarLayout.getChildAt(0)
+        val layoutParams = appbarChild?.let {
+             it.layoutParams as? AppBarLayout.LayoutParams
+        }
+        layoutParams?.let {
+            it.scrollFlags = scrollFlag
         }
 
-        appbar.collapsingToolbarExt?.let {
-            createCollapsingToolbarLayout(it, inflater, activityRecurveBinding.appBarLayout)
-        }
-
-        return activityRecurveBinding.appBarLayout
+        return activityRecurveBinding.appbarLayout
     }
 
     override fun createToolbar(
             toolbarExt: ToolbarExt,
             inflater: LayoutInflater,
-            parent: ViewGroup): Toolbar {
+            parent: ViewGroup): ToolbarRecurveBinding {
 
         val toolbarRecurveBinding = ToolbarRecurveBinding.inflate(inflater)
         val toolbar = toolbarRecurveBinding.toolbar
         toolbar.title = toolbarExt.title
-        activityRecurveBinding.appBarLayout.addView(toolbar)
-        return toolbar
+        activityRecurveBinding.appbarLayout.addView(toolbar)
+        activity.setSupportActionBar(toolbar)
+        return toolbarRecurveBinding
     }
 
     override fun createCollapsingToolbarLayout(
             collapsingToolbarLayoutExt: CollapsingToolbarLayoutExt,
             inflater: LayoutInflater,
             parent: ViewGroup)
-            : CollapsingToolbarLayout {
+            : ToolbarCollapsingRecurveBinding {
 
         val collapsingBinding = ToolbarCollapsingRecurveBinding.inflate(inflater)
 
@@ -61,8 +75,9 @@ class RecurveAppbarCreator(var activityRecurveBinding: ActivityRecurveBinding): 
         collapsingToolbarLayoutExt.toolbarExt?.let {
             toolbar.title = it.title
         }
+        activity.setSupportActionBar(toolbar)
 
-        val content = collapsingCreator?.let{
+        collapsingCreator?.let{
 
             val collapsingContent = collapsingCreator.invoke(
                     LayoutInflater.from(collapsingBinding.root.context),
@@ -70,11 +85,32 @@ class RecurveAppbarCreator(var activityRecurveBinding: ActivityRecurveBinding): 
             collapsingBinding.collapsingToolbarLayout.addView(collapsingContent)
             collapsingBinding.collapsingToolbarLayout
         }
-        activityRecurveBinding.appBarLayout
+        activityRecurveBinding.appbarLayout
                 .addView(collapsingBinding.root)
-        return collapsingBinding.collapsingToolbarLayout
+        return collapsingBinding
     }
 
 
+    private fun getScrollFlag(appbarExt: AppbarExt): Int {
+        var result = 1
+        appbarExt.scrollFlags?.let {
+            val flags = it.trim().split("|")
+            flags.forEach { flag ->
+                result = result or when(flag.toLowerCase()){
+                    "scroll" -> AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                    "exitUntilCollapsed" -> AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+                    "enterAlways" -> AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+                    "enterAlwaysCollapsed" -> AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED
+                    "snap" -> AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                    else -> {
+                        0
+                    }
+                }
+            }
+        }
+
+        return result
+
+    }
 
 }

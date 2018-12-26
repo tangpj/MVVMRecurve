@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.tangpj.recurve.databinding.ToolbarCollapsingRecurveBinding
+import com.tangpj.recurve.databinding.ToolbarRecurveBinding
 import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import com.tangpj.recurve.ui.creator.ext.CollapsingToolbarLayoutExt
 import com.tangpj.recurve.ui.creator.ext.ToolbarExt
@@ -33,11 +35,11 @@ interface AppbarCreator{
     fun createToolbar(
             toolbarExt: ToolbarExt,
             inflater: LayoutInflater,
-            parent: ViewGroup): Toolbar
+            parent: ViewGroup): ToolbarRecurveBinding
 
     fun createCollapsingToolbarLayout(
             collapsingToolbarLayoutExt: CollapsingToolbarLayoutExt,
             inflater: LayoutInflater,
             parent: ViewGroup)
-            : CollapsingToolbarLayout
+            : ToolbarCollapsingRecurveBinding
 }
