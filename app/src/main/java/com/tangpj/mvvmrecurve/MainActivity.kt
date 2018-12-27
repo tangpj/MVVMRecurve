@@ -13,7 +13,7 @@ class MainActivity: RecurveActivity(){
         appbar {
             scrollFlags = "scroll|exitUntilCollapsed"
             collapsingToolbar {
-                contentScrimColor = R.color.colorPrimary
+                contentScrimColor = R.color.colorAccent
                 toolBar {
                     title = "测试测试"
                 }
