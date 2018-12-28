@@ -11,13 +11,14 @@ class MainActivity: RecurveActivity(){
         super.onCreate(savedInstanceState)
         val binding = initContentBinding<ContentTestBinding>(R.layout.content_test)
         appbar {
+            scrollEnable = true
             scrollFlags = "scroll|exitUntilCollapsed"
             collapsingToolbar {
                 contentScrimColor = R.color.colorAccent
                 toolBar {
                     title = "测试测试"
                 }
-                collapsingContent { inflater, collapsingToolbarLayout ->
+                collapsingView { inflater, collapsingToolbarLayout ->
                     val content = CollasingTestBinding.inflate(inflater, collapsingToolbarLayout, false)
                     content.root
                 }

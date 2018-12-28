@@ -2,7 +2,6 @@ package com.tangpj.recurve.ui.creator.ext
 
 import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
@@ -18,23 +17,13 @@ class CollapsingToolbarLayoutExt{
     var collapsingCreator
             : ((inflater: LayoutInflater, CollapsingToolbarLayout) -> View)? = null
 
-
-    fun contentScrimColor(@ColorInt contentScrimColor: Int){
-        this.contentScrimColor = contentScrimColor
-    }
-
-    fun contentScrimDrawable(@DrawableRes contentScrimDrawable: Int){
-        this.contentScrimDrawable  = contentScrimDrawable
-    }
-
-
     fun toolBar(init: ToolbarExt.() -> Unit){
         val toolbarExt = ToolbarExt()
         toolbarExt.init()
         this.toolbarExt = toolbarExt
     }
 
-    fun collapsingContent(collapsingCreator
+    fun collapsingView(collapsingCreator
                          : ((inflater: LayoutInflater, CollapsingToolbarLayout) -> View)?){
         this.collapsingCreator = collapsingCreator
     }

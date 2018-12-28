@@ -5,6 +5,7 @@
     <ImageView
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:src="@mipmap/ic_launcher_round"
         app:layout_collapseMode="parallax"
         app:layout_collapseParallaxMultiplier="0.7"
         />

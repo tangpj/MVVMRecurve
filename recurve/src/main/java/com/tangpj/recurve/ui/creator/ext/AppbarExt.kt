@@ -4,7 +4,7 @@ import android.content.Context
 
 class AppbarExt(val context: Context){
 
-    var scrollEnable: Boolean = true
+    var scrollEnable: Boolean = false
 
     var scrollFlags: String? = null
 
@@ -12,15 +12,7 @@ class AppbarExt(val context: Context){
 
     var collapsingToolbarExt: CollapsingToolbarLayoutExt? = null
 
-    fun scrollEnable(scrollEnable: Boolean){
-        this.scrollEnable = scrollEnable
-    }
-
-    fun scrollFlags(scrollFlags: String){
-        this.scrollFlags = scrollFlags
-    }
-
-    fun toolBar(init: ToolbarExt.() -> Unit){
+    fun toolbar(init: ToolbarExt.() -> Unit){
         val toolbarExt = ToolbarExt()
         toolbarExt.init()
         this.toolbarExt = toolbarExt

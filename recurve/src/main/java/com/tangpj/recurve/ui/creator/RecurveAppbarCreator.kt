@@ -54,7 +54,7 @@ class RecurveAppbarCreator(
         val toolbarRecurveBinding = ToolbarRecurveBinding.inflate(inflater)
         val toolbar = toolbarRecurveBinding.toolbar
         toolbar.title = toolbarExt.title
-        activityRecurveBinding.appbarLayout.addView(toolbar)
+        activityRecurveBinding.appbarLayout.addView(toolbar, 0)
         activity.setSupportActionBar(toolbar)
         return toolbarRecurveBinding
     }

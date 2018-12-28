@@ -35,6 +35,5 @@ abstract class RecurveActivity:
 
     fun appbar(init: AppbarExt.() -> Unit){
         appbar(appbarCreator, init)
-
     }
 }

@@ -7,6 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/textLight</item>
+
+        <item name="toolbarStyle">@style/toolbar</item>
+    </style>
+
+    <style name="toolbar" parent="Base.V7.Widget.AppCompat.Toolbar">
     </style>
 
 
