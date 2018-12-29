@@ -2,6 +2,7 @@ package com.tangpj.recurve.ui.creator.ext
 
 import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
@@ -10,6 +11,7 @@ class CollapsingToolbarLayoutExt{
     @DrawableRes
     var contentScrimDrawable: Int = -1
 
+    @ColorRes
     var contentScrimColor: Int = -1
 
     var toolbarExt: ToolbarExt? = null

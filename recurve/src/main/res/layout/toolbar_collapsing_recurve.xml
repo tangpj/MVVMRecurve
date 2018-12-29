@@ -3,14 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
-
         android:id="@+id/collapsing_toolbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:actionBarSize"
-        app:contentScrim="#30469b"
-        app:expandedTitleMarginStart="48dp"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

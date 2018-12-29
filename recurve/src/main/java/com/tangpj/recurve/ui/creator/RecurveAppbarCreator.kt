@@ -74,8 +74,8 @@ class RecurveAppbarCreator(
             toolbar.title = it.title
         }
         if (collapsingToolbarLayoutExt.contentScrimColor != -1){
-            collapsingBinding.collapsingToolbarLayout
-                    .setContentScrimColor(collapsingToolbarLayoutExt.contentScrimColor)
+            collapsingBinding.collapsingToolbarLayout.setContentScrimColor(
+                    activity.resources.getColor(collapsingToolbarLayoutExt.contentScrimColor))
         }
         activity.setSupportActionBar(toolbar)
 
@@ -84,7 +84,7 @@ class RecurveAppbarCreator(
             val collapsingContent = collapsingCreator.invoke(
                     LayoutInflater.from(collapsingBinding.root.context),
                     collapsingBinding.collapsingToolbarLayout)
-            collapsingBinding.collapsingToolbarLayout.addView(collapsingContent)
+            collapsingBinding.collapsingToolbarLayout.addView(collapsingContent, 0)
             collapsingBinding.collapsingToolbarLayout
         }
         activityRecurveBinding.appbarLayout
