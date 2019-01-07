@@ -29,7 +29,7 @@ abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), ContentCreate {
         activityRecurveBinding = DataBindingUtil
                 .setContentView(this, R.layout.activity_recurve)
         contentCreate = RecurveContentCreate(activityRecurveBinding)
-        appbarCreator = RecurveAppbarCreator(activityRecurveBinding)
+        appbarCreator = RecurveAppbarCreator(this, activityRecurveBinding)
     }
 
     override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
