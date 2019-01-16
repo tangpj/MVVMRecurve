@@ -10,7 +10,6 @@ import com.tangpj.recurve.ui.strategy.LoadingStrategy
 
 abstract class RecurveFragment : Fragment(){
 
-    private var mLoadingStrategy: LoadingStrategy? = null
 
     abstract fun onCreateBinding(inflater: LayoutInflater,
                                  container: ViewGroup?,
@@ -20,15 +19,10 @@ abstract class RecurveFragment : Fragment(){
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = onCreateBinding(inflater, container, savedInstanceState)
-        binding?.let {
-            mLoadingStrategy = loadingStrategy()
-        }
-        mLoadingStrategy?.let {
-            
-        }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    fun loadingStrategy(): LoadingStrategy? = null
+    fun loadingStrategy(key: String): LoadingStrategy? = null
 
 }
