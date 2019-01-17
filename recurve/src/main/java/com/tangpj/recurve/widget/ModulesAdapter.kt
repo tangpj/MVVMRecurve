@@ -47,6 +47,15 @@ class ModulesAdapter
         notifyModulesItemSetChange(creator)
     }
 
+    fun addCreator(index: Int, creator: Creator){
+        val creatorMap = creatorList.groupBy { it.getCreatorType() }
+        if (creatorMap[creator.getCreatorType()] != null){
+            throw IllegalArgumentException("Creator CreatorType can't not equal")
+        }
+        creatorList.add(index, creator)
+        notifyModulesItemSetChange(creator)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder{
         val viewTypeList = creatorList.groupBy { it.getCreatorItemViewTypeByViteType(viewType)}[viewType]
         return viewTypeList?.first()?.onCreateItemViewHolder(parent, viewType)

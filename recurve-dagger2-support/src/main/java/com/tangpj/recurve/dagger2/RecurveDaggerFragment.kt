@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
+import com.tangpj.recurve.ui.creator.LoadingCreator
 import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
 import com.tangpj.recurve.ui.strategy.LoadingStrategy
 import dagger.android.support.DaggerFragment
+abstract class RecurveDaggerFragment()
+    : Fragment(), LoadingCreator by RecurveLoadingCreator(){
 
-abstract class RecurveDaggerFragment: DaggerFragment(){
-
-    private val loadingCreator by lazy { RecurveLoadingCreator() }
 
     abstract fun onCreateBinding(inflater: LayoutInflater,
                                  container: ViewGroup?,
@@ -21,9 +22,6 @@ abstract class RecurveDaggerFragment: DaggerFragment(){
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = onCreateBinding(inflater, container, savedInstanceState)
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
-
-    fun loadingStrategy(key: String): LoadingStrategy? = loadingCreator.getLoadingStrategy(key)
 }
