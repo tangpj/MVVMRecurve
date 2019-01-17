@@ -11,4 +11,8 @@ class RecurveLoadingCreator: LoadingCreator{
     }
 
     override fun getLoadingStrategy(key: String): LoadingStrategy? = loadingMap[key]
+
+    override fun clear() {
+        loadingMap.clear()
+    }
 }

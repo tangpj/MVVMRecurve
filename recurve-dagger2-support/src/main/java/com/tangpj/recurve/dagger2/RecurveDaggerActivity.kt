@@ -17,7 +17,7 @@ import com.tangpj.recurve.ui.creator.RecurveContentCreate
 import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import dagger.android.support.DaggerAppCompatActivity
 
-abstract class DaggerRecurveActivity: DaggerAppCompatActivity(), ContentCreate {
+abstract class RecurveDaggerActivity: DaggerAppCompatActivity(), ContentCreate {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
 

@@ -7,4 +7,6 @@ interface LoadingCreator{
     fun addLoadingStrategy(pair: Pair<String, LoadingStrategy>)
 
     fun getLoadingStrategy(key: String): LoadingStrategy?
+
+    fun clear()
 }
