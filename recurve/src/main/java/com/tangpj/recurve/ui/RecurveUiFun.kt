@@ -10,7 +10,7 @@ import com.tangpj.recurve.ui.creator.ext.AppbarExt
  * 创建appbar
  *
  * @method: appbar
- * @author: tangpengjian113
+ * @author: tpj
  * @createTime: 2019/1/16 15:09
  */
 fun AppCompatActivity.appbar(appbarCreator: AppbarCreator,

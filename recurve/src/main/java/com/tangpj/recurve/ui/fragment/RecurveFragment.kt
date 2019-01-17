@@ -10,9 +10,8 @@ import com.tangpj.recurve.ui.creator.LoadingCreator
 import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
 import com.tangpj.recurve.ui.strategy.LoadingStrategy
 
-abstract class RecurveFragment : Fragment(){
-
-    private val loadingCreator by lazy { RecurveLoadingCreator() }
+abstract class RecurveFragment()
+    : Fragment(), LoadingCreator by RecurveLoadingCreator(){
 
     abstract fun onCreateBinding(inflater: LayoutInflater,
                                  container: ViewGroup?,
@@ -22,10 +21,6 @@ abstract class RecurveFragment : Fragment(){
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = onCreateBinding(inflater, container, savedInstanceState)
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
-
-    fun loadingStrategy(key: String): LoadingStrategy? = loadingCreator.getLoadingStrategy(key)
-
 }

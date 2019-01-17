@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
  * 加载回调策略
  * 
  * @className: LoadingStrategy
- * @author: tangpengjian113
+ * @author: tpj
  * @createTime: 2019/1/15 12:24
  *
  * @param lifecycleOwner 监听生命周期

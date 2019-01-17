@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.tangpj.recurve.databinding.FragmentRecurveListBinding
+import com.tangpj.recurve.ui.creator.ListViewCreator
+import com.tangpj.recurve.ui.creator.LoadingCreator
+import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
+import com.tangpj.recurve.widget.Creator
+import com.tangpj.recurve.widget.ModulesAdapter
 
-class RecurveListFragment<T> : Fragment() {
+class RecurveListFragment <T> ()
+    : Fragment(), LoadingCreator by RecurveLoadingCreator(), ListViewCreator{
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
+    private val mAdapter = ModulesAdapter()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -20,8 +24,16 @@ class RecurveListFragment<T> : Fragment() {
         return binding.root
     }
 
-    private fun initView(binding:  FragmentRecurveListBinding){
+    private fun initView(binding: FragmentRecurveListBinding){
+        binding.rvL.adapter = mAdapter
+    }
 
+    override fun addItemCreator(creator: Creator) {
+        mAdapter.addCreator(creator)
+    }
+
+    override fun addItemCreator(index: Int, creator: Creator) {
+        mAdapter.addCreator(index, creator)
     }
 
 

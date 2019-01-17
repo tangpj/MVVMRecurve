@@ -25,7 +25,7 @@ interface AppbarCreator{
      * 接收Appbar配置并且初始化Appbar
      *
      * @method: appbar
-     * @author: tangpengjian113
+     * @author: tpj
      * @createTime: 2018/12/5 21:21
      *
      * @param init Appbar配置
