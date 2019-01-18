@@ -1,21 +1,22 @@
-package com.tangpj.recurve.ui.fragment
+package com.tangpj.recurve.dagger2
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tangpj.recurve.databinding.FragmentRecurveListBinding
-import com.tangpj.recurve.ui.creator.RecyclerViewCreator
 import com.tangpj.recurve.ui.creator.LoadingCreator
 import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
+import com.tangpj.recurve.ui.creator.RecyclerViewCreator
 import com.tangpj.recurve.widget.Creator
 import com.tangpj.recurve.widget.ModulesAdapter
+import dagger.android.support.DaggerFragment
 
-open class RecurveListFragment <E, in ItemHolder: RecyclerView.ViewHolder>
-    : Fragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewCreator{
+
+open class RecurveDaggerListFragment <E, in ItemHolder: RecyclerView.ViewHolder>
+    : DaggerFragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewCreator {
 
     private val mAdapter = ModulesAdapter()
 

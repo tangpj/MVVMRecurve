@@ -35,8 +35,8 @@ abstract class ExpandableCreator<Parent,Child, in ParentHolder: RecyclerView.Vie
      */
 
     companion object {
-        const val ITEM_TYPE_PARENT = 1023
-        const val ITEM_TYPE_CHILD = 1024
+        const val ITEM_TYPE_PARENT = 8
+        const val ITEM_TYPE_CHILD = 4
     }
 
     private var dataMap: LinkedHashMap<Parent,MutableList<Child>> = LinkedHashMap()
@@ -168,13 +168,13 @@ abstract class ExpandableCreator<Parent,Child, in ParentHolder: RecyclerView.Vie
 
     override fun getCreatorItemViewTypeByPosition(creatorPosition: Int): Int {
         if (getParentInCreatorPosition(creatorPosition) != null){
-            return creatorType * ITEM_TYPE_PARENT
+            return creatorType shl ITEM_TYPE_PARENT
         }
-        return creatorType * ITEM_TYPE_CHILD
+        return creatorType shl ITEM_TYPE_CHILD
     }
 
     override fun getCreatorItemViewTypeByViteType(viewType: Int): Int {
-        if (viewType % ITEM_TYPE_PARENT == 0 || viewType % ITEM_TYPE_CHILD == 0){
+        if (viewType shr ITEM_TYPE_PARENT == viewType || viewType shr ITEM_TYPE_CHILD == 0){
             return viewType
         }
         return 0

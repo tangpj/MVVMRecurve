@@ -1,5 +1,6 @@
 package com.tangpj.recurve.ui.creator
 
+import androidx.recyclerview.widget.RecyclerView
 import com.tangpj.recurve.widget.Creator
 
 
@@ -10,13 +11,13 @@ import com.tangpj.recurve.widget.Creator
  * @author: tpj
  * @createTime: 2019/1/17 20:46
  */
-interface ListViewCreator{
+interface RecyclerViewCreator{
 
     /**
      * 添加内容创建器
      *
      * @method: addItemCreator
-     * @author: tangpengjian113
+     * @author: tpj
      * @createTime: 2019/1/17 21:07
      * @param creator Item内容创建器
      */
@@ -26,8 +27,12 @@ interface ListViewCreator{
      * 添加内容创建器到指定位置
      *
      * @method: addItemCreator
-     * @author: tangpengjian113
+     * @author: tpj
      * @createTime: 2019/1/17 21:08
      */
     fun addItemCreator(index: Int, creator: Creator)
+
+    fun getLayoutManager(): RecyclerView.LayoutManager
+
+
 }

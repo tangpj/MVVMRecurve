@@ -18,6 +18,7 @@ package com.tangpj.recurve.widget
 import android.view.ViewGroup
 import androidx.annotation.IntDef
 import androidx.recyclerview.widget.RecyclerView
+import java.util.function.Function
 
 /**
  * Created by tang on 2018/3/10.
@@ -27,30 +28,32 @@ class ModulesAdapter
 
     private var creatorList: MutableList<Creator>
             = mutableListOf()
+
     fun setCreator(creatorList: MutableList<Creator>){
-        val creatorMap = creatorList.groupBy { it.getCreatorType() }
-        for (entry in creatorMap) {
-            if (entry.value.size > 1){
-                throw IllegalArgumentException("Creator CreatorType can't not equal")
+        checkedViewType { it ->
+            it.entries.forEach { entry ->
+                if ( entry.value.size > 1){
+                    return@checkedViewType true
+                }
             }
+            return@checkedViewType  false
         }
+
         this.creatorList = creatorList
         notifyDataSetChanged()
     }
 
     fun addCreator(creator: Creator){
-        val creatorMap = creatorList.groupBy { it.getCreatorType() }
-        if (creatorMap[creator.getCreatorType()] != null){
-            throw IllegalArgumentException("Creator CreatorType can't not equal")
+        checkedViewType{
+            it[creator.getCreatorType()] != null
         }
         creatorList.add(creator)
         notifyModulesItemSetChange(creator)
     }
 
     fun addCreator(index: Int, creator: Creator){
-        val creatorMap = creatorList.groupBy { it.getCreatorType() }
-        if (creatorMap[creator.getCreatorType()] != null){
-            throw IllegalArgumentException("Creator CreatorType can't not equal")
+        checkedViewType{
+            it[creator.getCreatorType()] != null
         }
         creatorList.add(index, creator)
         notifyModulesItemSetChange(creator)
@@ -149,6 +152,12 @@ class ModulesAdapter
         return resultPosition
     }
 
+    private fun  checkedViewType(checkFun: (Map<Int, List<Creator>>) -> Boolean){
+        val creatorMap = creatorList.groupBy { it.getCreatorType() }
+        if(checkFun.invoke(creatorMap)){
+            throw IllegalArgumentException("Creator CreatorType can't not equal")
+        }
+    }
 
 }
 

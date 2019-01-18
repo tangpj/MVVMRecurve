@@ -17,6 +17,7 @@ package com.tangpj.recurve.widget
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.IllegalArgumentException
 
 /**
  * Created by tang on 2018/3/11.
@@ -24,6 +25,15 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class ItemCreator<E, in ItemHolder: RecyclerView.ViewHolder> @JvmOverloads constructor(
         private val adapter: ModulesAdapter, private val creatorType: Int = 0): Creator, ArrayDataOperator<E>{
+
+    init {
+        if ((creatorType == ExpandableCreator.ITEM_TYPE_PARENT) ||
+                (creatorType == ExpandableCreator.ITEM_TYPE_PARENT)){
+            throw IllegalArgumentException("creatorType can't equal " +
+                    "ExpandableCreator.ITEM_TYPE_PARENT(1023) " +
+                    "or ExpandableCreator.ITEM_TYPE_PARENT(1024)")
+        }
+    }
 
     private var dataList: MutableList<E> = mutableListOf()
 
