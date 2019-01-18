@@ -10,17 +10,23 @@ import com.tangpj.recurve.ui.creator.LoadingCreator
 import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
 import com.tangpj.recurve.ui.strategy.LoadingStrategy
 
+/**
+ * 
+ * @className: 
+ * @author: tangpengjian113
+ * @createTime: 2019/1/18 14:45
+ */
 abstract class RecurveFragment()
     : Fragment(), LoadingCreator by RecurveLoadingCreator(){
 
     abstract fun onCreateBinding(inflater: LayoutInflater,
                                  container: ViewGroup?,
-                                 savedInstanceState: Bundle?): ViewDataBinding?
+                                 savedInstanceState: Bundle?): ViewDataBinding
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = onCreateBinding(inflater, container, savedInstanceState)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return binding.root
     }
 }

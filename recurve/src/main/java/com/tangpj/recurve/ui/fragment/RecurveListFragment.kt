@@ -14,7 +14,7 @@ import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
 import com.tangpj.recurve.widget.Creator
 import com.tangpj.recurve.widget.ModulesAdapter
 
-open class RecurveListFragment <E, in ItemHolder: RecyclerView.ViewHolder>
+open class RecurveListFragment
     : Fragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewCreator{
 
     private val mAdapter = ModulesAdapter()
@@ -23,6 +23,7 @@ open class RecurveListFragment <E, in ItemHolder: RecyclerView.ViewHolder>
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = FragmentRecurveListBinding.inflate(inflater, container, false)
+        initView(binding)
         return binding.root
     }
 
