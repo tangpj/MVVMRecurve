@@ -13,27 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.widget
-
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+package com.tangpj.recurve.recyclerview.creator
 
 /**
- * Created by tang on 2018/3/11.
+ * Created by tang on 2018/3/16.
+ * 一级列表数据操作接口
  */
-interface Creator{
+interface ArrayDataOperator<E>{
 
-    fun getItemCount(): Int
+    fun setDataList(dataList: MutableList<E>)
 
-    fun getCreatorItemViewTypeByPosition(creatorPosition: Int): Int
+    fun getData(): List<E>
 
-    fun getCreatorItemViewTypeByViteType(viewType: Int): Int
+    fun getItem(position: Int): E
 
-    fun getCreatorType(): Int
+    fun addItem(e: E): Boolean
 
-    fun getSpan(): Int
+    fun addItem(position: Int, e: E)
 
-    fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+    fun setItem(position: Int,e: E): E?
 
-    fun onBindItemView(itemHolder: RecyclerView.ViewHolder, creatorPosition: Int)
+    fun removedItem(e: E): Boolean
+
+    fun removedItemAt(position: Int):E?
+
 }
+

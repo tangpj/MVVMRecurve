@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.widget
+package com.tangpj.recurve.recyclerview.creator
 
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +23,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.tangpj.recurve.R
+import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
 
 /**
  * Created by tang on 2018/3/14.
@@ -43,7 +44,7 @@ class ArrayCreator<T>(adapter: ModulesAdapter
     : ItemCreator<T, ArrayCreator.ArrayViewHolder>(adapter,creatorType) {
 
     override fun onCreateItemViewHolder(parent: ViewGroup,viewType: Int): ArrayViewHolder {
-        return ArrayViewHolder(LayoutInflater.from(parent.context).inflate(layoutId,parent,false),viewId)
+        return ArrayViewHolder(LayoutInflater.from(parent.context).inflate(layoutId, parent, false), viewId)
     }
 
     override fun onBindItemView(itemHolder: ArrayViewHolder, e: T, inCreatorPosition: Int) {
@@ -55,6 +56,6 @@ class ArrayCreator<T>(adapter: ModulesAdapter
     }
 }
 
-fun stringCreator(adapter: ModulesAdapter,creatorType: Int = 0): ArrayCreator<String>{
+fun stringCreator(adapter: ModulesAdapter, creatorType: Int = 0): ArrayCreator<String> {
     return ArrayCreator(adapter, creatorType = creatorType)
 }

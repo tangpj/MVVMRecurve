@@ -1,7 +1,7 @@
 package com.tangpj.recurve.ui.creator
 
 import androidx.recyclerview.widget.RecyclerView
-import com.tangpj.recurve.widget.Creator
+import com.tangpj.recurve.recyclerview.creator.Creator
 
 
 /**

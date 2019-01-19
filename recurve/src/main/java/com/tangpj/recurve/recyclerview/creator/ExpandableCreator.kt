@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.widget
+package com.tangpj.recurve.recyclerview.creator
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
+import com.tangpj.recurve.recyclerview.adapter.WRAP
 
 /**
  * Created by tang on 2018/3/15.
@@ -27,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class ExpandableCreator<Parent,Child, in ParentHolder: RecyclerView.ViewHolder
         , in ChildHolder: RecyclerView.ViewHolder>
 @JvmOverloads constructor(private val adapter: ModulesAdapter, private val creatorType: Int = 0)
-    :Creator,ExpandableOperator<Parent,Child> {
+    : Creator, ExpandableOperator<Parent, Child> {
 
     /**
      * ItemType保留位

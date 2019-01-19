@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.widget
+package com.tangpj.recurve.recyclerview.creator
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
+import com.tangpj.recurve.recyclerview.adapter.WRAP
 import java.lang.IllegalArgumentException
 
 /**
@@ -24,7 +26,7 @@ import java.lang.IllegalArgumentException
  * 辅助Adapter创建Item
  */
 abstract class ItemCreator<E, in ItemHolder: RecyclerView.ViewHolder> @JvmOverloads constructor(
-        private val adapter: ModulesAdapter, private val creatorType: Int = 0): Creator, ArrayDataOperator<E>{
+        private val adapter: ModulesAdapter, private val creatorType: Int = 0): Creator, ArrayDataOperator<E> {
 
     init {
         if ((creatorType == ExpandableCreator.ITEM_TYPE_PARENT) ||
@@ -108,7 +110,6 @@ abstract class ItemCreator<E, in ItemHolder: RecyclerView.ViewHolder> @JvmOverlo
 
     abstract fun onBindItemView(itemHolder: ItemHolder, e: E, inCreatorPosition: Int)
 
-    @Suppress("UNCHECKED_CAST")
     final override fun onBindItemView(itemHolder: RecyclerView.ViewHolder, creatorPosition: Int) {
         val e: E = dataList[creatorPosition]
         itemClickListener?.let { listener

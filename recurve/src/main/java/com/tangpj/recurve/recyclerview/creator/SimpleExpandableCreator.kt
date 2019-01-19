@@ -1,4 +1,4 @@
-package com.tangpj.recurve.widget
+package com.tangpj.recurve.recyclerview.creator
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.tangpj.recurve.R
+import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
 
 /**
  * Created by tang on 2018/3/18.
@@ -27,11 +28,11 @@ class SimpleExpandableCreator<Parent,Child>(
 
     override fun onCreateParentViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
             = ParentViewHolder(LayoutInflater.from(parent.context)
-            .inflate(parentLayoutId,parent,false), parentViewId)
+            .inflate(parentLayoutId, parent, false), parentViewId)
 
     override fun onCreateChildViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
             = ChildViewHolder(LayoutInflater.from(parent.context)
-            .inflate(childLayoutId,parent,false), childViewId)
+            .inflate(childLayoutId, parent, false), childViewId)
 
     override fun onBindParentItemView(parentHolder: ParentViewHolder, parent: Parent?
                                       , parentPosition: Int, creatorPosition: Int) {
