@@ -18,13 +18,12 @@ package com.tangpj.recurve.widget
 import android.view.ViewGroup
 import androidx.annotation.IntDef
 import androidx.recyclerview.widget.RecyclerView
-import java.util.function.Function
 
 /**
  * Created by tang on 2018/3/10.
  */
 class ModulesAdapter
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    : RecyclerView.Adapter<RecurveViewHolder<*>>() {
 
     private var creatorList: MutableList<Creator>
             = mutableListOf()
@@ -59,13 +58,13 @@ class ModulesAdapter
         notifyModulesItemSetChange(creator)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecurveViewHolder<*>{
         val viewTypeList = creatorList.groupBy { it.getCreatorItemViewTypeByViteType(viewType)}[viewType]
         return viewTypeList?.first()?.onCreateItemViewHolder(parent, viewType)
                 ?: creatorList.first().onCreateItemViewHolder(parent, viewType)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecurveViewHolder<*>, position: Int) {
         val creator = creatorList[getCreatorIndex(position)]
         val modulesStartPosition = getModulesStartPosition(creator)
         val inCreatorPosition = position - modulesStartPosition

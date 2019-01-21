@@ -16,15 +16,15 @@
 package com.tangpj.recurve.widget
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
+import androidx.databinding.ViewDataBinding
 import java.lang.IllegalArgumentException
 
 /**
  * Created by tang on 2018/3/11.
  * 辅助Adapter创建Item
  */
-abstract class ItemCreator<E, in ItemHolder: RecyclerView.ViewHolder> @JvmOverloads constructor(
-        private val adapter: ModulesAdapter, private val creatorType: Int = 0): Creator, ArrayDataOperator<E>{
+abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructor(
+        private val adapter: ModulesAdapter, private val creatorType: Int = 0): Creator, DataOperator<E>{
 
     init {
         if ((creatorType == ExpandableCreator.ITEM_TYPE_PARENT) ||
@@ -106,15 +106,22 @@ abstract class ItemCreator<E, in ItemHolder: RecyclerView.ViewHolder> @JvmOverlo
 
     override fun getSpan(): Int = WRAP
 
-    abstract fun onBindItemView(itemHolder: ItemHolder, e: E, inCreatorPosition: Int)
+    abstract fun onBindItemView(
+            itemHolder: RecurveViewHolder<Binding>?, e: E?, inCreatorPosition: Int)
 
     @Suppress("UNCHECKED_CAST")
-    final override fun onBindItemView(itemHolder: RecyclerView.ViewHolder, creatorPosition: Int) {
+    final override fun onBindItemView(
+            itemHolder: RecurveViewHolder<*>, creatorPosition: Int) {
+
         val e: E = dataList[creatorPosition]
         itemClickListener?.let { listener
             -> itemHolder.itemView.setOnClickListener {
             listener.invoke(itemHolder.itemView, e , creatorPosition) } }
-        onBindItemView(itemHolder as ItemHolder, e ,creatorPosition)
+
+        onBindItemView(
+                itemHolder as? RecurveViewHolder<Binding>,
+                e,
+                creatorPosition)
     }
 
 }

@@ -17,6 +17,7 @@ package com.tangpj.recurve.widget
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -24,10 +25,10 @@ import androidx.recyclerview.widget.RecyclerView
  * 辅助创建二级Adapter
  */
 
-abstract class ExpandableCreator<Parent,Child, in ParentHolder: RecyclerView.ViewHolder
-        , in ChildHolder: RecyclerView.ViewHolder>
+abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
+        , ChildBinding: ViewDataBinding>
 @JvmOverloads constructor(private val adapter: ModulesAdapter, private val creatorType: Int = 0)
-    :Creator,ExpandableOperator<Parent,Child> {
+    :Creator,ExpandableDataOperator<Parent,Child> {
 
     /**
      * ItemType保留位
@@ -186,7 +187,7 @@ abstract class ExpandableCreator<Parent,Child, in ParentHolder: RecyclerView.Vie
 
     override fun getSpan(): Int = WRAP
 
-    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecurveViewHolder<*> {
         if (viewType / creatorType == ITEM_TYPE_PARENT){
             return onCreateParentViewHolder(parent)
         }
@@ -194,13 +195,13 @@ abstract class ExpandableCreator<Parent,Child, in ParentHolder: RecyclerView.Vie
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun onBindItemView(itemHolder: RecyclerView.ViewHolder, creatorPosition: Int) {
+    final override fun onBindItemView(itemHolder: RecurveViewHolder<*>, creatorPosition: Int) {
         if (getCreatorItemViewTypeByPosition(creatorPosition) / creatorType == ITEM_TYPE_PARENT){
             val parent = getParentInCreatorPosition(creatorPosition)
             val parentPosition = getParentPosition(parent)
             parentClickListener?.let { listener ->
                 itemHolder.itemView.setOnClickListener { listener.invoke(it, parent, parentPosition,creatorPosition) } }
-            onBindParentItemView(itemHolder as ParentHolder
+            onBindParentItemView(itemHolder as? RecurveViewHolder<ParentBinding>
                     , parent , parentPosition, creatorPosition)
             return
         }
@@ -208,7 +209,7 @@ abstract class ExpandableCreator<Parent,Child, in ParentHolder: RecyclerView.Vie
         childClickListener?.let { listener ->
             itemHolder.itemView.setOnClickListener { listener.invoke(it, child, childPosition, creatorPosition) }
         }
-        onBindChildItemView(itemHolder as ChildHolder, child, childPosition, creatorPosition)
+        onBindChildItemView(itemHolder as? RecurveViewHolder<ChildBinding>, child, childPosition, creatorPosition)
     }
 
     private fun realSetParentItem(parentPosition: Int, parent: Parent,isAdd: Boolean = false): List<Child>?{
@@ -311,14 +312,14 @@ abstract class ExpandableCreator<Parent,Child, in ParentHolder: RecyclerView.Vie
     private fun getChildPositionInCreatorAt(parentPosition: Int, childPositionInList: Int): Int =
             getChildPositionInCreator(getParent(parentPosition),childPositionInList)
 
-    abstract fun onCreateParentViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
+    abstract fun onCreateParentViewHolder(parent: ViewGroup): RecurveViewHolder<*>
 
-    abstract fun onCreateChildViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
+    abstract fun onCreateChildViewHolder(parent: ViewGroup): RecurveViewHolder<*>
 
-    abstract fun onBindParentItemView(parentHolder: ParentHolder, parent: Parent?
+    abstract fun onBindParentItemView(parentHolder: RecurveViewHolder<ParentBinding>?, parent: Parent?
                                       , parentPosition: Int, creatorPosition: Int)
 
-    abstract fun onBindChildItemView(childHolder: ChildHolder, child: Child?
+    abstract fun onBindChildItemView(childHolder: RecurveViewHolder<ChildBinding>?, child: Child?
                                      , childPosition: Int, creatorPosition: Int)
 
 }

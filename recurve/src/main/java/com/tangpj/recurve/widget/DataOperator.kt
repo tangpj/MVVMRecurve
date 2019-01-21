@@ -19,7 +19,7 @@ package com.tangpj.recurve.widget
  * Created by tang on 2018/3/16.
  * 一级列表数据操作接口
  */
-interface ArrayDataOperator<E>{
+interface DataOperator<E>{
 
     fun setDataList(dataList: MutableList<E>)
 

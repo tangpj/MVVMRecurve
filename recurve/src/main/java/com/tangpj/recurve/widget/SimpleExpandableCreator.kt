@@ -1,13 +1,14 @@
 package com.tangpj.recurve.widget
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
-import androidx.recyclerview.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import com.tangpj.recurve.R
+import com.tangpj.recurve.databinding.ItemTextBinding
 
 /**
  * Created by tang on 2018/3/18.
@@ -23,32 +24,45 @@ class SimpleExpandableCreator<Parent,Child>(
         , private val parentConverter: ((Parent?) -> String)? = null
         , private val childConverter: ((Child?) -> String)? = null)
     : ExpandableCreator<Parent, Child
-        , SimpleExpandableCreator.ParentViewHolder, SimpleExpandableCreator.ChildViewHolder>(adapter,creatorType = creatorType) {
+        , ViewDataBinding, ViewDataBinding>(adapter,creatorType = creatorType) {
 
-    override fun onCreateParentViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
-            = ParentViewHolder(LayoutInflater.from(parent.context)
-            .inflate(parentLayoutId,parent,false), parentViewId)
 
-    override fun onCreateChildViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
-            = ChildViewHolder(LayoutInflater.from(parent.context)
-            .inflate(childLayoutId,parent,false), childViewId)
+    override fun onCreateParentViewHolder(parent: ViewGroup): RecurveViewHolder<ViewDataBinding>{
+        val inflater =  LayoutInflater.from((parent.context))
+        val binding = DataBindingUtil.bind<ViewDataBinding>(
+                inflater.inflate(parentLayoutId, parent, false))
+        return if (binding != null)
+            RecurveViewHolder(binding)
+        else
+        //找不到直接创建默认ViewBinding
+            RecurveViewHolder(ItemTextBinding.inflate(inflater, parent, false))
+    }
 
-    override fun onBindParentItemView(parentHolder: ParentViewHolder, parent: Parent?
+
+    override fun onCreateChildViewHolder(parent: ViewGroup): RecurveViewHolder<ViewDataBinding>{
+        val inflater =  LayoutInflater.from((parent.context))
+        val binding = DataBindingUtil.bind<ViewDataBinding>(
+                inflater.inflate(childLayoutId, parent, false))
+
+        return if (binding != null)
+            RecurveViewHolder(binding)
+        else
+        //找不到直接创建默认ViewBinding
+            RecurveViewHolder(ItemTextBinding.inflate(inflater, parent, false))
+
+    }
+
+    override fun onBindParentItemView(parentHolder: RecurveViewHolder<ViewDataBinding>?, parent: Parent?
                                       , parentPosition: Int, creatorPosition: Int) {
-        parentHolder.textView.text = parentConverter?.invoke(parent) ?: parent.toString()
+        parent?.let { val text = parentConverter?.invoke(it) ?: it.toString()
+            parentHolder?.itemView?.findViewById<TextView>(parentViewId)?.text = text
+        }
     }
 
-    override fun onBindChildItemView(childHolder: ChildViewHolder, child: Child?
+    override fun onBindChildItemView(childHolder: RecurveViewHolder<ViewDataBinding>?, child: Child?
                                      , childPosition: Int, creatorPosition: Int) {
-        childHolder.textView.text = childConverter?.invoke(child) ?: child.toString()
-    }
-
-
-    class ParentViewHolder(itemView: View, @IdRes private val viewId: Int): RecyclerView.ViewHolder(itemView){
-        val textView: TextView = itemView.findViewById(viewId)
-    }
-
-    class ChildViewHolder(itemView: View, @IdRes private val viewId: Int): RecyclerView.ViewHolder(itemView){
-        val textView: TextView = itemView.findViewById(viewId)
+        child?.let { val text = childConverter?.invoke(it) ?: it.toString()
+            childHolder?.itemView?.findViewById<TextView>(parentViewId)?.text = text
+        }
     }
 }

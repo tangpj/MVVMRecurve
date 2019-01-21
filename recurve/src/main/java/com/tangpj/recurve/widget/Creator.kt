@@ -16,6 +16,7 @@
 package com.tangpj.recurve.widget
 
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -33,7 +34,7 @@ interface Creator{
 
     fun getSpan(): Int
 
-    fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+    fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecurveViewHolder<*>
 
-    fun onBindItemView(itemHolder: RecyclerView.ViewHolder, creatorPosition: Int)
+    fun onBindItemView(itemHolder: RecurveViewHolder<*>, creatorPosition: Int)
 }

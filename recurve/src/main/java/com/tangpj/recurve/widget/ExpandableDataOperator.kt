@@ -19,7 +19,7 @@ package com.tangpj.recurve.widget
  * Created by tang on 2018/3/16.
  * 二级数据操作类
  */
-interface ExpandableOperator<Parent,Child> {
+interface ExpandableDataOperator<Parent,Child> {
 
     fun setDataList(dataMap: LinkedHashMap<Parent,MutableList<Child>>)
 
