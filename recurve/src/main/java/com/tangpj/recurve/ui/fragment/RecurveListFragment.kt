@@ -11,8 +11,8 @@ import com.tangpj.recurve.databinding.FragmentRecurveListBinding
 import com.tangpj.recurve.ui.creator.RecyclerViewCreator
 import com.tangpj.recurve.ui.creator.LoadingCreator
 import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
-import com.tangpj.recurve.widget.Creator
-import com.tangpj.recurve.widget.ModulesAdapter
+import com.tangpj.recurve.recyclerview.creator.Creator
+import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
 
 open class RecurveListFragment
     : Fragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewCreator{

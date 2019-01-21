@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.widget
+package com.tangpj.recurve.recyclerview.creator
 
 /**
  * Created by tang on 2018/3/16.
  * 二级数据操作类
  */
-interface ExpandableDataOperator<Parent,Child> {
+interface ExpandableOperator<Parent,Child> {
 
     fun setDataList(dataMap: LinkedHashMap<Parent,MutableList<Child>>)
 

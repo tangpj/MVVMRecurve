@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.widget
+package com.tangpj.recurve.recyclerview.adapter
 
 import android.view.ViewGroup
 import androidx.annotation.IntDef
 import androidx.recyclerview.widget.RecyclerView
+import com.tangpj.recurve.recyclerview.creator.Creator
+import com.tangpj.recurve.recyclerview.creator.RecurveViewHolder
 
 /**
  * Created by tang on 2018/3/10.
