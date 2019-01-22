@@ -15,7 +15,7 @@ import com.tangpj.recurve.ui.creator.*
 import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import com.tangpj.recurve.ui.fragment.RecurveListFragment
 
-class RecurveDaggerListActivity :
+open class RecurveDaggerListActivity :
         AppCompatActivity(), ContentCreate, RecyclerViewCreator {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding

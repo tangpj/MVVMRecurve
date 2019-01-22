@@ -109,7 +109,9 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
     override fun getSpan(): Int = WRAP
 
     abstract fun onBindItemView(
-            itemHolder: RecurveViewHolder<Binding>?, e: E?, inCreatorPosition: Int)
+            itemHolder: RecurveViewHolder<Binding>?,
+            e: E?,
+            inCreatorPosition: Int)
 
     @Suppress("UNCHECKED_CAST")
     final override fun onBindItemView(
