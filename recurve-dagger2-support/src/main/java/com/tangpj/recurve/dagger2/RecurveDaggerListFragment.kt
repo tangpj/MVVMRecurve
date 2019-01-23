@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tangpj.recurve.databinding.FragmentRecurveListBinding
@@ -15,7 +16,7 @@ import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
 import dagger.android.support.DaggerFragment
 
 
-open class RecurveDaggerListFragment <E, in ItemHolder: RecyclerView.ViewHolder>
+open class RecurveDaggerListFragment
     : DaggerFragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewCreator {
 
     private val mAdapter = ModulesAdapter()

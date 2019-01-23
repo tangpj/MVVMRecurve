@@ -2,7 +2,6 @@ package com.tangpj.recurve.dagger2
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -14,14 +13,15 @@ import com.tangpj.recurve.ui.appbar
 import com.tangpj.recurve.ui.creator.*
 import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import com.tangpj.recurve.ui.fragment.RecurveListFragment
+import dagger.android.support.DaggerAppCompatActivity
 
-open class RecurveDaggerListActivity :
-        AppCompatActivity(), ContentCreate, RecyclerViewCreator {
+open class RecurveDaggerListActivity:
+        DaggerAppCompatActivity(), ContentCreate, RecyclerViewCreator {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
     private lateinit var contentListBinding: ContentListBinding
 
-    private lateinit var listFragment: RecurveListFragment
+    private lateinit var listFragment: RecurveDaggerListFragment
 
     private lateinit var appbarCreator: AppbarCreator
     private lateinit var contentCreate: ContentCreate
@@ -50,7 +50,7 @@ open class RecurveDaggerListActivity :
 
     private fun initView(){
         contentListBinding = contentCreate.initContentBinding(R.layout.content_list)
-        listFragment = RecurveListFragment()
+        listFragment = RecurveDaggerListFragment()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.content, listFragment).commit()
     }
