@@ -21,7 +21,7 @@ open class RecurveDaggerListActivity:
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
     private lateinit var contentListBinding: ContentListBinding
 
-    private lateinit var listFragment: RecurveDaggerListFragment
+    private lateinit var listFragment: RecurveListFragment
 
     private lateinit var appbarCreator: AppbarCreator
     private lateinit var contentCreate: ContentCreate
@@ -50,7 +50,7 @@ open class RecurveDaggerListActivity:
 
     private fun initView(){
         contentListBinding = contentCreate.initContentBinding(R.layout.content_list)
-        listFragment = RecurveDaggerListFragment()
+        listFragment = RecurveListFragment()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.content, listFragment).commit()
     }
