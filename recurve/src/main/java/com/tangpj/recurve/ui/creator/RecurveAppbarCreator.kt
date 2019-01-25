@@ -11,6 +11,14 @@ import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import com.tangpj.recurve.ui.creator.ext.CollapsingToolbarLayoutExt
 import com.tangpj.recurve.ui.creator.ext.ToolbarExt
 
+/**
+ * Appbar创建器
+ * 优先级：createCollapsingToolbarLayout > toolbar > title
+ *
+ * @className: RecurveAppbarCreator
+ * @author: tangpengjian113
+ * @createTime: 2019/1/25 10:14
+ */
 class RecurveAppbarCreator(
         private val activity: AppCompatActivity,
         private var activityRecurveBinding: ActivityRecurveBinding): AppbarCreator {
@@ -22,14 +30,13 @@ class RecurveAppbarCreator(
         init.invoke(appbarExt)
         val inflater = LayoutInflater.from(context)
 
-        val toolbarBinding = appbarExt.toolbarExt?.let {
-            createToolbar(it, inflater, activityRecurveBinding.appbarLayout )
+        val collapsingToolbarLayoutBinding = appbarExt.collapsingToolbarExt?.let {
+            createCollapsingToolbarLayout(it, inflater, activityRecurveBinding.appbarLayout)
         }
-        if (toolbarBinding == null){
-            appbarExt.collapsingToolbarExt?.let {
-                createCollapsingToolbarLayout(it, inflater, activityRecurveBinding.appbarLayout)
-            }
-        }
+
+       if (collapsingToolbarLayoutBinding == null){
+           createToolbar(appbarExt, inflater, activityRecurveBinding.appbarLayout )
+       }
         val scrollFlag = if(appbarExt.scrollEnable) {
             getScrollFlag(appbarExt)
         } else {
@@ -47,13 +54,18 @@ class RecurveAppbarCreator(
     }
 
     override fun createToolbar(
-            toolbarExt: ToolbarExt,
+            appbarExt: AppbarExt,
             inflater: LayoutInflater,
             parent: ViewGroup): ToolbarRecurveBinding {
 
         val toolbarRecurveBinding = ToolbarRecurveBinding.inflate(inflater)
         val toolbar = toolbarRecurveBinding.toolbar
-        toolbar.title = toolbarExt.title
+        val toolbarExt = appbarExt.toolbarExt
+        toolbar.title = if(toolbarExt != null){
+            toolbarExt.title
+        }else{
+            appbarExt.title
+        }
         activityRecurveBinding.appbarLayout.addView(toolbar, 0)
         activity.setSupportActionBar(toolbar)
         return toolbarRecurveBinding

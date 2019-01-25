@@ -8,6 +8,8 @@ class AppbarExt(val context: Context){
 
     var scrollFlags: String? = null
 
+    var title: String? = null
+
     var toolbarExt: ToolbarExt? = null
 
     var collapsingToolbarExt: CollapsingToolbarLayoutExt? = null

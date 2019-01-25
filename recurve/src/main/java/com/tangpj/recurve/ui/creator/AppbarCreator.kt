@@ -33,7 +33,7 @@ interface AppbarCreator{
     fun appbar(init: AppbarExt.() -> Unit): AppBarLayout
 
     fun createToolbar(
-            toolbarExt: ToolbarExt,
+            appbarExt: AppbarExt,
             inflater: LayoutInflater,
             parent: ViewGroup): ToolbarRecurveBinding
 

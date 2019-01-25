@@ -28,7 +28,8 @@ open class RecurveDaggerListFragment
     }
 
     private fun initView(binding: FragmentRecurveListBinding){
-        binding.rvL.adapter = mAdapter
+        binding.rv.layoutManager = getLayoutManager()
+        binding.rv.adapter = mAdapter
     }
 
     override fun addItemCreator(creator: Creator) {
