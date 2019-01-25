@@ -15,8 +15,9 @@ import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import com.tangpj.recurve.ui.fragment.RecurveListFragment
 import dagger.android.support.DaggerAppCompatActivity
 
-open class RecurveDaggerListActivity:
-        DaggerAppCompatActivity(), ContentCreate, RecyclerViewCreator {
+open class RecurveDaggerListActivity :
+        DaggerAppCompatActivity(), ContentCreate, RecyclerViewInit {
+
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
     private lateinit var contentListBinding: ContentListBinding
@@ -46,7 +47,9 @@ open class RecurveDaggerListActivity:
         listFragment.addItemCreator(index, creator)
     }
 
-    override fun getLayoutManager(): RecyclerView.LayoutManager = listFragment.getLayoutManager()
+    override fun setLayoutManager(lm: RecyclerView.LayoutManager){
+        listFragment.setLayoutManager(lm)
+    }
 
     private fun initView(){
         contentListBinding = contentCreate.initContentBinding(R.layout.content_list)

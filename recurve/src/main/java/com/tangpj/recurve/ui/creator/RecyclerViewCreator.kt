@@ -11,7 +11,7 @@ import com.tangpj.recurve.recyclerview.creator.Creator
  * @author: tpj
  * @createTime: 2019/1/17 20:46
  */
-interface RecyclerViewCreator{
+interface RecyclerViewInit{
 
     /**
      * 添加内容创建器
@@ -32,7 +32,7 @@ interface RecyclerViewCreator{
      */
     fun addItemCreator(index: Int, creator: Creator)
 
-    fun getLayoutManager(): RecyclerView.LayoutManager
+    fun setLayoutManager(lm: RecyclerView.LayoutManager)
 
 
 }

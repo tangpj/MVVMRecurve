@@ -22,7 +22,8 @@ import com.tangpj.recurve.ui.fragment.RecurveListFragment
  * @createTime: 2019/1/18 14:44
  */
 class RecurveListActivity :
-        AppCompatActivity(), ContentCreate, RecyclerViewCreator {
+        AppCompatActivity(), ContentCreate, RecyclerViewInit {
+
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
     private lateinit var contentListBinding: ContentListBinding
@@ -52,7 +53,9 @@ class RecurveListActivity :
         listFragment.addItemCreator(index, creator)
     }
 
-    override fun getLayoutManager(): RecyclerView.LayoutManager = listFragment.getLayoutManager()
+    override fun setLayoutManager(lm: RecyclerView.LayoutManager){
+        listFragment.setLayoutManager(lm)
+    }
 
     private fun initView(){
         contentListBinding = contentCreate.initContentBinding(R.layout.content_list)

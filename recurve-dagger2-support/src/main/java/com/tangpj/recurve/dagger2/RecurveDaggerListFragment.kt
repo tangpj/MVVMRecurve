@@ -4,32 +4,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tangpj.recurve.databinding.FragmentRecurveListBinding
+import com.tangpj.recurve.databinding.FragmentRecurveRecyclerViewBinding
 import com.tangpj.recurve.ui.creator.LoadingCreator
 import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
-import com.tangpj.recurve.ui.creator.RecyclerViewCreator
 import com.tangpj.recurve.recyclerview.creator.Creator
 import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
+import com.tangpj.recurve.ui.creator.RecyclerViewInit
+import dagger.android.support.DaggerFragment
 
 
 open class RecurveDaggerListFragment
-    : Fragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewCreator {
+    : DaggerFragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewInit {
 
     private val mAdapter = ModulesAdapter()
+    private var lm: RecyclerView.LayoutManager? = null
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val binding = FragmentRecurveListBinding.inflate(inflater, container, false)
+    final override fun onCreateView(inflater: LayoutInflater,
+                                    container: ViewGroup?,
+                                    savedInstanceState: Bundle?): View? {
+        val binding = onCreateBinding(inflater, container, savedInstanceState)
         return binding.root
     }
 
-    private fun initView(binding: FragmentRecurveListBinding){
-        binding.rv.layoutManager = getLayoutManager()
-        binding.rv.adapter = mAdapter
+    protected fun initViewRecyclerView(rv: RecyclerView){
+        lm?.let {
+            rv.layoutManager = it
+        }
+        rv.adapter = mAdapter
+    }
+
+    open fun onCreateBinding(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?): ViewDataBinding{
+        val binding = FragmentRecurveRecyclerViewBinding.inflate(inflater, container, false)
+        initViewRecyclerView(binding.rv)
+        return binding
     }
 
     override fun addItemCreator(creator: Creator) {
@@ -40,7 +53,8 @@ open class RecurveDaggerListFragment
         mAdapter.addCreator(index, creator)
     }
 
-    override fun getLayoutManager(): RecyclerView.LayoutManager = LinearLayoutManager(context)
-
+    override fun setLayoutManager(lm: RecyclerView.LayoutManager ){
+        this.lm = lm
+    }
 
 }
