@@ -34,5 +34,4 @@ interface RecyclerViewInit{
 
     fun setLayoutManager(lm: RecyclerView.LayoutManager)
 
-
 }

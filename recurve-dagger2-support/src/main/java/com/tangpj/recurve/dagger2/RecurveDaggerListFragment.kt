@@ -29,7 +29,7 @@ open class RecurveDaggerListFragment
         return binding.root
     }
 
-    protected fun initViewRecyclerView(rv: RecyclerView){
+    protected open fun initRecyclerView(rv: RecyclerView){
         lm?.let {
             rv.layoutManager = it
         }
@@ -41,7 +41,7 @@ open class RecurveDaggerListFragment
             container: ViewGroup?,
             savedInstanceState: Bundle?): ViewDataBinding{
         val binding = FragmentRecurveRecyclerViewBinding.inflate(inflater, container, false)
-        initViewRecyclerView(binding.rv)
+        initRecyclerView(binding.rv)
         return binding
     }
 
