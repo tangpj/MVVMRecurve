@@ -2,6 +2,7 @@ package com.tangpj.recurve.ui.creator
 
 import android.view.LayoutInflater
 import androidx.annotation.LayoutRes
+import androidx.annotation.NavigationRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -24,5 +25,4 @@ class RecurveContentCreate(var activityRecurveBinding: ActivityRecurveBinding) :
         return binding
 
     }
-
 }

@@ -12,6 +12,6 @@ import androidx.databinding.ViewDataBinding
  */
 interface ContentCreate{
 
+    //根据Id初始化ContentBinding
     fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
-
 }

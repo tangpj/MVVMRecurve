@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion build_versions.compile_sdk
@@ -50,6 +51,10 @@ dependencies {
     api deps.androidx.recyclerView
     api deps.kotlin.stdlib_jdk8
     api deps.kotlin.ktx
+
+    api deps.navigation.fragment_ktx
+    api deps.navigation.fragment
+    api deps.navigation.runtime
 
     api deps.androidx.material
     api deps.androidx.customtabs

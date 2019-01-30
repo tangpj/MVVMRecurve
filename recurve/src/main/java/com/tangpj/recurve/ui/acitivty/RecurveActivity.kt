@@ -1,12 +1,19 @@
 package com.tangpj.recurve.ui.acitivty
 
 import android.os.Bundle
+import android.view.View
+import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
+import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
+import com.tangpj.recurve.databinding.FragmentNavigationBinding
 import com.tangpj.recurve.ui.appbar
 import com.tangpj.recurve.ui.creator.AppbarCreator
 import com.tangpj.recurve.ui.creator.ContentCreate
@@ -32,6 +39,21 @@ abstract class RecurveActivity:
 
     override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
             = contentCreate.initContentBinding(layoutId)
+
+
+    open fun <Binding : ViewDataBinding> initContentFragment(
+            @LayoutRes layoutId: Int = R.layout.fragment_navigation,
+            @IdRes resId: Int = R.id.fragment_container,
+            @NavigationRes graphResId: Int): Binding{
+
+        val binding: Binding = initContentBinding(layoutId)
+        val view: View = ActivityCompat.requireViewById(this, resId)
+        val navigationController = NavController(this)
+        navigationController.setGraph(graphResId)
+        view.setTag(androidx.navigation.R.id.nav_controller_view_tag, navigationController)
+        return binding
+
+    }
 
     fun appbar(init: AppbarExt.() -> Unit){
         appbar(appbarCreator, init)

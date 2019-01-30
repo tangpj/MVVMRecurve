@@ -58,7 +58,7 @@ class RecurveListActivity :
     }
 
     private fun initView(){
-        contentListBinding = contentCreate.initContentBinding(R.layout.content_list)
+        contentListBinding = initContentBinding(R.layout.content_list)
         listFragment = RecurveListFragment()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.content, listFragment).commit()
