@@ -42,17 +42,17 @@ abstract class RecurveDaggerActivity:
             = contentCreate.initContentBinding(layoutId)
 
 
-    open fun <Binding : ViewDataBinding> initContentFragment(
+    fun <Binding : ViewDataBinding> initContentFragment(
             @NavigationRes graphResId: Int,
             @LayoutRes layoutId: Int = R.layout.fragment_navigation,
-            @IdRes resId: Int = R.id.fragment_container): Binding{
+            @IdRes resId: Int = R.id.fragment_container): NavController{
 
         val binding: Binding = initContentBinding(layoutId)
         val view: View = ActivityCompat.requireViewById(this, resId)
         val navigationController = NavController(this)
         navigationController.setGraph(graphResId)
         view.setTag(androidx.navigation.R.id.nav_controller_view_tag, navigationController)
-        return binding
+        return navigationController
 
     }
 

@@ -10,7 +10,7 @@ import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
 import dagger.android.support.DaggerFragment
 
 
-abstract class RecurveDaggerFragment()
+abstract class RecurveDaggerFragment
     : DaggerFragment(), LoadingCreator by RecurveLoadingCreator(){
 
 
@@ -22,6 +22,6 @@ abstract class RecurveDaggerFragment()
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = onCreateBinding(inflater, container, savedInstanceState)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return binding?.root
     }
 }

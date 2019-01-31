@@ -10,10 +10,8 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
-import com.tangpj.recurve.databinding.FragmentNavigationBinding
 import com.tangpj.recurve.ui.appbar
 import com.tangpj.recurve.ui.creator.AppbarCreator
 import com.tangpj.recurve.ui.creator.ContentCreate
