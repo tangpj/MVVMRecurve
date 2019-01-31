@@ -42,9 +42,9 @@ abstract class RecurveActivity:
 
 
     open fun <Binding : ViewDataBinding> initContentFragment(
+            @NavigationRes graphResId: Int,
             @LayoutRes layoutId: Int = R.layout.fragment_navigation,
-            @IdRes resId: Int = R.id.fragment_container,
-            @NavigationRes graphResId: Int): Binding{
+            @IdRes resId: Int = R.id.fragment_container): Binding{
 
         val binding: Binding = initContentBinding(layoutId)
         val view: View = ActivityCompat.requireViewById(this, resId)
