@@ -1,26 +1,25 @@
 package com.tangpj.recurve.dagger2
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
-import com.tangpj.recurve.databinding.ToolbarRecurveBinding
+import com.tangpj.recurve.databinding.FragmentNavigationBinding
 import com.tangpj.recurve.ui.appbar
 import com.tangpj.recurve.ui.creator.AppbarCreator
 import com.tangpj.recurve.ui.creator.ContentCreate
 import com.tangpj.recurve.ui.creator.RecurveAppbarCreator
 import com.tangpj.recurve.ui.creator.RecurveContentCreate
 import com.tangpj.recurve.ui.creator.ext.AppbarExt
-import dagger.android.support.DaggerAppCompatActivity
+import java.lang.NullPointerException
 
 abstract class RecurveDaggerActivity:
         AppCompatActivity(), ContentCreate {
@@ -42,17 +41,26 @@ abstract class RecurveDaggerActivity:
             = contentCreate.initContentBinding(layoutId)
 
 
+    @JvmOverloads
+    fun initContentFragment(
+            @NavigationRes graphResId: Int,
+            @LayoutRes layoutId: Int = R.layout.fragment_navigation,
+            @IdRes resId: Int = R.id.fragment_container): NavController =
+            initContentFragment<FragmentNavigationBinding>(graphResId, layoutId, resId, null)
+
+
     fun <Binding : ViewDataBinding> initContentFragment(
             @NavigationRes graphResId: Int,
             @LayoutRes layoutId: Int = R.layout.fragment_navigation,
-            @IdRes resId: Int = R.id.fragment_container): NavController{
+            @IdRes resId: Int = R.id.fragment_container,
+            initBinding: ((Binding) -> Unit)? = null ): NavController{
 
         val binding: Binding = initContentBinding(layoutId)
-        val view: View = ActivityCompat.requireViewById(this, resId)
-        val navigationController = NavController(this)
-        navigationController.setGraph(graphResId)
-        view.setTag(androidx.navigation.R.id.nav_controller_view_tag, navigationController)
-        return navigationController
+        initBinding?.invoke(binding)
+        val fragment = supportFragmentManager.findFragmentById(resId) as? NavHostFragment
+                ?: throw NullPointerException("can not find fragment by id = $resId")
+        fragment.setGraph(graphResId)
+        return findNavController(resId)
 
     }
 
