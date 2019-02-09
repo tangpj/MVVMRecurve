@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.tangpj.recurve.resource
 
 import androidx.lifecycle.LiveData
@@ -33,7 +32,7 @@ import io.reactivex.schedulers.Schedulers
  * @param <ResultType>
  * @param <RequestType>
 </RequestType></ResultType> */
-abstract class NetWorkBoundResource<ResultType, RequestType>
+abstract class NetworkBoundResource<ResultType, RequestType>
 @MainThread constructor() {
 
     protected val result = MediatorLiveData<Resource<ResultType>>()
