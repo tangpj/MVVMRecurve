@@ -20,12 +20,13 @@ import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import com.tangpj.recurve.resource.ApiResponse
 import com.tangpj.recurve.resource.NextPageStrategy
+import retrofit2.Response
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 
 class LiveDataCallAdapterFactory @JvmOverloads constructor(
-        private val nextPageStrategy: NextPageStrategy? = null) : CallAdapter.Factory() {
+        private val nextPageStrategy: NextPageStrategy<Response<*>>? = null) : CallAdapter.Factory() {
 
     override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
         if (CallAdapter.Factory.getRawType(returnType) != LiveData::class.java) {

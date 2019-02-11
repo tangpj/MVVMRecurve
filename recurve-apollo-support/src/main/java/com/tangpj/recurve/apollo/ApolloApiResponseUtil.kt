@@ -20,7 +20,7 @@ import com.apollographql.apollo.api.Response
 import com.tangpj.recurve.resource.*
 
 
-fun <T> create(response: Response<T>, nextPageStrategy: NextPageStrategy? = null): ApiResponse<T> {
+fun <T> create(response: Response<T>, nextPageStrategy: NextPageStrategy<*>? = null): ApiResponse<T> {
     return if (!response.hasErrors()) {
         val body = response.data()
         if (body == null ) {

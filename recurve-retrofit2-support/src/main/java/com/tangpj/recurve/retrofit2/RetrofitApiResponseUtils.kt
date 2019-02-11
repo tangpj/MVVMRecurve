@@ -19,7 +19,7 @@ package com.tangpj.recurve.retrofit2
 import com.tangpj.recurve.resource.*
 import retrofit2.Response
 
-fun <T> create(response: Response<T>, nextPageStrategy: NextPageStrategy? = null): ApiResponse<T> {
+fun <T> create(response: Response<T>, nextPageStrategy: NextPageStrategy<Response<*>>? = null): ApiResponse<T> {
     return if (response.isSuccessful) {
         val body = response.body()
         if (body == null || response.code() == 204) {

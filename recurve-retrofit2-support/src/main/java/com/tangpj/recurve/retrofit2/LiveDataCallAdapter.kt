@@ -34,7 +34,7 @@ import com.tangpj.recurve.resource.NextPageStrategy
  * @param <R>
 </R> */
 class LiveDataCallAdapter<R> @JvmOverloads constructor(private val responseType: Type
-                                                       , val nextPageStrategy: NextPageStrategy? = null)
+                                                       , val nextPageStrategy: NextPageStrategy<Response<*>>? = null)
     : CallAdapter<R, LiveData<ApiResponse<R>>> {
 
     override fun responseType(): Type = responseType
@@ -47,6 +47,7 @@ class LiveDataCallAdapter<R> @JvmOverloads constructor(private val responseType:
                     if (started.compareAndSet(false, true)) {
                         call.enqueue(object : Callback<R> {
                             override fun onResponse(call: Call<R>, response: Response<R>) {
+                                nextPageStrategy?.setResponse(response)
                                 postValue(create(response = response
                                         , nextPageStrategy = nextPageStrategy))
                             }

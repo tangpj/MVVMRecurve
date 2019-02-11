@@ -15,6 +15,14 @@
  */
 package com.tangpj.recurve.resource
 
-interface NextPageStrategy{
-    fun nextPageRule(): Int
+/**
+ * 判断是否有下一页策略
+ *
+ * @ClassName: NextPageStrategy
+ * @author create by Tang
+ * @date 2019/2/11 10:46 PM
+ */
+abstract class NextPageStrategy<Response>{
+    abstract fun setResponse(response: Response)
+    abstract fun nextPageRule(): Int
 }

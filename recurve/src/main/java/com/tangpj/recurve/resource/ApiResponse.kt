@@ -15,7 +15,6 @@
  */
 package com.tangpj.recurve.resource
 
-import java.util.regex.Pattern
 
 /**
  * Common class used by API responses.
@@ -40,11 +39,11 @@ class ApiEmptyResponse<T> : ApiResponse<T>()
 data class ApiSuccessResponse<T>(
         val body: T) : ApiResponse<T>() {
 
-    private var mNextPageStrategy: NextPageStrategy? = null
+    private var mNextPageStrategy: NextPageStrategy<*>? = null
 
-    constructor(body: T, nextPageStrategy: NextPageStrategy? = null)
+    constructor(body: T, nextPageStrategy: NextPageStrategy<*>? = null)
             : this(body = body){
-        mNextPageStrategy= nextPageStrategy
+        mNextPageStrategy = nextPageStrategy
     }
 
 
