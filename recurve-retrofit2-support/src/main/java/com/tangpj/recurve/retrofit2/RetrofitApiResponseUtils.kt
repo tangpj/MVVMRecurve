@@ -27,7 +27,6 @@ fun <T> create(response: Response<T>, nextPageStrategy: NextPageStrategy? = null
         } else {
             ApiSuccessResponse(
                     body = body,
-                    linkHeader = response.headers()?.get("link"),
                     nextPageStrategy = nextPageStrategy
             )
         }

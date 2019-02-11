@@ -38,43 +38,20 @@ sealed class ApiResponse<T> {
 class ApiEmptyResponse<T> : ApiResponse<T>()
 
 data class ApiSuccessResponse<T>(
-        val body: T,
-        val links: Map<String, String>
-) : ApiResponse<T>() {
+        val body: T) : ApiResponse<T>() {
 
     private var mNextPageStrategy: NextPageStrategy? = null
 
-    @JvmOverloads
-    constructor(body: T, linkHeader: String?, nextPageStrategy: NextPageStrategy? = null) : this(
-            body = body,
-            links = linkHeader?.extractLinks() ?: emptyMap()){
+    constructor(body: T, nextPageStrategy: NextPageStrategy? = null)
+            : this(body = body){
         mNextPageStrategy= nextPageStrategy
     }
 
 
     val nextPage: Int by lazy(LazyThreadSafetyMode.NONE) {
-        mNextPageStrategy?.nextPageRule(links) ?: -1
+        mNextPageStrategy?.nextPageRule() ?: -1
     }
 
-    companion object {
-        private val LINK_PATTERN = Pattern.compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"")
-        private val PAGE_PATTERN = Pattern.compile("\\bpage=(\\d+)")
-        private const val NEXT_LINK = "next"
-
-        private fun String.extractLinks(): Map<String, String> {
-            val links = mutableMapOf<String, String>()
-            val matcher = LINK_PATTERN.matcher(this)
-
-            while (matcher.find()) {
-                val count = matcher.groupCount()
-                if (count == 2) {
-                    links[matcher.group(2)] = matcher.group(1)
-                }
-            }
-            return links
-        }
-
-    }
 }
 
 data class ApiErrorResponse<T>(val errorMessage: String) : ApiResponse<T>()
