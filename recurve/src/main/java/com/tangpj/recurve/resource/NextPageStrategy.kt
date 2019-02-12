@@ -22,7 +22,7 @@ package com.tangpj.recurve.resource
  * @author create by Tang
  * @date 2019/2/11 10:46 PM
  */
-abstract class NextPageStrategy<Response>{
-    abstract fun setResponse(response: Response)
-    abstract fun nextPageRule(): Int
+interface NextPageStrategy<Response>{
+    fun setResponse(response: Response)
+    fun nextPageRule(): Int
 }

@@ -22,31 +22,34 @@ import com.apollographql.apollo.ApolloQueryWatcher
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.tangpj.recurve.resource.ApiResponse
+import com.tangpj.recurve.resource.NextPageStrategy
 import java.util.concurrent.atomic.AtomicBoolean
 
-class LiveDataApollo{
-    private constructor()
+@JvmOverloads
+fun <R> from(
+        watcher: ApolloQueryWatcher<R>,
+        nextPageStrategy: NextPageStrategy<Response<R>>? = null): LiveData<ApiResponse<R>> =
+        object : LiveData<ApiResponse<R>>() {
+            var started = AtomicBoolean(false)
 
-    fun <R> from(watcher: ApolloQueryWatcher<R>): LiveData<ApiResponse<R>> =
-            object : LiveData<ApiResponse<R>>() {
-                var started = AtomicBoolean(false)
+            override fun onActive() {
+                super.onActive()
+                if (started.compareAndSet(false, true)){
+                    watcher.enqueueAndWatch(object : ApolloCall.Callback<R>() {
 
-                override fun onActive() {
-                    super.onActive()
-                    if (started.compareAndSet(false, true)){
-                        watcher.enqueueAndWatch(object : ApolloCall.Callback<R>() {
+                        override fun onResponse(response: Response<R>) {
+                            postValue(create(response = response, nextPageStrategy = nextPageStrategy))
+                        }
 
-                            override fun onResponse(response: Response<R>) {
-                                postValue(create(response = response))
-                            }
+                        override fun onFailure(e: ApolloException) {
+                            postValue(ApiResponse.create(error = e))
+                        }
 
-                            override fun onFailure(e: ApolloException) {
-                                postValue(ApiResponse.create(error = e))
-                            }
-
-                        })
-                    }
+                    })
                 }
             }
+        }
 
-}
+
+
+
