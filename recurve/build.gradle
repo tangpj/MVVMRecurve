@@ -56,11 +56,11 @@ dependencies {
     api deps.navigation.fragment
     api deps.navigation.runtime
 
+    api deps.okhttp.okhttp3
+
     api deps.androidx.material
     api deps.androidx.customtabs
     api deps.androidx.annotations
-    api deps.room.runtime
-    api deps.room.rxjava2
 
     api deps.lifecycle.runtime
     api deps.lifecycle.extensions

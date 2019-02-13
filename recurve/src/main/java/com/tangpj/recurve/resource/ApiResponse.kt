@@ -15,17 +15,19 @@
  */
 package com.tangpj.recurve.resource
 
+import okhttp3.Headers
+
 
 /**
  * Common class used by API responses.
  * @param <T> the type of the response object
 </T> */
 @Suppress("unused") // T is used in extending classes
-sealed class ApiResponse<T> {
+sealed class ApiResponse {
 
     companion object {
         @JvmStatic
-        fun <T> create(error: Throwable): ApiErrorResponse<T> {
+        fun <T> create(error: Throwable): ApiErrorResponse {
             return ApiErrorResponse(error.message ?: "unknown error")
         }
     }
@@ -34,23 +36,11 @@ sealed class ApiResponse<T> {
 /**
  * separate class for HTTP 204 resposes so that we can make ApiSuccessResponse's body non-null.
  */
-class ApiEmptyResponse<T> : ApiResponse<T>()
 
-data class ApiSuccessResponse<T>(
-        val body: T) : ApiResponse<T>() {
+data class ApiSuccessResponse<T>
+@JvmOverloads constructor(val body: T, val headers: Headers? = null) : ApiResponse()
 
-    private var mNextPageStrategy: NextPageStrategy<*>? = null
+sealed class ApiEmptyResponse : ApiResponse()
 
-    constructor(body: T, nextPageStrategy: NextPageStrategy<*>? = null)
-            : this(body = body){
-        mNextPageStrategy = nextPageStrategy
-    }
+data class ApiErrorResponse(val errorMessage: String) : ApiResponse()
 
-
-    val nextPage: Int by lazy(LazyThreadSafetyMode.NONE) {
-        mNextPageStrategy?.nextPageRule() ?: -1
-    }
-
-}
-
-data class ApiErrorResponse<T>(val errorMessage: String) : ApiResponse<T>()

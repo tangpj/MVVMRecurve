@@ -72,9 +72,9 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             when (response) {
                 is ApiSuccessResponse -> {
 
-                    Observable.fromArray(response)
-                            .subscribeOn(Schedulers.io())
+                    Observable.just(response)
                             .map { saveCallResult(processResponse(it)) }
+                            .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
                                 result.addSource(loadFromDb()) { newData
@@ -83,8 +83,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                             }
                 }
                 is ApiEmptyResponse -> {
-
-                    Observable.fromArray(response)
+                    Observable.just(response)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
                                 result.addSource(loadFromDb()) { newData
@@ -104,7 +103,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
 
     protected open fun onFetchFailed() {}
 
-    fun asLiveData() = result as LiveData<Resource<ResultType>>
+    fun asLiveData() = result
 
     @WorkerThread
     protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body

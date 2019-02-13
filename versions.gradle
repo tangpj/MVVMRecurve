@@ -16,6 +16,7 @@ versions.dagger = "2.16"
 versions.junit = "4.12"
 versions.espresso = "3.1.0-alpha1"
 versions.retrofit = "2.4.0"
+versions.okhttp = "3.11.0"
 versions.okhttp_logging_interceptor = "3.9.0"
 versions.mockwebserver = "3.8.1"
 versions.apache_commons = "2.5"
@@ -80,6 +81,10 @@ retrofit.mock = "com.squareup.retrofit2:retrofit-mock:$versions.retrofit"
 retrofit.rxjava_adapter = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 deps.retrofit = retrofit
 deps.okhttp_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${versions.okhttp_logging_interceptor}"
+
+def okhttp = [:]
+okhttp.okhttp3 = "com.squareup.okhttp3:okhttp:$versions.okhttp"
+deps.okhttp = okhttp
 
 def dagger = [:]
 dagger.runtime = "com.google.dagger:dagger:$versions.dagger"

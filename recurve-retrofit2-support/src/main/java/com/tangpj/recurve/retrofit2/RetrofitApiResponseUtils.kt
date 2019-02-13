@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.tangpj.recurve.retrofit2
 
 import com.tangpj.recurve.resource.*
@@ -25,10 +24,8 @@ fun <T> create(response: Response<T>, nextPageStrategy: NextPageStrategy<Respons
         if (body == null || response.code() == 204) {
             ApiEmptyResponse()
         } else {
-            ApiSuccessResponse(
-                    body = body,
-                    nextPageStrategy = nextPageStrategy
-            )
+            ApiSuccessResponse(body = body,
+                    nextPageStrategy = nextPageStrategy)
         }
     } else {
         val msg = response.errorBody()?.string()
