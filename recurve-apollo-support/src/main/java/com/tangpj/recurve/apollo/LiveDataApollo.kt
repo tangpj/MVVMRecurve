@@ -153,6 +153,10 @@ internal object LiveDataApollo {
             override fun onActive() {
                 super.onActive()
                 call.execute(object : ApolloSubscriptionCall.Callback<T> {
+                    override fun onTerminated() {
+
+                    }
+
                     override fun onResponse(response: Response<T>) {
                         postValue(create(response))
                     }

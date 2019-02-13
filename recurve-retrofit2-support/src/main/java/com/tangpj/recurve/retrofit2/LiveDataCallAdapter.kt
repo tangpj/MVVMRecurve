@@ -48,8 +48,7 @@ class LiveDataCallAdapter<R> @JvmOverloads constructor(private val responseType:
                         call.enqueue(object : Callback<R> {
                             override fun onResponse(call: Call<R>, response: Response<R>) {
                                 nextPageStrategy?.setResponse(response)
-                                postValue(create(response = response
-                                        , nextPageStrategy = nextPageStrategy))
+                                postValue(create(response = response))
                             }
                             override fun onFailure(call: Call<R>, throwable: Throwable) {
                                 postValue(ApiResponse.create(throwable))

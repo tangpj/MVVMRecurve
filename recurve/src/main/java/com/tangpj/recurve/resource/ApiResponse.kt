@@ -23,11 +23,11 @@ import okhttp3.Headers
  * @param <T> the type of the response object
 </T> */
 @Suppress("unused") // T is used in extending classes
-sealed class ApiResponse {
+sealed class ApiResponse<T> {
 
     companion object {
         @JvmStatic
-        fun <T> create(error: Throwable): ApiErrorResponse {
+        fun <T> create(error: Throwable): ApiErrorResponse<T> {
             return ApiErrorResponse(error.message ?: "unknown error")
         }
     }
@@ -38,9 +38,9 @@ sealed class ApiResponse {
  */
 
 data class ApiSuccessResponse<T>
-@JvmOverloads constructor(val body: T, val headers: Headers? = null) : ApiResponse()
+@JvmOverloads constructor(val body: T, val headers: Headers? = null) : ApiResponse<T>()
 
-sealed class ApiEmptyResponse : ApiResponse()
+class ApiEmptyResponse<T> : ApiResponse<T>()
 
-data class ApiErrorResponse(val errorMessage: String) : ApiResponse()
+data class ApiErrorResponse<T>(val errorMessage: String) : ApiResponse<T>()
 

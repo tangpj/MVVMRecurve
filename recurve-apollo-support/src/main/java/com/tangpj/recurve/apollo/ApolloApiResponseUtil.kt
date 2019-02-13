@@ -27,8 +27,7 @@ fun <T> create(response: Response<T>, nextPageStrategy: NextPageStrategy<*>? = n
             ApiEmptyResponse()
         } else {
             ApiSuccessResponse(
-                    body = body,
-                    nextPageStrategy = nextPageStrategy
+                    body = body
             )
         }
     } else {
