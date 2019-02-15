@@ -31,6 +31,8 @@ interface DataOperator<E>{
 
     fun addItem(position: Int, e: E)
 
+    fun addItems(items: List<E>)
+
     fun setItem(position: Int,e: E): E?
 
     fun removedItem(e: E): Boolean

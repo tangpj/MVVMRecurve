@@ -71,10 +71,16 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
         adapter.notifyModulesItemInserted(this, position)
     }
 
+    override fun addItems(items: List<E>) {
+        val notifyStart = dataList.size
+        dataList.addAll(items)
+        adapter.notifyModulesItemRangeInserted(this, notifyStart, items.size)
+    }
+
     final override fun setItem(position: Int, e: E): E? {
         val result = dataList.set(position,e)
         if (result != null){
-            adapter.notifyModulesItemChanged(this,position)
+            adapter.notifyModulesItemInserted(this,position)
         }
         return result
     }

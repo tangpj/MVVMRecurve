@@ -89,10 +89,10 @@ class ModulesAdapter
         notifyModulesItemRangeChange(creator ,0,creator.getItemCount() - 1)
     }
 
-    fun notifyModulesItemRangeChange(creator: Creator, aimsStartPosition: Int, aimsEndPosition: Int){
+    fun notifyModulesItemRangeChange(creator: Creator, aimsStartPosition: Int, itemCount: Int){
         val startPosition = getModulesStartPosition(creator)
-        notifyItemRangeChanged(startPosition + aimsStartPosition,
-                startPosition + aimsEndPosition)
+        val notifyStartPos = startPosition + aimsStartPosition
+        notifyItemRangeChanged(notifyStartPos, notifyStartPos + itemCount)
     }
 
     fun notifyModulesItemChanged(creator: Creator, aimsPosition: Int){
@@ -103,6 +103,12 @@ class ModulesAdapter
     fun notifyModulesItemInserted(creator: Creator, aimsPosition: Int){
         val startPosition = getModulesStartPosition(creator)
         notifyItemInserted(startPosition + aimsPosition)
+    }
+
+    fun notifyModulesItemRangeInserted(creator: Creator, aimsStartPosition: Int, itemCount: Int){
+        val startPosition = getModulesStartPosition(creator)
+        val notifyStartPos = startPosition + aimsStartPosition
+        notifyItemRangeInserted(notifyStartPos, notifyStartPos + itemCount)
     }
 
     fun notifyModulesItemRemoved(creator: Creator, aimsPosition: Int){

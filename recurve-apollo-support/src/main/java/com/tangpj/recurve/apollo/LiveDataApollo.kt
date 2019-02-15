@@ -31,7 +31,7 @@ import com.tangpj.recurve.resource.ApiResponse
 
 
 @Suppress("unused")
-internal object LiveDataApollo {
+object LiveDataApollo {
     /**
      * Converts an [ApolloQueryWatcher] to a LiveData.
      *

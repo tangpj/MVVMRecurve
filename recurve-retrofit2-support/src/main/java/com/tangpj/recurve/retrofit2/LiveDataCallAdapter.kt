@@ -33,8 +33,7 @@ import com.tangpj.recurve.resource.NextPageStrategy
  * A Retrofit adapter that converts the Call into a LiveData of ApiResponse.
  * @param <R>
 </R> */
-class LiveDataCallAdapter<R> @JvmOverloads constructor(private val responseType: Type
-                                                       , val nextPageStrategy: NextPageStrategy<Response<*>>? = null)
+class LiveDataCallAdapter<R>(private val responseType: Type)
     : CallAdapter<R, LiveData<ApiResponse<R>>> {
 
     override fun responseType(): Type = responseType
@@ -47,7 +46,6 @@ class LiveDataCallAdapter<R> @JvmOverloads constructor(private val responseType:
                     if (started.compareAndSet(false, true)) {
                         call.enqueue(object : Callback<R> {
                             override fun onResponse(call: Call<R>, response: Response<R>) {
-                                nextPageStrategy?.setResponse(response)
                                 postValue(create(response = response))
                             }
                             override fun onFailure(call: Call<R>, throwable: Throwable) {
