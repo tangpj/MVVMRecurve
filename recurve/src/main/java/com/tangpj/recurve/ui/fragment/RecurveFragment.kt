@@ -28,8 +28,8 @@ import com.tangpj.recurve.ui.strategy.LoadingStrategy
 /**
  * 
  * @className: 
- * @author: tangpengjian113
- * @createTime: 2019/1/18 14:45
+ * @author: tpj
+ * @createTime: 2019/1/18 22:45
  */
 abstract class RecurveFragment()
     : Fragment(), LoadingCreator by RecurveLoadingCreator(){

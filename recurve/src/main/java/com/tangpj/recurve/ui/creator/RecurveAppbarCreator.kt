@@ -31,8 +31,8 @@ import com.tangpj.recurve.ui.creator.ext.ToolbarExt
  * 优先级：createCollapsingToolbarLayout > toolbar > title
  *
  * @className: RecurveAppbarCreator
- * @author: tangpengjian113
- * @createTime: 2019/1/25 10:14
+ * @author: tpj
+ * @createTime: 2019/1/25 21:14
  */
 class RecurveAppbarCreator(
         private val activity: AppCompatActivity,
