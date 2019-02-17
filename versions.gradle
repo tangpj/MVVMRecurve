@@ -39,7 +39,7 @@ versions.navigation = "1.0.0-alpha06"
 versions.app_code = 1
 versions.app_name = "1.0"
 versions.databinding_compiler = "3.3.0-alpha08"
-versions.apollo = "1.0.0-alpha2"
+versions.apollo = "1.0.0-alpha5"
 versions.apollo_converter = "0.1.0"
 versions.arouter_api = "1.4.1"
 versions.arouter_compiler = "1.2.2"
@@ -81,6 +81,7 @@ retrofit.mock = "com.squareup.retrofit2:retrofit-mock:$versions.retrofit"
 retrofit.rxjava_adapter = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 deps.retrofit = retrofit
 deps.okhttp_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${versions.okhttp_logging_interceptor}"
+
 
 def okhttp = [:]
 okhttp.okhttp3 = "com.squareup.okhttp3:okhttp:$versions.okhttp"
