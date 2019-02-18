@@ -34,10 +34,11 @@ import com.tangpj.recurve.ui.creator.ContentCreate
 import com.tangpj.recurve.ui.creator.RecurveAppbarCreator
 import com.tangpj.recurve.ui.creator.RecurveContentCreate
 import com.tangpj.recurve.ui.creator.ext.AppbarExt
+import dagger.android.support.DaggerAppCompatActivity
 import java.lang.NullPointerException
 
 abstract class RecurveDaggerActivity:
-        AppCompatActivity(), ContentCreate {
+        DaggerAppCompatActivity(), ContentCreate {
 
     private lateinit var activityRecurveBinding: ActivityRecurveBinding
 
