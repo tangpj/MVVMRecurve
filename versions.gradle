@@ -27,13 +27,14 @@ versions.constraint_layout = "1.1.0"
 versions.glide = "4.8.0"
 versions.glide_transformations = "3.3.0"
 versions.timber = "4.7.1"
-versions.android_gradle_plugin = '3.3.1'
+versions.android_gradle_plugin = '3.3.0'
 versions.rxjava2 = "2.2.1"
 versions.rx_android = "2.1.0"
 versions.atsl_runner = "1.1.0-alpha1"
 versions.atsl_rules = "1.0.1"
 versions.hamcrest = "1.3"
 versions.kotlin = "1.3.11"
+versions.kotlinx = "0.10.0"
 versions.ktx = "1.0.0-rc02"
 versions.navigation = "1.0.0-alpha06"
 versions.app_code = 1
@@ -43,7 +44,8 @@ versions.apollo = "1.0.0-alpha5"
 versions.apollo_converter = "0.1.0"
 versions.arouter_api = "1.4.1"
 versions.arouter_compiler = "1.2.2"
-deps.version = versions
+versions.cglib = "3.2.10"
+deps.versions = versions
 
 def androidx = [:]
 androidx.appcompat = "androidx.appcompat:appcompat:$versions.androidx"
@@ -118,7 +120,12 @@ kotlin.test = "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
 kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 kotlin.ktx = "androidx.core:core-ktx:$versions.ktx"
 kotlin.allopen = "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin"
+kotlin.plugin_serialization = "org.jetbrains.kotlin:kotlin-serialization:$versions.kotlin"
 deps.kotlin = kotlin
+
+def kotlinx = [:]
+kotlinx.serialization = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$versions.kotlinx"
+deps.kotlinx = kotlinx
 
 def navigation = [:]
 navigation.runtime = "android.arch.navigation:navigation-runtime:$versions.navigation"
@@ -135,7 +142,6 @@ apollo.runtime = "com.apollographql.apollo:apollo-runtime:$versions.apollo"
 apollo.plugin = "com.apollographql.apollo:apollo-gradle-plugin:$versions.apollo"
 apollo.android_support = "com.apollographql.apollo:apollo-android-support:$versions.apollo"
 apollo.converter = "com.apollographql.android:converter-pojo:$versions.apollo_converter"
-
 deps.apollo = apollo
 
 def arouter = [:]
@@ -157,6 +163,7 @@ deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.databinding_compiler = "androidx.databinding:databinding-compiler:$versions.databinding_compiler"
+deps.cglib = "cglib:cglib:$versions.cglib"
 ext.deps = deps
 
 def build_versions = [:]
@@ -182,5 +189,6 @@ static def addRepos(RepositoryHandler handler) {
     handler.mavenLocal()
     handler.maven { url 'https://jitpack.io' }
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    handler.maven { url "https://kotlin.bintray.com/kotlinx" }
 }
 ext.addRepos = this.&addRepos

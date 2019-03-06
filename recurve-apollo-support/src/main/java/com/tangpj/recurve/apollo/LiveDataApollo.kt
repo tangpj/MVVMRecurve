@@ -87,7 +87,6 @@ object LiveDataApollo {
 
                     override fun onStatusEvent(event: ApolloCall.StatusEvent) {
                         if (event == ApolloCall.StatusEvent.COMPLETED) {
-                            postValue(ApiEmptyResponse())
                         }
                     }
                 })

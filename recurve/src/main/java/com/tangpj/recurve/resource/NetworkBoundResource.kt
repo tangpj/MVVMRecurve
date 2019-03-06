@@ -60,6 +60,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             result.value = newValue
         }
     }
+
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
         val apiResponse = createCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
