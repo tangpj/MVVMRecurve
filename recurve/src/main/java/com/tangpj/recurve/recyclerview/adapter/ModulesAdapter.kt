@@ -31,7 +31,7 @@ class ModulesAdapter
             = mutableListOf()
 
     fun setCreator(creatorList: MutableList<Creator>){
-        checkedViewType { it ->
+        checkedViewType {
             it.entries.forEach { entry ->
                 if ( entry.value.size > 1){
                     return@checkedViewType true
@@ -73,7 +73,7 @@ class ModulesAdapter
         creator.onBindItemView(holder,inCreatorPosition)
     }
 
-    override fun getItemCount(): Int  = creatorList.sumBy { it -> it.getItemCount() }
+    override fun getItemCount(): Int  = creatorList.sumBy { it.getItemCount() }
 
     override fun getItemViewType(position: Int): Int {
         var sum = 0
@@ -86,7 +86,7 @@ class ModulesAdapter
     }
 
     fun notifyModulesItemSetChange(creator: Creator){
-        notifyModulesItemRangeChange(creator ,0,creator.getItemCount() - 1)
+        notifyModulesItemRangeChange(creator ,0,creator.getItemCount())
     }
 
     fun notifyModulesItemRangeChange(creator: Creator, aimsStartPosition: Int, itemCount: Int){

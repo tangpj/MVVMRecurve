@@ -26,7 +26,7 @@ import java.lang.IllegalArgumentException
  * 辅助Adapter创建Item
  */
 abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructor(
-        private val adapter: ModulesAdapter, private val creatorType: Int = 0): Creator, DataOperator<E>{
+        val adapter: ModulesAdapter, private val creatorType: Int = 0): Creator, DataOperator<E>{
 
     init {
         if ((creatorType == ExpandableCreator.ITEM_TYPE_PARENT) ||
@@ -45,9 +45,9 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
         this.itemClickListener = listener
     }
 
-    override fun setDataList(dataList: MutableList<E>){
-        this.dataList = dataList
-        if (dataList.size > 0){
+    override fun setDataList(dataList: List<E>){
+        this.dataList = dataList.toMutableList()
+        if (dataList.isNotEmpty()){
             adapter.notifyModulesItemSetChange(this)
         }
     }

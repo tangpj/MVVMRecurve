@@ -21,7 +21,7 @@ package com.tangpj.recurve.recyclerview.creator
  */
 interface DataOperator<E>{
 
-    fun setDataList(dataList: MutableList<E>)
+    fun setDataList(dataList: List<E>)
 
     fun getData(): List<E>
 

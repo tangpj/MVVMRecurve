@@ -34,7 +34,7 @@ import dagger.android.support.DaggerFragment
 open class RecurveDaggerListFragment
     : DaggerFragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewInit {
 
-    private val mAdapter = ModulesAdapter()
+    val mAdapter = ModulesAdapter()
     private var lm: RecyclerView.LayoutManager? = null
 
     final override fun onCreateView(inflater: LayoutInflater,
