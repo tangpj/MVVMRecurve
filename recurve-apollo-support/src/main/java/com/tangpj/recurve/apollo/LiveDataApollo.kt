@@ -152,6 +152,11 @@ object LiveDataApollo {
             override fun onActive() {
                 super.onActive()
                 call.execute(object : ApolloSubscriptionCall.Callback<T> {
+                    override fun onConnected() {
+
+                    }
+
+
                     override fun onTerminated() {
 
                     }
