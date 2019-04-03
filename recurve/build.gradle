@@ -75,6 +75,7 @@ dependencies {
 
     kapt deps.room.compiler
     kapt deps.lifecycle.compiler
+    api project(':recurve-module-adapter')
 
 
 }

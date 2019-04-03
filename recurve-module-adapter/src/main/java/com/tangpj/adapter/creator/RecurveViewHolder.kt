@@ -1,4 +1,4 @@
-package com.tangpj.recurve.recyclerview.creator
+package com.tangpj.adapter.creator
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

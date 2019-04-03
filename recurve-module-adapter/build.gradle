@@ -1,0 +1,25 @@
+apply from: "../support.gradle"
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+
+    dataBinding{
+        enabled true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation deps.junit
+    androidTestImplementation deps.espresso.core
+    androidTestImplementation deps.ext_junit
+
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.recyclerView
+    implementation deps.kotlin.stdlib_jdk8
+    implementation deps.kotlin.ktx
+
+}

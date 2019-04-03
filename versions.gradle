@@ -14,6 +14,7 @@ versions.lifecycle = "2.0.0-rc01"
 versions.androidx = "1.0.0-alpha1"
 versions.dagger = "2.16"
 versions.junit = "4.12"
+versions.ext_junit = "1.1.0"
 versions.espresso = "3.1.0-alpha1"
 versions.retrofit = "2.4.0"
 versions.okhttp = "3.11.0"
@@ -167,6 +168,7 @@ deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.databinding_compiler = "androidx.databinding:databinding-compiler:$versions.databinding_compiler"
+deps.ext_junit = "androidx.test.ext:junit:$versions.ext_junit"
 ext.deps = deps
 
 def build_versions = [:]

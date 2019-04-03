@@ -3,6 +3,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 dependencies {
-    api deps.retrofit.runtime
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.retrofit.runtime
+    implementation deps.kotlin.stdlib_jdk8
+    implementation project(":recurve")
 }
+
+
 

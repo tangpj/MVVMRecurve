@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.recyclerview.creator
+package com.tangpj.adapter.creator
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
-import com.tangpj.recurve.recyclerview.adapter.WRAP
+import com.tangpj.adapter.adapter.ModulesAdapter
+import com.tangpj.adapter.adapter.WRAP
 
 /**
  * Created by tang on 2018/3/15.

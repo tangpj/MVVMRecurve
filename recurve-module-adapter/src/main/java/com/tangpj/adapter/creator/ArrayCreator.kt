@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.recurve.recyclerview.creator
+package com.tangpj.adapter.creator
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -22,9 +22,9 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.tangpj.recurve.R
-import com.tangpj.recurve.databinding.ItemTextBinding
-import com.tangpj.recurve.recyclerview.adapter.ModulesAdapter
+import com.tangpj.adapter.R
+import com.tangpj.adapter.adapter.ModulesAdapter
+import com.tangpj.adapter.databinding.ItemTextBinding
 
 /**
  * Created by tang on 2018/3/14.

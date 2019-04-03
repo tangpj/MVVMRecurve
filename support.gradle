@@ -49,11 +49,4 @@ android {
 }
 
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api deps.kotlin.stdlib_jdk8
-    implementation project(":recurve")
-
-
-}

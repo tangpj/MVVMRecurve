@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
 import com.tangpj.recurve.databinding.ContentListBinding
-import com.tangpj.recurve.recyclerview.creator.Creator
+import com.tangpj.adapter.creator.Creator
 import com.tangpj.recurve.ui.appbar
 import com.tangpj.recurve.ui.creator.*
 import com.tangpj.recurve.ui.creator.ext.AppbarExt

@@ -20,6 +20,9 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
 
+    implementation deps.kotlin.stdlib_jdk8
+    implementation project(":recurve")
+
     implementation deps.dagger.runtime
     implementation deps.dagger.android
     implementation deps.dagger.android_support
