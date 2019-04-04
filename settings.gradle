@@ -1,5 +1,7 @@
-include ':recurve-dagger2-support', ':recurve-glide-support', ':recurve-module-adapter'
+include ':recurve-dagger2-support'
 include':app'
 include':recurve'
 include':recurve-retrofit2-support'
 include':recurve-apollo-support'
+include':recurve-module-adapter'
+include':recurve-glide-support'
