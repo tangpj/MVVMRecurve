@@ -12,6 +12,7 @@ versions.room = "2.0.0-rc01"
 versions.paging = "2.0.0-rc01"
 versions.lifecycle = "2.0.0-rc01"
 versions.androidx = "1.0.0-alpha1"
+
 versions.dagger = "2.16"
 versions.junit = "4.12"
 versions.ext_junit = "1.1.0"
