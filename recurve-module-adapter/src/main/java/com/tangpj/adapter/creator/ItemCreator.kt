@@ -26,7 +26,8 @@ import java.lang.IllegalArgumentException
  * 辅助Adapter创建Item
  */
 abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructor(
-        val adapter: ModulesAdapter, private val creatorType: Int = 0): Creator, DataOperator<E>{
+        val adapter: ModulesAdapter, private val creatorType: Int = 0):
+        Creator, DataOperator<E>, BindingView<E, Binding>{
 
     init {
         if ((creatorType == ExpandableCreator.ITEM_TYPE_PARENT) ||
@@ -114,10 +115,6 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
 
     override fun getSpan(): Int = WRAP
 
-    abstract fun onBindItemView(
-            itemHolder: RecurveViewHolder<Binding>?,
-            e: E?,
-            inCreatorPosition: Int)
 
     @Suppress("UNCHECKED_CAST")
     final override fun onBindItemView(

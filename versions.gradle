@@ -8,8 +8,6 @@ def deps = [:]
 
 def versions = [:]
 versions.arch_core = "2.0.0-alpha1"
-versions.room = "2.0.0-rc01"
-versions.paging = "2.0.0-rc01"
 versions.lifecycle = "2.0.0-rc01"
 versions.androidx = "1.0.0-alpha1"
 
@@ -59,10 +57,10 @@ androidx.core_utils = "androidx.legacy:legacy-support-core-utils:$versions.andro
 deps.androidx = androidx
 
 def room = [:]
-room.runtime = "androidx.room:room-runtime:$versions.room"
-room.compiler = "androidx.room:room-compiler:$versions.room"
-room.rxjava2 = "androidx.room:room-rxjava2:$versions.room"
-room.testing = "androidx.room:room-testing:$versions.room"
+room.runtime = "androidx.room:room-runtime:$versions.lifecycle"
+room.compiler = "androidx.room:room-compiler:$versions.lifecycle"
+room.rxjava2 = "androidx.room:room-rxjava2:$versions.lifecycle"
+room.testing = "androidx.room:room-testing:$versions.lifecycle"
 deps.room = room
 
 def lifecycle = [:]
@@ -156,7 +154,7 @@ arouter.compiler = "com.alibaba:arouter-compiler:$versions.arouter_compiler"
 
 deps.arouter = arouter
 
-deps.paging = "androidx.paging:paging-runtime:$versions.paging"
+deps.paging = "androidx.paging:paging-runtime:$versions.lifecycle"
 deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
 deps.glide_transformations = "jp.wasabeef:glide-transformations:$versions.glide_transformations"
 deps.dexmaker = "com.linkedin.dexmaker:dexmaker-mockito:$versions.dexmaker"

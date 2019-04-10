@@ -28,8 +28,10 @@ import com.tangpj.adapter.adapter.WRAP
 
 abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
         , ChildBinding: ViewDataBinding>
-@JvmOverloads constructor(private val adapter: ModulesAdapter, private val creatorType: Int = 0)
-    :Creator, ExpandableDataOperator<Parent, Child> {
+@JvmOverloads constructor(private val adapter: ModulesAdapter, private val creatorType: Int = 0) :
+        Creator,
+        ExpandableDataOperator<Parent, Child>,
+        ExpandableBindingView<Parent,Child, ParentBinding, ChildBinding>{
 
     /**
      * ItemType保留位
@@ -312,15 +314,5 @@ abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
 
     private fun getChildPositionInCreatorAt(parentPosition: Int, childPositionInList: Int): Int =
             getChildPositionInCreator(getParent(parentPosition),childPositionInList)
-
-    abstract fun onCreateParentViewHolder(parent: ViewGroup): RecurveViewHolder<*>
-
-    abstract fun onCreateChildViewHolder(parent: ViewGroup): RecurveViewHolder<*>
-
-    abstract fun onBindParentItemView(parentHolder: RecurveViewHolder<ParentBinding>?, parent: Parent?
-                                      , parentPosition: Int, creatorPosition: Int)
-
-    abstract fun onBindChildItemView(childHolder: RecurveViewHolder<ChildBinding>?, child: Child?
-                                     , childPosition: Int, creatorPosition: Int)
 
 }
