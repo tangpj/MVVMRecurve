@@ -30,8 +30,9 @@
         android:orientation="vertical"
         app:cardUseCompatPadding="true">
         <TextView android:id="@+id/name" style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_height="100dp"
             android:text="@{cheese.name}"
+            android:gravity="center_vertical"
             android:layout_marginBottom="@dimen/card_vertical_margin"
             android:layout_marginTop="@dimen/card_vertical_margin"/>
     </androidx.cardview.widget.CardView>

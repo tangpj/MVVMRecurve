@@ -18,6 +18,7 @@ package com.tangpj.mvvmrecurve.paging
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -32,6 +33,7 @@ import com.tangpj.mvvmrecurve.R
 import com.tangpj.mvvmrecurve.databinding.CheeseItemBinding
 import com.tangpj.paging.addPagedCreator
 import kotlinx.android.synthetic.main.activity_paged.*
+import timber.log.Timber
 
 /**
  * Shows a list of Cheeses, with swipe-to-delete, and an input field at the top to add.
@@ -40,8 +42,27 @@ import kotlinx.android.synthetic.main.activity_paged.*
  * is updated automatically using paging components.
  */
 class PagedActivity : AppCompatActivity() {
-    private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
+
+    private val TAG = "PagedActivity"
+
+    private val cheeseViewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProviders.of(this).get(CheeseViewModel::class.java)
+    }
+
+    private val bookViewModel by lazy(LazyThreadSafetyMode.NONE) {
+        ViewModelProviders.of(this).get(BookViewModel::class.java)
+    }
+
+    private val bookDiffCallback = object : DiffUtil.ItemCallback<Book>() {
+        override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean =
+                oldItem.id == newItem.id
+
+        /**
+         * Note that in kotlin, == checking on data classes compares all contents, but in Java,
+         * typically you'll implement Object#equals, and use it to compare object contents.
+         */
+        override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean =
+                oldItem == newItem
     }
 
     private val diffCallback = object : DiffUtil.ItemCallback<Cheese>() {
@@ -56,6 +77,7 @@ class PagedActivity : AppCompatActivity() {
                 oldItem == newItem
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paged)
@@ -64,11 +86,21 @@ class PagedActivity : AppCompatActivity() {
         val adapter = ModulesAdapter()
         val creator =
                 adapter.addPagedCreator(CheeseCreator(adapter), diffCallback)
+        val bookCreator =
+                adapter.addPagedCreator(BookCreator(adapter), bookDiffCallback)
         cheeseList.adapter = adapter
 
-        viewModel.allCheeses.observe(this,Observer<PagedList<Cheese>> {
+        cheeseViewModel.allCheeses.observe(this,Observer<PagedList<Cheese>> {
+            Log.d( TAG,"load cheese size = ${it.size}")
             creator.submitList(it)
         })
+
+        bookViewModel.allBooks.observe(this,Observer<PagedList<Book>> {
+            Log.d( TAG, "load book size = ${it.size}")
+            bookCreator.submitList(it)
+        })
+
+
         // Subscribe the adapter to the ViewModel, so the items in the adapter are refreshed
         // when the list changes
 //        viewModel.allCheeses.observe(this, Observer(adapter::submitList))
@@ -92,7 +124,7 @@ class PagedActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val binding = (viewHolder as? RecurveViewHolder<*>)?.binding
                 (binding as? CheeseItemBinding)?.cheese?.let {
-                    viewModel.remove(it)
+                    cheeseViewModel.remove(it)
                 }
             }
         }).attachToRecyclerView(cheeseList)
@@ -101,7 +133,7 @@ class PagedActivity : AppCompatActivity() {
     private fun addCheese() {
         val newCheese = inputText.text.trim()
         if (newCheese.isNotEmpty()) {
-            viewModel.insert(newCheese)
+            cheeseViewModel.insert(newCheese)
             inputText.setText("")
         }
     }
