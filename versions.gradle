@@ -9,6 +9,7 @@ def deps = [:]
 def versions = [:]
 versions.arch_core = "2.0.0-alpha1"
 versions.lifecycle = "2.0.0-rc01"
+versions.paging = "2.1.0-rc01"
 versions.androidx = "1.0.0-alpha1"
 
 versions.dagger = "2.16"
@@ -154,7 +155,7 @@ arouter.compiler = "com.alibaba:arouter-compiler:$versions.arouter_compiler"
 
 deps.arouter = arouter
 
-deps.paging = "androidx.paging:paging-runtime:$versions.lifecycle"
+deps.paging = "androidx.paging:paging-runtime-ktx:$versions.paging"
 deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
 deps.glide_transformations = "jp.wasabeef:glide-transformations:$versions.glide_transformations"
 deps.dexmaker = "com.linkedin.dexmaker:dexmaker-mockito:$versions.dexmaker"

@@ -1,5 +1,6 @@
+package com.tangpj.mvvmrecurve.paging
 /*
- * Copyright (C) 2018 Tang
+ * Copyright (C) 2017 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.adapter.creator
+
+
+import java.util.concurrent.Executors
+
+private val IO_EXECUTOR = Executors.newSingleThreadExecutor()
 
 /**
- * Created by tang on 2018/3/16.
- * 一级列表数据操作接口
+ * Utility method to run blocks on a dedicated background thread, used for io/database work.
  */
-interface DataOperator<E>{
-
-    fun setDataList(dataList: List<E>)
-
-    fun getData(): List<E>
-
-    fun getItem(position: Int): E?
-
-    fun addItem(e: E): Boolean
-
-    fun addItem(position: Int, e: E)
-
-    fun addItems(items: List<E>)
-
-    fun setItem(position: Int,e: E): E?
-
-    fun removedItem(e: E): Boolean
-
-    fun removedItemAt(position: Int):E?
-
+fun ioThread(f : () -> Unit) {
+    IO_EXECUTOR.execute(f)
 }
-

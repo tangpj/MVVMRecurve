@@ -119,7 +119,9 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
     @Suppress("UNCHECKED_CAST")
     final override fun onBindItemView(
             itemHolder: RecurveViewHolder<*>, creatorPosition: Int) {
-
+        if (dataList.isEmpty()){
+            return
+        }
         val e: E = dataList[creatorPosition]
         itemClickListener?.let { listener
             -> itemHolder.itemView.setOnClickListener {
