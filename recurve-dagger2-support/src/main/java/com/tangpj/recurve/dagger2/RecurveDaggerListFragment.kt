@@ -15,11 +15,13 @@
  */
 package com.tangpj.recurve.dagger2
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.tangpj.recurve.databinding.FragmentRecurveRecyclerViewBinding
 import com.tangpj.recurve.ui.creator.LoadingCreator
@@ -27,20 +29,32 @@ import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
 import com.tangpj.adapter.creator.Creator
 import com.tangpj.adapter.adapter.ModulesAdapter
 import com.tangpj.recurve.ui.creator.RecyclerViewInit
-import dagger.android.support.DaggerFragment
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
 
 open class RecurveDaggerListFragment
-    : DaggerFragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewInit {
+    : Fragment(), HasSupportFragmentInjector, LoadingCreator by RecurveLoadingCreator(), RecyclerViewInit {
 
     val mAdapter = ModulesAdapter()
     private var lm: RecyclerView.LayoutManager? = null
+
+    @Inject
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     final override fun onCreateView(inflater: LayoutInflater,
                                     container: ViewGroup?,
                                     savedInstanceState: Bundle?): View? {
         val binding = onCreateBinding(inflater, container, savedInstanceState)
         return binding.root
+    }
+
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     protected open fun initRecyclerView(rv: RecyclerView){
@@ -70,5 +84,7 @@ open class RecurveDaggerListFragment
     override fun setLayoutManager(lm: RecyclerView.LayoutManager ){
         this.lm = lm
     }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
 
 }

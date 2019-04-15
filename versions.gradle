@@ -12,7 +12,7 @@ versions.lifecycle = "2.0.0-rc01"
 versions.paging = "2.1.0-rc01"
 versions.androidx = "1.0.0-alpha1"
 
-versions.dagger = "2.16"
+versions.dagger = "2.22.1"
 versions.junit = "4.12"
 versions.ext_junit = "1.1.0"
 versions.espresso = "3.1.0-alpha1"
