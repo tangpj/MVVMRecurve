@@ -49,7 +49,7 @@ open class RecurveDaggerListFragment
                                     container: ViewGroup?,
                                     savedInstanceState: Bundle?): View? {
         val binding = onCreateBinding(inflater, container, savedInstanceState)
-        return binding.root
+        return binding?.root
     }
 
     override fun onAttach(context: Context?) {
@@ -67,7 +67,7 @@ open class RecurveDaggerListFragment
     open fun onCreateBinding(
             inflater: LayoutInflater,
             container: ViewGroup?,
-            savedInstanceState: Bundle?): ViewDataBinding{
+            savedInstanceState: Bundle?): ViewDataBinding?{
         val binding = FragmentRecurveRecyclerViewBinding.inflate(inflater, container, false)
         initRecyclerView(binding.rv)
         return binding
