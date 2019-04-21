@@ -1,12 +1,12 @@
 package com.tangpj.mvvmrecurve.paging
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.tangpj.adapter.adapter.ModulesAdapter
 import com.tangpj.adapter.creator.ItemCreator
 import com.tangpj.adapter.creator.RecurveViewHolder
 import com.tangpj.mvvmrecurve.databinding.BookItemBinding
-import timber.log.Timber
 
 class BookCreator(adapter: ModulesAdapter) : ItemCreator<Book, BookItemBinding>(adapter,2){
 
@@ -15,7 +15,7 @@ class BookCreator(adapter: ModulesAdapter) : ItemCreator<Book, BookItemBinding>(
         itemHolder?.let {
             it.binding.book = e
         }
-        Timber.d(e.toString())
+        Log.d("BookCreator", e.toString())
     }
 
     override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecurveViewHolder<*> {
