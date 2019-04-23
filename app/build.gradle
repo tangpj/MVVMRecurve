@@ -44,7 +44,7 @@ dependencies {
     api deps.constraint_layout
     api deps.androidx.appcompat
     implementation deps.room.runtime
-    implementation deps.paging
+    implementation deps.paging.runtime
     kapt deps.room.compiler
     api deps.atsl.runner
     api deps.espresso.core

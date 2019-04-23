@@ -74,6 +74,11 @@ lifecycle.java8 = "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle
 lifecycle.compiler = "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
 deps.lifecycle = lifecycle
 
+def paging = [:]
+paging.runtime = "androidx.paging:paging-runtime-ktx:$versions.paging"
+paging.common = "androidx.paging:paging-common:$versions.paging"
+deps.paging = paging
+
 def arch_core = [:]
 arch_core.testing = "androidx.arch.core:core-testing:$versions.arch_core"
 deps.arch_core = arch_core
@@ -156,7 +161,7 @@ arouter.compiler = "com.alibaba:arouter-compiler:$versions.arouter_compiler"
 
 deps.arouter = arouter
 
-deps.paging = "androidx.paging:paging-runtime-ktx:$versions.paging"
+
 deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
 deps.glide_transformations = "jp.wasabeef:glide-transformations:$versions.glide_transformations"
 deps.dexmaker = "com.linkedin.dexmaker:dexmaker-mockito:$versions.dexmaker"
