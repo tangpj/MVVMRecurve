@@ -8,4 +8,4 @@ enum class PageLoadStatus {
     LOAD_BEFORE
 }
 
-class PageLoadState(status: PageLoadStatus, networkState: NetworkState)
+class PageLoadState(val status: PageLoadStatus, val networkState: NetworkState)

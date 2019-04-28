@@ -80,6 +80,7 @@ open class RecurveDaggerListFragment
         adapter.addCreator(index, creator)
     }
 
+
     override fun setLayoutManager(lm: RecyclerView.LayoutManager ){
         this.lm = lm
     }
