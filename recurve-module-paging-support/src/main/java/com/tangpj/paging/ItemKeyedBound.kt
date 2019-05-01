@@ -3,7 +3,6 @@ package com.tangpj.paging
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.paging.ItemKeyedDataSource
-import androidx.paging.PageKeyedDataSource
 import com.tangpj.recurve.resource.ApiResponse
 
 interface ItemKeyedBound<Key, ResultType, RequestType>{

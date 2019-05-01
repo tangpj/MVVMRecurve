@@ -31,7 +31,6 @@ import com.tangpj.adapter.adapter.ModulesAdapter
 import com.tangpj.adapter.creator.RecurveViewHolder
 import com.tangpj.mvvmrecurve.R
 import com.tangpj.mvvmrecurve.databinding.CheeseItemBinding
-import com.tangpj.paging.addPagedCreator
 import kotlinx.android.synthetic.main.activity_paged.*
 import timber.log.Timber
 
@@ -83,22 +82,22 @@ class PagedActivity : AppCompatActivity() {
         setContentView(R.layout.activity_paged)
 
         // Create adapter for the RecyclerView
-        val adapter = ModulesAdapter()
-        val creator =
-                adapter.addPagedCreator(CheeseCreator(adapter), diffCallback)
-        val bookCreator =
-                adapter.addPagedCreator(BookCreator(adapter), bookDiffCallback)
-        cheeseList.adapter = adapter
-
-        cheeseViewModel.allCheeses.observe(this,Observer<PagedList<Cheese>> {
-            Log.d( TAG,"load cheese size = ${it.size}")
-            creator.submitList(it)
-        })
-
-        bookViewModel.allBooks.observe(this,Observer<PagedList<Book>> {
-            Log.d( TAG, "load book size = ${it.size}")
-            bookCreator.submitList(it)
-        })
+//        val adapter = ModulesAdapter()
+//        val creator =
+//                adapter.addPagedCreator(CheeseCreator(adapter), diffCallback)
+//        val bookCreator =
+//                adapter.addPagedCreator(BookCreator(adapter), bookDiffCallback)
+//        cheeseList.adapter = adapter
+//
+//        cheeseViewModel.allCheeses.observe(this,Observer<PagedList<Cheese>> {
+//            Log.d( TAG,"load cheese size = ${it.size}")
+//            creator.submitList(it)
+//        })
+//
+//        bookViewModel.allBooks.observe(this,Observer<PagedList<Book>> {
+//            Log.d( TAG, "load book size = ${it.size}")
+//            bookCreator.submitList(it)
+//        })
 
 
         // Subscribe the adapter to the ViewModel, so the items in the adapter are refreshed

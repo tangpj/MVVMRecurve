@@ -52,46 +52,70 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
                                         this@ItemKeyedBoundResource.loadFromDb()
 
                             }.asLiveData()
-                        result.let {
-                            changePageLoadState(PageLoadStatus.REFRESH, it, callback){
-                                loadInitial(params, callback)
-                            }
+
+                        changePageLoadState(PageLoadStatus.REFRESH, result, callback){
+                            loadInitial(params, callback)
 
                         }
                     }, {e -> Timber.e(e)})
 
-
-
-
-
         }
 
         override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
-            val result =
-                    object : RecourveBoundResourceProxy<ResultType, RequestType>(
-                            this@ItemKeyedBoundResource){
 
-                        override fun createCall(): LiveData<ApiResponse<RequestType>> =
-                                this@ItemKeyedBoundResource.createAfterCall(params)
+            val obs = Observable.just(params)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe ({
+                        val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
 
-                    }.asLiveData()
-            changePageLoadState(PageLoadStatus.LOAD_AFTER, result, callback){
-                loadAfter(params, callback)
-            }
+                            override fun createCall(): LiveData<ApiResponse<RequestType>> =
+                                    this@ItemKeyedBoundResource.createAfterCall(params)
+
+                            override fun saveCallResult(item: RequestType) =
+                                    this@ItemKeyedBoundResource.saveCallResult(item)
+
+
+                            override fun shouldFetch(data: List<ResultType>?): Boolean =
+                                    this@ItemKeyedBoundResource.shouldFetch(data)
+
+
+                            override fun loadFromDb(): LiveData<List<ResultType>> =
+                                    this@ItemKeyedBoundResource.loadFromDb()
+
+                        }.asLiveData()
+
+                        changePageLoadState(PageLoadStatus.LOAD_AFTER, result, callback){
+                            loadAfter(params, callback)
+                        }
+                    }, {e -> Timber.e(e)})
         }
 
         override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
-            val result =
-                    object : RecourveBoundResourceProxy<ResultType, RequestType>(
-                            this@ItemKeyedBoundResource){
+            val obs = Observable.just(params)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe ({
+                        val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
 
-                        override fun createCall(): LiveData<ApiResponse<RequestType>> =
-                                this@ItemKeyedBoundResource.createBeforeCall(params)
+                            override fun createCall(): LiveData<ApiResponse<RequestType>> =
+                                    this@ItemKeyedBoundResource.createBeforeCall(params)
 
-                    }.asLiveData()
-            changePageLoadState(PageLoadStatus.LOAD_BEFORE, result, callback){
-                loadBefore(params, callback)
-            }
+                            override fun saveCallResult(item: RequestType) =
+                                    this@ItemKeyedBoundResource.saveCallResult(item)
+
+
+                            override fun shouldFetch(data: List<ResultType>?): Boolean =
+                                    this@ItemKeyedBoundResource.shouldFetch(data)
+
+
+                            override fun loadFromDb(): LiveData<List<ResultType>> =
+                                    this@ItemKeyedBoundResource.loadFromDb()
+
+                        }.asLiveData()
+
+                        changePageLoadState(PageLoadStatus.LOAD_BEFORE, result, callback){
+                            loadBefore(params, callback)
+                        }
+                    }, {e -> Timber.e(e)})
         }
 
         override fun getKey(item: ResultType): Key = this@ItemKeyedBoundResource.getKey(item)
