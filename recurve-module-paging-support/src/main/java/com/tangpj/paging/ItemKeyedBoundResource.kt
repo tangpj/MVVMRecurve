@@ -9,6 +9,7 @@ import androidx.paging.toLiveData
 import com.tangpj.recurve.resource.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import timber.log.Timber
 
 abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
         ItemKeyedBound<Key, ResultType, RequestType>,
@@ -20,6 +21,8 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
 
     private val pageLoadState = MediatorLiveData<PageLoadState>()
 
+    private val resultPagedList = MediatorLiveData<PagedList<ResultType>>()
+
     private fun retryAllFailed() {
         val prevRetry = retry
         retry = null
@@ -29,31 +32,37 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
     internal val itemKeyedDataSource
             = object : ItemKeyedDataSource<Key, ResultType>(){
         override fun loadInitial(params: LoadInitialParams<Key>, callback: LoadInitialCallback<ResultType>) {
+            val obs = Observable.just(params)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe ({
+                        val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
 
-            Observable.just(params).observeOn(AndroidSchedulers.mainThread()).subscribe {
-                val result =
-                        object : NetworkBoundResource<List<ResultType>, RequestType>(){
+                                override fun createCall(): LiveData<ApiResponse<RequestType>> =
+                                        this@ItemKeyedBoundResource.createInitialCall(params)
 
-                            override fun createCall(): LiveData<ApiResponse<RequestType>> =
-                                    this@ItemKeyedBoundResource.createInitialCall(params)
-
-                            override fun saveCallResult(item: RequestType) =
-                                    this@ItemKeyedBoundResource.saveCallResult(item)
-
-
-                            override fun shouldFetch(data: List<ResultType>?): Boolean =
-                                    this@ItemKeyedBoundResource.shouldFetch(data)
+                                override fun saveCallResult(item: RequestType) =
+                                        this@ItemKeyedBoundResource.saveCallResult(item)
 
 
-                            override fun loadFromDb(): LiveData<List<ResultType>> =
-                                    this@ItemKeyedBoundResource.loadFromDb()
+                                override fun shouldFetch(data: List<ResultType>?): Boolean =
+                                        this@ItemKeyedBoundResource.shouldFetch(data)
 
-                        }.asLiveData()
-                changePageLoadState(PageLoadStatus.REFRESH,result){
-                    loadInitial(params, callback)
-                }
-                onCallbackProcess(result, callback)
-            }.toString()
+
+                                override fun loadFromDb(): LiveData<List<ResultType>> =
+                                        this@ItemKeyedBoundResource.loadFromDb()
+
+                            }.asLiveData()
+                        result.let {
+                            changePageLoadState(PageLoadStatus.REFRESH, it, callback){
+                                loadInitial(params, callback)
+                            }
+
+                        }
+                    }, {e -> Timber.e(e)})
+
+
+
+
 
         }
 
@@ -66,10 +75,9 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
                                 this@ItemKeyedBoundResource.createAfterCall(params)
 
                     }.asLiveData()
-            changePageLoadState(PageLoadStatus.LOAD_AFTER, result){
+            changePageLoadState(PageLoadStatus.LOAD_AFTER, result, callback){
                 loadAfter(params, callback)
             }
-            onCallbackProcess(result, callback)
         }
 
         override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
@@ -81,10 +89,9 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
                                 this@ItemKeyedBoundResource.createBeforeCall(params)
 
                     }.asLiveData()
-            changePageLoadState(PageLoadStatus.LOAD_BEFORE, result){
+            changePageLoadState(PageLoadStatus.LOAD_BEFORE, result, callback){
                 loadBefore(params, callback)
             }
-            onCallbackProcess(result, callback)
         }
 
         override fun getKey(item: ResultType): Key = this@ItemKeyedBoundResource.getKey(item)
@@ -94,27 +101,19 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
     private fun changePageLoadState(
             pageLoadStatus: PageLoadStatus,
             result: MediatorLiveData<Resource<List<ResultType>>>,
+            callback: ItemKeyedDataSource.LoadCallback<ResultType>,
             retry: () -> Any){
         pageLoadState.addSource(result){
             when {
                 it.networkState.status == Status.ERROR -> {
                     this.retry = retry
-                    pageLoadState.removeSource(result)
                 }
-                it.networkState.status == Status.SUCCESS -> pageLoadState.removeSource(result)
+                it.networkState.status == Status.SUCCESS -> {
+                    it.data?.let { data -> callback.onResult(data) }
+                }
 
             }
             pageLoadState.postValue(PageLoadState(pageLoadStatus, it.networkState))
-        }
-    }
-
-    private fun onCallbackProcess(
-            result: LiveData<Resource<List<ResultType>>>,
-            callback: ItemKeyedDataSource.LoadCallback<ResultType>){
-        Transformations.map(result){
-            if (it.networkState.status == Status.SUCCESS){
-                it.data?.let { data -> callback.onResult(data) }
-            }
         }
     }
 
