@@ -5,16 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.paging.ItemKeyedDataSource
 import com.tangpj.recurve.resource.ApiResponse
 
-interface ItemKeyedBound<Key, ResultType, RequestType>{
+abstract class ItemKeyedBound<Key, ResultType, RequestType>{
 
     @MainThread
-    fun createInitialCall(params: ItemKeyedDataSource.LoadInitialParams<Key>): LiveData<ApiResponse<RequestType>>
+    abstract fun createInitialCall(params: ItemKeyedDataSource.LoadInitialParams<Key>): LiveData<ApiResponse<RequestType>>
+
+    abstract fun getKey(item: ResultType): Key
 
     @MainThread
-    fun createAfterCall(params: ItemKeyedDataSource.LoadParams<Key>): LiveData<ApiResponse<RequestType>>
+    open fun createAfterCall(
+            params: ItemKeyedDataSource.LoadParams<Key>): LiveData<ApiResponse<RequestType>>? = null
 
     @MainThread
-    fun createBeforeCall(params: ItemKeyedDataSource.LoadParams<Key>): LiveData<ApiResponse<RequestType>>
+    open fun createBeforeCall(
+            params: ItemKeyedDataSource.LoadParams<Key>): LiveData<ApiResponse<RequestType>>? = null
 
-    fun getKey(item: ResultType): Key
 }

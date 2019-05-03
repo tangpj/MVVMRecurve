@@ -26,7 +26,7 @@ data class Listing<T>(
         // the LiveData of paged lists for the UI to observe
         val pagedList: LiveData<PagedList<T>>,
         // represents the network request status to show to the user
-        val networkState: LiveData<PageLoadState>,
+        val pageLoadState: LiveData<PageLoadState>,
         // refreshes the whole data and fetches it from scratch.
         val refresh: () -> Unit,
         // retries any failed requests.

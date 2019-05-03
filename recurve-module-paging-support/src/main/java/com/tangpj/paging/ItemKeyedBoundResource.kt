@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 
 abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
-        ItemKeyedBound<Key, ResultType, RequestType>,
+        ItemKeyedBound<Key, ResultType, RequestType>(),
         RecurveBound<List<ResultType>, RequestType>,
         PageResult<ResultType>{
 
@@ -62,14 +62,15 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
         }
 
         override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
-
+            val afterCall = createAfterCall(params)
+            afterCall ?: return
             val obs = Observable.just(params)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
                         val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
 
                             override fun createCall(): LiveData<ApiResponse<RequestType>> =
-                                    this@ItemKeyedBoundResource.createAfterCall(params)
+                                    afterCall
 
                             override fun saveCallResult(item: RequestType) =
                                     this@ItemKeyedBoundResource.saveCallResult(item)
@@ -91,13 +92,15 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
         }
 
         override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
+            val beforeCall = createBeforeCall(params)
+            beforeCall ?: return
             val obs = Observable.just(params)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
                         val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
 
                             override fun createCall(): LiveData<ApiResponse<RequestType>> =
-                                    this@ItemKeyedBoundResource.createBeforeCall(params)
+                                    beforeCall
 
                             override fun saveCallResult(item: RequestType) =
                                     this@ItemKeyedBoundResource.saveCallResult(item)
@@ -145,10 +148,9 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
         val factory
                 = RecurveItemSourceFactory(this)
         val pagedList = factory.toLiveData(config)
-
         return Listing(
                 pagedList = pagedList,
-                networkState = pageLoadState,
+                pageLoadState = pageLoadState,
                 retry = { retryAllFailed() },
                 refresh = { itemKeyedDataSource.invalidate() })
     }
