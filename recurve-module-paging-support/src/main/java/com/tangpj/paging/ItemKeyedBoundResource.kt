@@ -148,8 +148,26 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
         val factory
                 = RecurveItemSourceFactory(this)
         val pagedList = factory.toLiveData(config)
+        val resource = MediatorLiveData<Resource<PagedList<ResultType>>>()
+        resource.addSource(pageLoadState){
+            when(it.networkState.status){
+                Status.LOADING -> {
+                    resource.value = Resource.loading(null)
+                }
+                Status.ERROR -> {
+                    resource.value = Resource.error(it.networkState.msg ?: "unknown error")
+                }
+                Status.SUCCESS -> {
+                    resource.removeSource(pageLoadState)
+                    resource.addSource(pagedList){ _pagedList ->
+                        resource.value = Resource.success(_pagedList)
+                        resource.removeSource(pagedList)
+                    }
+                }
+            }
+        }
         return Listing(
-                pagedList = pagedList,
+                resource = resource,
                 pageLoadState = pageLoadState,
                 retry = { retryAllFailed() },
                 refresh = { itemKeyedDataSource.invalidate() })
