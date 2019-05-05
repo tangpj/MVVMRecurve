@@ -2,7 +2,6 @@ package com.tangpj.paging
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Transformations
 import androidx.paging.ItemKeyedDataSource
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
@@ -149,6 +148,10 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
                 = RecurveItemSourceFactory(this)
         val pagedList = factory.toLiveData(config)
         val resource = MediatorLiveData<Resource<PagedList<ResultType>>>()
+        resource.addSource(pagedList){ _pagedList ->
+            resource.value = Resource.success(_pagedList)
+            resource.removeSource(pagedList)
+        }
         resource.addSource(pageLoadState){
             when(it.networkState.status){
                 Status.LOADING -> {
@@ -159,10 +162,7 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
                 }
                 Status.SUCCESS -> {
                     resource.removeSource(pageLoadState)
-                    resource.addSource(pagedList){ _pagedList ->
-                        resource.value = Resource.success(_pagedList)
-                        resource.removeSource(pagedList)
-                    }
+
                 }
             }
         }
