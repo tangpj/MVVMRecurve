@@ -21,7 +21,7 @@ package com.tangpj.recurve.resource
  * A generic class that holds a value with its loading status.
  * @param <T>
 </T> */
-class Resource<out T>(val networkState: NetworkState, val data: T?) {
+class Resource<T>(val networkState: NetworkState, val data: T?) {
 
     companion object {
         fun <T> success(data: T? = null): Resource<T> {
