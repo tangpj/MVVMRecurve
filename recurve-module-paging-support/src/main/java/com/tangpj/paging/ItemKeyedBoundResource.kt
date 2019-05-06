@@ -8,6 +8,9 @@ import androidx.paging.toLiveData
 import com.tangpj.recurve.resource.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.internal.schedulers.ComputationScheduler
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
@@ -18,6 +21,8 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
     // keep a function reference for the retry event
     private var retry: (() -> Any)? = null
 
+    private val compositeDisposable = CompositeDisposable()
+
     private val pageLoadState = MediatorLiveData<PageLoadState>()
 
     private val resultPagedList = MediatorLiveData<PagedList<ResultType>>()
@@ -25,13 +30,18 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
     private fun retryAllFailed() {
         val prevRetry = retry
         retry = null
+        val retryDisposable = Observable.just(prevRetry).observeOn(Schedulers.io()).subscribe({
+            it?.invoke()
+        }, { e -> Timber.e(e) })
         prevRetry?.invoke()
+        compositeDisposable.add(retryDisposable)
     }
 
     internal val itemKeyedDataSource
             = object : ItemKeyedDataSource<Key, ResultType>(){
         override fun loadInitial(params: LoadInitialParams<Key>, callback: LoadInitialCallback<ResultType>) {
-            val obs = Observable.just(params)
+            val realResult = MediatorLiveData<Resource<List<ResultType>>>()
+            val disposable = Observable.just(params)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
                         val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
@@ -51,19 +61,25 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
                                         this@ItemKeyedBoundResource.loadFromDb()
 
                             }.asLiveData()
-
-                        changePageLoadState(PageLoadStatus.REFRESH, result, callback){
-                            loadInitial(params, callback)
-
+                        realResult.addSource(result){
+                            realResult.value = it
                         }
-                    }, {e -> Timber.e(e)})
+
+                    }, { e -> Timber.e(e) })
+
+            changePageLoadState(PageLoadStatus.REFRESH, realResult, callback){
+                loadInitial(params, callback)
+
+            }
+            compositeDisposable.add(disposable)
 
         }
 
         override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
             val afterCall = createAfterCall(params)
             afterCall ?: return
-            val obs = Observable.just(params)
+            val realResult = MediatorLiveData<Resource<List<ResultType>>>()
+            val disposable = Observable.just(params)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
                         val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
@@ -83,17 +99,23 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
                                     this@ItemKeyedBoundResource.loadFromDb()
 
                         }.asLiveData()
-
-                        changePageLoadState(PageLoadStatus.LOAD_AFTER, result, callback){
-                            loadAfter(params, callback)
+                        realResult.addSource(result){
+                            realResult.value = it
                         }
-                    }, {e -> Timber.e(e)})
+
+                    }, { e -> Timber.e(e) })
+
+            changePageLoadState(PageLoadStatus.LOAD_AFTER, realResult, callback){
+                loadAfter(params, callback)
+            }
+            compositeDisposable.add(disposable)
         }
 
         override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
             val beforeCall = createBeforeCall(params)
             beforeCall ?: return
-            val obs = Observable.just(params)
+            val realResult = MediatorLiveData<Resource<List<ResultType>>>()
+            val disposable = Observable.just(params)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
                         val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
@@ -113,11 +135,16 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
                                     this@ItemKeyedBoundResource.loadFromDb()
 
                         }.asLiveData()
-
-                        changePageLoadState(PageLoadStatus.LOAD_BEFORE, result, callback){
-                            loadBefore(params, callback)
+                        realResult.addSource(result){
+                            realResult.value = it
                         }
-                    }, {e -> Timber.e(e)})
+                    }, { e -> Timber.e(e) })
+
+            changePageLoadState(PageLoadStatus.LOAD_BEFORE, realResult, callback){
+                loadBefore(params, callback)
+            }
+
+            compositeDisposable.add(disposable)
         }
 
         override fun getKey(item: ResultType): Key = this@ItemKeyedBoundResource.getKey(item)
@@ -129,18 +156,22 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
             result: MediatorLiveData<Resource<List<ResultType>>>,
             callback: ItemKeyedDataSource.LoadCallback<ResultType>,
             retry: () -> Any){
-        pageLoadState.addSource(result){
-            when {
-                it.networkState.status == Status.ERROR -> {
-                    this.retry = retry
-                }
-                it.networkState.status == Status.SUCCESS -> {
-                    it.data?.let { data -> callback.onResult(data) }
-                }
+        val changeDisposable = Observable.just(result)
+                .observeOn(AndroidSchedulers.mainThread()).subscribe ({
+                    pageLoadState.addSource(result){
+                        when {
+                            it.networkState.status == Status.ERROR -> {
+                                this.retry = retry
+                            }
+                            it.networkState.status == Status.SUCCESS -> {
+                                it.data?.let { data -> callback.onResult(data) }
+                            }
 
-            }
-            pageLoadState.postValue(PageLoadState(pageLoadStatus, it.networkState))
-        }
+                        }
+                        pageLoadState.postValue(PageLoadState(pageLoadStatus, it.networkState))}
+
+                }, { e -> Timber.e(e) } )
+        compositeDisposable.add(changeDisposable)
     }
 
     override fun asListing(config: PagedList.Config): Listing<ResultType> {
