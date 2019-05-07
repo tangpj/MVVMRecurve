@@ -161,6 +161,7 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                                 this.retry = retry
                             }
                             it.networkState.status == Status.SUCCESS -> {
+                                pageLoadState.removeSource(result)
                                 it.data?.let { data -> callback.onResult(data) }
                             }
 
