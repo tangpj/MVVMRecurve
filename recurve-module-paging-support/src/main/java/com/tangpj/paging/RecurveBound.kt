@@ -13,4 +13,10 @@ interface RecurveBound<ResultType, RequestType>{
 
     @MainThread
     fun loadFromDb(): LiveData<ResultType>
+
+    @MainThread
+    fun hasNextPage() = false
+
+    @MainThread
+    fun hasPreviousPage() = false
 }

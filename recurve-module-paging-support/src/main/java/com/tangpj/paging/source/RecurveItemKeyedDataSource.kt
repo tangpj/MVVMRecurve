@@ -2,6 +2,7 @@ package com.tangpj.paging.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.ItemKeyedDataSource
 import androidx.paging.ItemKeyedDataSource.*
 import com.tangpj.paging.ItemKeyedBoundResource
@@ -75,8 +76,9 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
     }
 
     override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
-        val afterCall = itemKeyedBoundResource.createAfterCall(params)
-        afterCall ?: return
+        if(!itemKeyedBoundResource.hasNextPage()){
+            return
+        }
         val realResult = MediatorLiveData<Resource<List<ResultType>>>()
         val disposable = Observable.just(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -84,11 +86,11 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                     val result = object : NetworkBoundResource<List<ResultType>, RequestType>(){
 
                         override fun createCall(): LiveData<ApiResponse<RequestType>> =
-                                afterCall
+                                itemKeyedBoundResource.createAfterCall(params) ?: MutableLiveData()
 
-                        override fun saveCallResult(item: RequestType) =
-                                itemKeyedBoundResource.saveCallResult(item)
-
+                        override fun saveCallResult(item: RequestType) {
+                            return itemKeyedBoundResource.saveCallResult(item)
+                        }
 
                         override fun shouldFetch(data: List<ResultType>?): Boolean =
                                 itemKeyedBoundResource.shouldFetch(data)
@@ -111,6 +113,9 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
     }
 
     override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<ResultType>) {
+        if(!itemKeyedBoundResource.hasPreviousPage()){
+            return
+        }
         val beforeCall = itemKeyedBoundResource.createBeforeCall(params)
         beforeCall ?: return
         val realResult = MediatorLiveData<Resource<List<ResultType>>>()
@@ -161,8 +166,8 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                                 this.retry = retry
                             }
                             it.networkState.status == Status.SUCCESS -> {
-                                pageLoadState.removeSource(result)
                                 it.data?.let { data -> callback.onResult(data) }
+                                pageLoadState.removeSource(result)
                             }
 
                         }
