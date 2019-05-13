@@ -25,7 +25,7 @@ import com.tangpj.recurve.resource.Resource
  */
 data class Listing<T>(
         // the LiveData of paged lists for the UI to observe
-        val resource: LiveData<Resource<PagedList<T>>>,
+        val pagedList: LiveData<PagedList<T>>,
         // represents the network request status to show to the user
         val pageLoadState: LiveData<PageLoadState>,
         // refreshes the whole data and fetches it from scratch.
