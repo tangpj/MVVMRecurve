@@ -11,6 +11,7 @@ versions.arch_core = "2.0.0-alpha1"
 versions.lifecycle = "2.0.0"
 versions.paging = "2.1.0"
 versions.androidx = "1.0.0"
+versions.room = "2.1.0-alpha06"
 
 versions.dagger = "2.16"
 versions.junit = "4.12"
@@ -59,10 +60,10 @@ androidx.core_utils = "androidx.legacy:legacy-support-core-utils:$versions.andro
 deps.androidx = androidx
 
 def room = [:]
-room.runtime = "androidx.room:room-runtime:$versions.lifecycle"
-room.compiler = "androidx.room:room-compiler:$versions.lifecycle"
-room.rxjava2 = "androidx.room:room-rxjava2:$versions.lifecycle"
-room.testing = "androidx.room:room-testing:$versions.lifecycle"
+room.runtime = "androidx.room:room-runtime:$versions.room"
+room.compiler = "androidx.room:room-compiler:$versions.room"
+room.rxjava2 = "androidx.room:room-rxjava2:$versions.room"
+room.testing = "androidx.room:room-testing:$versions.room"
 deps.room = room
 
 def lifecycle = [:]
