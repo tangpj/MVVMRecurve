@@ -28,7 +28,10 @@ class RateLimiter<in KEY>(timeout: Int, timeUnit: TimeUnit) {
     private val timeout = timeUnit.toMillis(timeout.toLong())
 
     @Synchronized
-    fun shouldFetch(key: KEY): Boolean {
+    fun shouldFetch(key: KEY?): Boolean {
+        if (key == null){
+            return true
+        }
         val lastFetched = timestamps[key]
         val now = now()
         if (lastFetched == null) {
