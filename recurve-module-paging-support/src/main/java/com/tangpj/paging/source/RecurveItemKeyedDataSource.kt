@@ -166,7 +166,11 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                                 this.retry = retry
                             }
                             it.networkState.status == Status.SUCCESS -> {
-                                it.data?.let { data -> callback.onResult(data) }
+                                it.data?.let {
+                                    data -> callback.onResult(data)
+
+                                    Timber.d(data.joinToString { test -> test.toString()})
+                                }
                                 pageLoadState.removeSource(result)
                             }
 
