@@ -105,7 +105,7 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
         return removedItem
     }
 
-    final override fun getItemCount() = dataList.size
+    override fun getItemCount() = dataList.size
 
     final override fun getCreatorItemViewTypeByPosition(creatorPosition: Int): Int = creatorType
 
@@ -128,7 +128,7 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
             listener.invoke(itemHolder.itemView, e , creatorPosition) } }
 
         onBindItemView(
-                itemHolder as? RecurveViewHolder<Binding>,
+                itemHolder as RecurveViewHolder<Binding>,
                 e,
                 creatorPosition)
     }

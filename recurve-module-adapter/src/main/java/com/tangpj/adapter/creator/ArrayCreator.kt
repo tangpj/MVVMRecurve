@@ -56,9 +56,9 @@ class ArrayCreator<E>(adapter: ModulesAdapter
     }
 
     override fun onBindItemView(
-            itemHolder: RecurveViewHolder<ViewDataBinding>?, e: E?, inCreatorPosition: Int) {
+            itemHolder: RecurveViewHolder<ViewDataBinding>, e: E?, inCreatorPosition: Int) {
         e?.let { val text = stringConverter?.invoke(it) ?: it.toString()
-            itemHolder?.itemView?.findViewById<TextView>(viewId)?.text = text
+            itemHolder.itemView.findViewById<TextView>(viewId)?.text = text
         }
     }
 
