@@ -70,7 +70,9 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
 
                     }.asLiveData()
                     realResult.addSource(result){
-                        realResult.value = it
+                        if (realResult.value != it){
+                            realResult.value = it
+                        }
                     }
 
                 }, { e -> Timber.e(e) })
@@ -109,7 +111,9 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
 
                     }.asLiveData()
                     realResult.addSource(result){
-                        realResult.value = it
+                        if (realResult.value != it){
+                            realResult.value = it
+                        }
                     }
 
                 }, { e -> Timber.e(e) })
@@ -148,7 +152,9 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
 
                     }.asLiveData()
                     realResult.addSource(result){
-                        realResult.value = it
+                        if (realResult.value != it){
+                            realResult.value = it
+                        }
                     }
                 }, { e -> Timber.e(e) })
 
