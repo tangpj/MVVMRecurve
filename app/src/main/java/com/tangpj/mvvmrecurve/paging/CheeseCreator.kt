@@ -9,8 +9,8 @@ import com.tangpj.mvvmrecurve.databinding.CheeseItemBinding
 
 class CheeseCreator(adapter: ModulesAdapter) : ItemCreator<Cheese, CheeseItemBinding>(adapter){
 
-    override fun onBindItemView(itemHolder: RecurveViewHolder<CheeseItemBinding>?, e: Cheese?, inCreatorPosition: Int) {
-        itemHolder?.let {
+    override fun onBindItemView(itemHolder: RecurveViewHolder<CheeseItemBinding>, e: Cheese?, inCreatorPosition: Int) {
+        itemHolder.let {
             it.binding.cheese = e
         }
     }
