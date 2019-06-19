@@ -12,12 +12,9 @@
         android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingStart="?android:attr/listPreferredItemPaddingLeft"
         android:gravity="center_vertical"
         android:text="@{text}"
-        tools:text="text"
-        tools:ignore="RtlSymmetry" />
+        tools:text="text" />
 
 
 </layout>
