@@ -10,9 +10,9 @@ import com.tangpj.mvvmrecurve.databinding.BookItemBinding
 
 class BookCreator(adapter: ModulesAdapter) : ItemCreator<Book, BookItemBinding>(adapter,2){
 
-    override fun onBindItemView(itemHolder: RecurveViewHolder<BookItemBinding>?, e: Book?, inCreatorPosition: Int) {
+    override fun onBindItemView(itemHolder: RecurveViewHolder<BookItemBinding>, e: Book?, inCreatorPosition: Int) {
         e ?: return
-        itemHolder?.let {
+        itemHolder.let {
             it.binding.book = e
         }
         Log.d("BookCreator", e.toString())

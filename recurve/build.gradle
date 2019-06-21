@@ -51,6 +51,8 @@ dependencies {
     api deps.androidx.recyclerView
     api deps.kotlin.stdlib_jdk8
     api deps.kotlin.ktx
+    api deps.kotlinx.coroutines
+    api deps.kotlinx.android
 
     api deps.navigation.fragment_ktx
     api deps.navigation.fragment

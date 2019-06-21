@@ -40,9 +40,9 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
 
     private var dataList: MutableList<E> = mutableListOf()
 
-    private var itemClickListener: ((view: View, e: E, creatorPosition: Int) -> Unit)? = null
+    private var itemClickListener: ((view: View, e: E?, creatorPosition: Int) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((view: View, e: E, creatorPosition: Int) -> Unit)){
+    fun setOnItemClickListener(listener: ((view: View, e: E?, creatorPosition: Int) -> Unit)){
         this.itemClickListener = listener
     }
 
@@ -105,7 +105,7 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
         return removedItem
     }
 
-    final override fun getItemCount() = dataList.size
+    override fun getItemCount() = dataList.size
 
     final override fun getCreatorItemViewTypeByPosition(creatorPosition: Int): Int = creatorType
 
@@ -122,13 +122,17 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
         if (getItemCount() == 0){
             return
         }
-        val e: E = dataList[creatorPosition]
+        val e: E? = if (dataList.size > creatorPosition){
+            dataList[creatorPosition]
+        }else{
+            null
+        }
         itemClickListener?.let { listener
             -> itemHolder.itemView.setOnClickListener {
             listener.invoke(itemHolder.itemView, e , creatorPosition) } }
 
         onBindItemView(
-                itemHolder as? RecurveViewHolder<Binding>,
+                itemHolder as RecurveViewHolder<Binding>,
                 e,
                 creatorPosition)
     }

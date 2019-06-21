@@ -27,21 +27,26 @@ import com.tangpj.recurve.ui.strategy.LoadingStrategy
 
 /**
  * 
- * @className: 
+ * @className: RecurveFragment
  * @author: tpj
  * @createTime: 2019/1/18 22:45
  */
-abstract class RecurveFragment()
+abstract class RecurveFragment<Binding: ViewDataBinding>
     : Fragment(), LoadingCreator by RecurveLoadingCreator(){
 
     abstract fun onCreateBinding(inflater: LayoutInflater,
                                  container: ViewGroup?,
-                                 savedInstanceState: Bundle?): ViewDataBinding
+                                 savedInstanceState: Bundle?): Binding
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val binding = onCreateBinding(inflater, container, savedInstanceState)
+        val binding = this.onCreateBinding(inflater, container, savedInstanceState)
+        initBinding(binding)
         return binding.root
+    }
+
+    open fun initBinding(binding: Binding){
+
     }
 }
