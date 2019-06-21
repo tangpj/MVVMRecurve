@@ -32,11 +32,19 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
     internal fun retryAllFailed() {
         val prevRetry = retry
         retry = null
-        val retryDisposable = Observable.just(prevRetry).observeOn(Schedulers.io()).subscribe({
-            it?.invoke()
-        }, { e -> Timber.e(e) })
+        val retryDisposable = if (prevRetry != null){
+            Observable.just(prevRetry).observeOn(Schedulers.io()).subscribe({
+                it?.invoke()
+            }, { e -> Timber.e(e) })
+        }else{
+            null
+        }
+
         prevRetry?.invoke()
-        compositeDisposable.add(retryDisposable)
+        retryDisposable?.let {
+            compositeDisposable.add(it)
+
+        }
     }
 
     override fun loadInitial(params: LoadInitialParams<Key>, callback: LoadInitialCallback<ResultType>) {
@@ -62,7 +70,9 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
 
                     }.asLiveData()
                     realResult.addSource(result){
-                        realResult.value = it
+                        if (realResult.value != it){
+                            realResult.value = it
+                        }
                     }
 
                 }, { e -> Timber.e(e) })
@@ -101,7 +111,9 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
 
                     }.asLiveData()
                     realResult.addSource(result){
-                        realResult.value = it
+                        if (realResult.value != it){
+                            realResult.value = it
+                        }
                     }
 
                 }, { e -> Timber.e(e) })
@@ -140,7 +152,9 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
 
                     }.asLiveData()
                     realResult.addSource(result){
-                        realResult.value = it
+                        if (realResult.value != it){
+                            realResult.value = it
+                        }
                     }
                 }, { e -> Timber.e(e) })
 
@@ -163,11 +177,14 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                     pageLoadState.addSource(result){
                         when {
                             it.networkState.status == Status.ERROR -> {
+                                pageLoadState.removeSource(result)
                                 this.retry = retry
                             }
                             it.networkState.status == Status.SUCCESS -> {
-                                it.data?.let { data -> callback.onResult(data) }
                                 pageLoadState.removeSource(result)
+                                it.data?.let {
+                                    data -> callback.onResult(data)
+                                }
                             }
 
                         }

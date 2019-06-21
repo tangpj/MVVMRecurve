@@ -58,7 +58,7 @@ abstract class PagedItemCreator<E, Binding : ViewDataBinding>:
     override fun getCreatorType(): Int = creatorType
     override fun getSpan(): Int = WRAP
 
-
+    @Suppress("UNCHECKED_CAST")
     override fun onBindItemView(itemHolder: RecurveViewHolder<*>, creatorPosition: Int) {
         if (getItemCount() == 0){
             return
@@ -72,7 +72,7 @@ abstract class PagedItemCreator<E, Binding : ViewDataBinding>:
         }
 
         onBindItemView(
-                itemHolder as? RecurveViewHolder<Binding>,
+                itemHolder as RecurveViewHolder<Binding>,
                 e,
                 creatorPosition)
     }
