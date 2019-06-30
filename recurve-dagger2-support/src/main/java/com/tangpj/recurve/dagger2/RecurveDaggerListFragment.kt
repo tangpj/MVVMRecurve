@@ -51,7 +51,7 @@ open class RecurveDaggerListFragment
         return binding?.root
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
