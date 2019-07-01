@@ -21,7 +21,6 @@ dependencies {
     implementation deps.kotlin.stdlib_jdk8
     implementation project(":recurve")
 
-    api deps.apollo.converter
     api deps.apollo.runtime
     api deps.apollo.android_support
 }
