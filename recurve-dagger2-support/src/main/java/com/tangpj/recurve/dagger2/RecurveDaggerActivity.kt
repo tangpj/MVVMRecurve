@@ -53,7 +53,7 @@ abstract class RecurveDaggerActivity:
         appbarCreator = RecurveAppbarCreator(this, activityRecurveBinding)
     }
 
-    override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
+    final override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
             = contentCreate.initContentBinding(layoutId)
 
 
