@@ -104,6 +104,10 @@ class RecurveAppbarCreator(
             collapsingBinding.collapsingToolbarLayout.setContentScrimColor(
                     activity.resources.getColor(collapsingToolbarLayoutExt.contentScrimColor))
         }
+        if (collapsingToolbarLayoutExt.contentScrimColorInt != -1){
+            collapsingBinding.collapsingToolbarLayout.setContentScrimColor(
+                    collapsingToolbarLayoutExt.contentScrimColorInt)
+        }
         activity.setSupportActionBar(toolbar)
 
         collapsingCreator?.let{
