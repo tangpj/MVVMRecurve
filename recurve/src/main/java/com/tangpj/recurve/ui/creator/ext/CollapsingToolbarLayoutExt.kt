@@ -35,7 +35,7 @@ class CollapsingToolbarLayoutExt{
 
     var toolbarExt: ToolbarExt? = null
 
-    var expandedTitleGravity: Int = -1
+    var expandedTitleGravity: String? = ""
 
     var collapsingCreator
             : ((inflater: LayoutInflater, CollapsingToolbarLayout) -> View)? = null
