@@ -9,6 +9,8 @@
         <item name="colorControlNormal">@color/textLight</item>
 
         <item name="toolbarStyle">@style/toolbar</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="toolbar" parent="Base.V7.Widget.AppCompat.Toolbar">
