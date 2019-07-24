@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
+import androidx.navigation.createGraph
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.tangpj.recurve.R
@@ -73,10 +74,9 @@ abstract class RecurveDaggerActivity:
 
         val binding: Binding = initContentBinding(layoutId)
         initBinding?.invoke(binding)
-        val fragment = supportFragmentManager.findFragmentById(resId) as? NavHostFragment
-                ?: throw NullPointerException("can not find fragment by id = $resId")
-        fragment.setGraph(graphResId)
-        return findNavController(resId)
+        val fragment = NavHostFragment.create(graphResId)
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commitNow()
+        return fragment.navController
 
     }
 

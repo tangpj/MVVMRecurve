@@ -19,13 +19,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
 import com.tangpj.recurve.databinding.ToolbarCollapsingRecurveBinding
 import com.tangpj.recurve.databinding.ToolbarRecurveBinding
 import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import com.tangpj.recurve.ui.creator.ext.CollapsingToolbarLayoutExt
-import com.tangpj.recurve.ui.creator.ext.ToolbarExt
 
 /**
  * Appbar创建器

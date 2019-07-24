@@ -61,21 +61,18 @@ abstract class RecurveActivity:
             @NavigationRes graphResId: Int,
             @LayoutRes layoutId: Int = R.layout.fragment_navigation,
             @IdRes resId: Int = R.id.fragment_container): NavController =
-            initContentFragment<FragmentNavigationBinding>(graphResId, layoutId, resId, null)
+            initContentFragment<ViewDataBinding>(graphResId, layoutId, null)
 
 
     fun <Binding : ViewDataBinding> initContentFragment(
             @NavigationRes graphResId: Int,
             @LayoutRes layoutId: Int = R.layout.fragment_navigation,
-            @IdRes resId: Int = R.id.fragment_container,
             initBinding: ((Binding) -> Unit)? = null ): NavController{
 
         val binding: Binding = initContentBinding(layoutId)
         initBinding?.invoke(binding)
-        val fragment = supportFragmentManager.findFragmentById(resId) as? NavHostFragment
-                ?: throw NullPointerException("can not find fragment by id = $resId")
-        fragment.setGraph(graphResId)
-        return findNavController(resId)
+        val fragment = NavHostFragment.create(graphResId)
+        return fragment.navController
 
     }
 
