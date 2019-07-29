@@ -23,15 +23,7 @@ fun ViewPager2.setupWithNavController(
 
     var firstFragmentGraphId = 0
 
-    navGraphIds.forEachIndexed{ index, navGraphId ->
-        val fragmentTag = getFragmentTag(index)
 
-        val navHostFragment = obtainNavHostFragment(
-                fragmentTag,
-                navGraphId
-        )
-
-    }
 
 }
 
@@ -86,8 +78,7 @@ private fun obtainNavHostFragment(
     existingFragment?.let { return it }
 
     // Otherwise, create it and return it.
-    val navHostFragment = NavHostFragment.create(navGraphId)
-    return navHostFragment
+    return NavHostFragment.create(navGraphId)
 }
 
 private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
@@ -111,8 +102,6 @@ private class NavHostPagerAdapter(
 
     override fun createFragment(position: Int): Fragment{
         val fragment = obtainNavHostFragment(activity.supportFragmentManager, getFragmentTag(position), navGraphIds[position])
-
-
     }
 
 }
