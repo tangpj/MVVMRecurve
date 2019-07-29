@@ -45,43 +45,13 @@ android {
     }
 
 }
-group = "com.github.tangpj"
 
 dependencies {
-    api deps.androidx.appcompat
-    api deps.androidx.recyclerView
-    api deps.kotlin.stdlib_jdk8
-    api deps.kotlin.ktx
-    api deps.kotlinx.coroutines
-    api deps.kotlinx.android
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.viewpager2
+    implementation deps.kotlin.stdlib_jdk8
+    implementation deps.kotlin.ktx
 
-    api deps.navigation.fragment_ktx
-    api deps.navigation.fragment
-    api deps.navigation.runtime
-
-    api deps.okhttp.okhttp3
-
-    api deps.androidx.material
-    api deps.androidx.customtabs
-    api deps.androidx.annotations
-
-    api deps.lifecycle.runtime
-    api deps.lifecycle.extensions
-    api deps.lifecycle.viewmodel
-    api deps.lifecycle.livedata
-
-    api deps.timber
-
-    // RxJava
-    api deps.rx_android
-    api deps.rxjava2
-
-    kapt deps.room.compiler
-    kapt deps.lifecycle.compiler
-    api project(':recurve-module-adapter')
-
-
-}
-repositories {
-    mavenCentral()
+    implementation  deps.navigation.fragment
+    implementation deps.navigation.runtime
 }
