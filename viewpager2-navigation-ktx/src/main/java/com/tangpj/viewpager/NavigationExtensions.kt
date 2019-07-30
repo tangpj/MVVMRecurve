@@ -2,6 +2,8 @@ package com.tangpj.viewpager
 
 import android.content.Intent
 import android.util.SparseArray
+import android.util.SparseIntArray
+import android.util.SparseLongArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -10,21 +12,40 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.adapter.FragmentViewHolder
 import androidx.viewpager2.widget.ViewPager2
 
 fun ViewPager2.setupWithNavController(
+        activity: FragmentActivity,
         navGraphIds :List<Int>,
-        fragmentManager: FragmentManager,
         intent: Intent) : LiveData<NavController>{
-
-    val graphIdToTagMap = SparseArray<String>()
 
     val selectedNavController = MutableLiveData<NavController>()
 
-    var firstFragmentGraphId = 0
+    adapter = NavHostPagerAdapter(activity, navGraphIds)
 
+    return selectedNavController
+}
 
+private fun ViewPager2.setupDeepLinks(
+        navGraphIds: List<Int>,
+        fragmentManager: FragmentManager,
+        containerId: Int,
+        intent: Intent
+) {
+    navGraphIds.forEachIndexed { index, navGraphId ->
+        val fragmentTag = getFragmentTag(index)
 
+        // Find or create the Navigation host fragment
+        val navHostFragment = obtainNavHostFragment(
+                fragmentManager,
+                fragmentTag,
+                navGraphId
+        )
+        // Handle Intent
+        navHostFragment.navController.handleDeepLink(intent)
+
+    }
 }
 
 private fun ViewPager2.setupItemReselected(
@@ -45,28 +66,6 @@ private fun ViewPager2.setupItemReselected(
     })
 }
 
-private fun detachNavHostFragment(
-        fragmentManager: FragmentManager,
-        navHostFragment: NavHostFragment) {
-    fragmentManager.beginTransaction()
-            .detach(navHostFragment)
-            .commitNow()
-}
-
-private fun attachNavHostFragment(
-        fragmentManager: FragmentManager,
-        navHostFragment: NavHostFragment,
-        isPrimaryNavFragment: Boolean) {
-    fragmentManager.beginTransaction()
-            .attach(navHostFragment)
-            .apply {
-                if (isPrimaryNavFragment) {
-                    setPrimaryNavigationFragment(navHostFragment)
-                }
-            }
-            .commitNow()
-
-}
 
 private fun obtainNavHostFragment(
         fragmentManager: FragmentManager,
@@ -98,10 +97,24 @@ private class NavHostPagerAdapter(
         val activity: FragmentActivity,
         val navGraphIds: List<Int>
 ) : FragmentStateAdapter(activity){
+
+    private val holderItemIds = SparseArray<Long>()
+
     override fun getItemCount(): Int = navGraphIds.size
 
-    override fun createFragment(position: Int): Fragment{
-        val fragment = obtainNavHostFragment(activity.supportFragmentManager, getFragmentTag(position), navGraphIds[position])
+    override fun getItemId(position: Int): Long {
+        return navGraphIds[position].toLong()
     }
+
+    override fun onBindViewHolder(holder: FragmentViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        holderItemIds.append(position, holder.itemId)
+    }
+
+    override fun createFragment(position: Int): Fragment{
+        return obtainNavHostFragment(activity.supportFragmentManager, getFragmentTag(position), navGraphIds[position])
+    }
+
+    internal fun getFragmentTag(position: Int) = "f${holderItemIds[position]}"
 
 }
