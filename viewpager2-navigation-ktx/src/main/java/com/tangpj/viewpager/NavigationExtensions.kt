@@ -2,13 +2,10 @@ package com.tangpj.viewpager
 
 import android.content.Intent
 import android.util.SparseArray
-import android.util.SparseIntArray
-import android.util.SparseLongArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -21,41 +18,22 @@ fun ViewPager2.setupWithNavController(
         intent: Intent) : LiveData<NavController>{
 
     val selectedNavController = MutableLiveData<NavController>()
+    val navFragmentAdapter = NavHostPagerAdapter(activity, intent, navGraphIds )
 
-    adapter = NavHostPagerAdapter(activity, navGraphIds)
+    val fragmentManager = activity.supportFragmentManager
 
+    adapter = navFragmentAdapter
+//    setupItemReselected(navFragmentAdapter, fragmentManager)
     return selectedNavController
 }
 
-private fun ViewPager2.setupDeepLinks(
-        navGraphIds: List<Int>,
-        fragmentManager: FragmentManager,
-        containerId: Int,
-        intent: Intent
-) {
-    navGraphIds.forEachIndexed { index, navGraphId ->
-        val fragmentTag = getFragmentTag(index)
-
-        // Find or create the Navigation host fragment
-        val navHostFragment = obtainNavHostFragment(
-                fragmentManager,
-                fragmentTag,
-                navGraphId
-        )
-        // Handle Intent
-        navHostFragment.navController.handleDeepLink(intent)
-
-    }
-}
-
 private fun ViewPager2.setupItemReselected(
-        graphIdToTagMap: SparseArray<String>,
+        adapter: NavHostPagerAdapter,
         fragmentManager: FragmentManager) {
     registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
-            val newlySelectedItemTag = graphIdToTagMap[position]
-            val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
+            val selectedFragment = fragmentManager.findFragmentByTag(adapter.getKey(position))
                     as NavHostFragment
             val navController = selectedFragment.navController
             // Pop the back stack to the start destination of the current navController graph
@@ -90,13 +68,16 @@ private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     return false
 }
 
-private fun getFragmentTag(index: Int) = "ViewPager2#$index"
-
 
 private class NavHostPagerAdapter(
-        val activity: FragmentActivity,
-        val navGraphIds: List<Int>
+        private val activity: FragmentActivity,
+        private val intent: Intent,
+        private val navGraphIds: List<Int>
 ) : FragmentStateAdapter(activity){
+
+    companion object{
+        private const val KEY_PREFIX_FRAGMENT = "f#"
+    }
 
     private val holderItemIds = SparseArray<Long>()
 
@@ -112,9 +93,22 @@ private class NavHostPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment{
-        return obtainNavHostFragment(activity.supportFragmentManager, getFragmentTag(position), navGraphIds[position])
+        val fragment =
+                obtainNavHostFragment(activity.supportFragmentManager, getKey(position), navGraphIds[position])
+        // Find or create the Navigation host fragment
+        fragment.lifecycle.addObserver(object : LifecycleEventObserver{
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                if (event == Lifecycle.Event.ON_CREATE){
+                    fragment.navController.handleDeepLink(intent)
+                }
+            }
+
+        })
+        return fragment
     }
 
-    internal fun getFragmentTag(position: Int) = "f${holderItemIds[position]}"
-
+    // Helper function for dealing with save / restore state
+    internal fun getKey(position: Int): String {
+        return KEY_PREFIX_FRAGMENT +getItemId(position)
+    }
 }
