@@ -23,7 +23,9 @@ fun ViewPager2.setupWithNavController(
     val fragmentManager = activity.supportFragmentManager
 
     adapter = navFragmentAdapter
-//    setupItemReselected(navFragmentAdapter, fragmentManager)
+    setupItemReselected(navFragmentAdapter, fragmentManager)
+    fragmentManager.addOnBackStackChangedListener {
+    }
     return selectedNavController
 }
 
@@ -80,6 +82,7 @@ private class NavHostPagerAdapter(
     }
 
     private val holderItemIds = SparseArray<Long>()
+    private val fragmentManager = activity.supportFragmentManager
 
     override fun getItemCount(): Int = navGraphIds.size
 
@@ -88,8 +91,12 @@ private class NavHostPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: FragmentViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
         holderItemIds.append(position, holder.itemId)
+        val f = fragmentManager.findFragmentByTag(getKey(position))
+        f?.let {
+            fragmentManager.beginTransaction().add(holder.itemView.id, it).commitNow()
+        }
+        super.onBindViewHolder(holder, position, payloads)
     }
 
     override fun createFragment(position: Int): Fragment{
@@ -109,6 +116,6 @@ private class NavHostPagerAdapter(
 
     // Helper function for dealing with save / restore state
     internal fun getKey(position: Int): String {
-        return KEY_PREFIX_FRAGMENT +getItemId(position)
+        return KEY_PREFIX_FRAGMENT + getItemId(position)
     }
 }
