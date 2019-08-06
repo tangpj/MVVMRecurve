@@ -11,7 +11,6 @@ import androidx.navigation.fragment.NavHostFragment
 
 class NavContainerFragment private constructor(): Fragment(){
 
-    private var graphId = 0
     private var navController: NavController? = null
 
     companion object{
@@ -25,13 +24,8 @@ class NavContainerFragment private constructor(): Fragment(){
                 }
     }
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        graphId = arguments?.getInt(KEY_NAV_GRAPH_ID, 0) ?: 0
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val graphId = arguments?.getInt(KEY_NAV_GRAPH_ID, 0) ?: 0
         val view = inflater.inflate(R.layout.fragment_nav_container, container, false)
         val fragment = NavHostFragment.create(graphId)
         childFragmentManager.beginTransaction().add(R.id.nav_container, fragment)
