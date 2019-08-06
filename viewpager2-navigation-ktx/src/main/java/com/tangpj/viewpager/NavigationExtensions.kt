@@ -1,7 +1,10 @@
 package com.tangpj.viewpager
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.SparseArray
+import android.view.LayoutInflater
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -17,6 +20,7 @@ fun ViewPager2.setupWithNavController(
         navGraphIds :List<Int>,
         intent: Intent) : LiveData<NavController>{
 
+    id = ViewCompat.generateViewId()
     val selectedNavController = MutableLiveData<NavController>()
     val navFragmentAdapter = NavHostPagerAdapter(activity, intent, navGraphIds )
 
@@ -36,29 +40,18 @@ private fun ViewPager2.setupItemReselected(
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             val selectedFragment = fragmentManager.findFragmentByTag(adapter.getKey(position))
-                    as NavHostFragment
-            val navController = selectedFragment.navController
+                    as NavContainerFragment
+            val navController = selectedFragment.getNavController()
             // Pop the back stack to the start destination of the current navController graph
-            navController.popBackStack(
-                    navController.graph.startDestination, false
-            )
+//            navController?.popBackStack(
+//                    navController.graph.startDestination, false
+//            )
         }
     })
 }
 
 
-private fun obtainNavHostFragment(
-        fragmentManager: FragmentManager,
-        fragmentTag: String,
-        navGraphId: Int
-): NavHostFragment {
-    // If the Nav Host fragment exists, return it
-    val existingFragment = fragmentManager.findFragmentByTag(fragmentTag) as NavHostFragment?
-    existingFragment?.let { return it }
 
-    // Otherwise, create it and return it.
-    return NavHostFragment.create(navGraphId)
-}
 
 private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     val backStackCount = backStackEntryCount
@@ -78,7 +71,7 @@ private class NavHostPagerAdapter(
 ) : FragmentStateAdapter(activity){
 
     companion object{
-        private const val KEY_PREFIX_FRAGMENT = "f#"
+        private const val KEY_PREFIX_FRAGMENT = "f"
     }
 
     private val holderItemIds = SparseArray<Long>()
@@ -92,21 +85,17 @@ private class NavHostPagerAdapter(
 
     override fun onBindViewHolder(holder: FragmentViewHolder, position: Int, payloads: MutableList<Any>) {
         holderItemIds.append(position, holder.itemId)
-        val f = fragmentManager.findFragmentByTag(getKey(position))
-        f?.let {
-            fragmentManager.beginTransaction().add(holder.itemView.id, it).commitNow()
-        }
         super.onBindViewHolder(holder, position, payloads)
     }
 
     override fun createFragment(position: Int): Fragment{
         val fragment =
-                obtainNavHostFragment(activity.supportFragmentManager, getKey(position), navGraphIds[position])
+                NavContainerFragment.create(navGraphIds[position])
         // Find or create the Navigation host fragment
         fragment.lifecycle.addObserver(object : LifecycleEventObserver{
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                 if (event == Lifecycle.Event.ON_CREATE){
-                    fragment.navController.handleDeepLink(intent)
+                    fragment.getNavController()?.handleDeepLink(intent)
                 }
             }
 
