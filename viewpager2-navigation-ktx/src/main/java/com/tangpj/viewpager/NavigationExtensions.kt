@@ -49,6 +49,7 @@ fun ViewPager2.setupWithNavController(
     return selectedNavController
 }
 
+
 private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     val backStackCount = backStackEntryCount
     for (index in 0 until backStackCount) {
@@ -61,7 +62,7 @@ private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
 
 
 private class NavHostPagerAdapter(
-        private val activity: FragmentActivity,
+        activity: FragmentActivity,
         private val intent: Intent,
         private val navGraphIds: List<Int>
 ) : FragmentStateAdapter(activity){
