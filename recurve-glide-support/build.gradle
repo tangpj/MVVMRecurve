@@ -11,10 +11,10 @@ android {
 dependencies {
     implementation deps.kotlin.stdlib_jdk8
     implementation project(":recurve")
-    implementation (deps.glide){
+    implementation (deps.glide.core){
         exclude group: 'com.android.support'
     }
-    implementation (deps.glide_transformations){
+    implementation (deps.glide.transformations){
         exclude group: 'com.android.support'
     }
 
