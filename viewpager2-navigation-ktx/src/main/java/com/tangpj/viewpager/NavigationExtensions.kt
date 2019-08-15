@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.adapter.FragmentViewHolder
 import androidx.viewpager2.widget.ViewPager2
 
 fun ViewPager2.setupWithNavController(
@@ -28,10 +27,14 @@ fun ViewPager2.setupWithNavController(
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             val selectedFragment = fragmentManager.findFragmentByTag(navFragmentAdapter.getTag(position))
-                    as NavContainerFragment
-            val navController = selectedFragment.getNavController()
+                    as? NavContainerFragment
+            selectedFragment?.let {
+                val navController = selectedFragment.getNavController()
+                selectedNavController.value = navController
+
+            }
+
             // Pop the back stack to the start destination of the current navController graph
-            selectedNavController.value = navController
 
         }
     })
@@ -71,17 +74,10 @@ private class NavHostPagerAdapter(
         private const val KEY_PREFIX_FRAGMENT = "f"
     }
 
-    private val holderItemIds = SparseArray<Long>()
-
     override fun getItemCount(): Int = navGraphIds.size
 
     override fun getItemId(position: Int): Long {
         return navGraphIds[position].toLong()
-    }
-
-    override fun onBindViewHolder(holder: FragmentViewHolder, position: Int, payloads: MutableList<Any>) {
-        holderItemIds.append(position, holder.itemId)
-        super.onBindViewHolder(holder, position, payloads)
     }
 
     override fun createFragment(position: Int): Fragment{
