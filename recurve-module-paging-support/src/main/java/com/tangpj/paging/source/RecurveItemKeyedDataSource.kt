@@ -1,5 +1,6 @@
 package com.tangpj.paging.source
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -182,9 +183,14 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                             }
                             it.networkState.status == Status.SUCCESS -> {
                                 pageLoadState.removeSource(result)
-                                it.data?.let {
-                                    data -> callback.onResult(data)
+                                try {
+                                    it.data?.let {
+                                        data -> callback.onResult(data)
+                                    }
+                                }catch (e: Exception){
+                                    Timber.e(e)
                                 }
+
                             }
 
                         }
