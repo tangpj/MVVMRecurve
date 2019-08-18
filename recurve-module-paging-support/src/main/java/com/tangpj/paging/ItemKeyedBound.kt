@@ -20,4 +20,6 @@ abstract class ItemKeyedBound<Key, ResultType, RequestType>{
     open fun createBeforeCall(
             params: ItemKeyedDataSource.LoadParams<Key>): LiveData<ApiResponse<RequestType>>? = null
 
+    open fun onFetchFailed() {}
+
 }

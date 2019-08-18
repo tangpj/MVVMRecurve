@@ -82,6 +82,7 @@ object LiveDataApollo {
                     }
 
                     override fun onFailure(e: ApolloException) {
+                        call.cancel()
                         postValue(ApiResponse.create(e))
                     }
 
