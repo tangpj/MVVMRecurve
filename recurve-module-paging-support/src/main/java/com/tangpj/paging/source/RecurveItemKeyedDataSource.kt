@@ -69,6 +69,11 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                         override fun loadFromDb(): LiveData<List<ResultType>> =
                                 itemKeyedBoundResource.loadFromDb()
 
+                        override fun onFetchFailed() {
+                            super.onFetchFailed()
+                            itemKeyedBoundResource.onFetchFailed()
+                        }
+
                     }.asLiveData()
                     realResult.addSource(result){
                         if (realResult.value != it){
@@ -109,6 +114,11 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
 
                         override fun loadFromDb(): LiveData<List<ResultType>> =
                                 itemKeyedBoundResource.loadFromDb()
+
+                        override fun onFetchFailed() {
+                            super.onFetchFailed()
+                            itemKeyedBoundResource.onFetchFailed()
+                        }
 
                     }.asLiveData()
                     realResult.addSource(result){
@@ -151,6 +161,11 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                         override fun loadFromDb(): LiveData<List<ResultType>> =
                                 itemKeyedBoundResource.loadFromDb()
 
+                        override fun onFetchFailed() {
+                            super.onFetchFailed()
+                            itemKeyedBoundResource.onFetchFailed()
+                        }
+
                     }.asLiveData()
                     realResult.addSource(result){
                         if (realResult.value != it){
@@ -179,6 +194,13 @@ class RecurveItemKeyedDataSource<Key, ResultType, RequestType> constructor(
                         when {
                             it.networkState.status == Status.ERROR -> {
                                 pageLoadState.removeSource(result)
+                                try {
+                                    it.data?.let {
+                                        data -> callback.onResult(data)
+                                    }
+                                }catch (e: Exception){
+                                    Timber.e(e)
+                                }
                                 this.retry = retry
                             }
                             it.networkState.status == Status.SUCCESS -> {
