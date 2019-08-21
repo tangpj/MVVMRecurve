@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 
 class NavContainerFragment private constructor(): Fragment(){
 
-    private var navController: NavController? = null
+    val navController = MutableLiveData<NavController>()
 
     companion object{
         internal const val KEY_NAV_GRAPH_ID =
@@ -30,10 +31,8 @@ class NavContainerFragment private constructor(): Fragment(){
         val fragment = NavHostFragment.create(graphId)
         childFragmentManager.beginTransaction().add(R.id.nav_container, fragment)
                 .setPrimaryNavigationFragment(fragment).commitNow()
-        navController = fragment.navController
+        navController.value = fragment.navController
         return view
     }
 
-
-    fun getNavController() : NavController? = navController
 }
