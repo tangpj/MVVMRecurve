@@ -26,16 +26,14 @@ fun ViewPager2.setupWithNavController(
     registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
-            val selectedFragment = fragmentManager.findFragmentByTag(navFragmentAdapter.getTag(position))
-                    as? NavContainerFragment
-            selectedFragment?.let {
-                val navController = selectedFragment.getNavController()
-                selectedNavController.value = navController
+            val selectedFragment = getFragment(
+                    fragmentManager,
+                    navGraphIds[position],
+                    navFragmentAdapter.getTag(position))
+            selectedFragment.getNavController()?.let {
+                selectedNavController.value = it
 
             }
-
-            // Pop the back stack to the start destination of the current navController graph
-
         }
     })
 
@@ -63,6 +61,15 @@ private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     return false
 }
 
+private fun getFragment(
+        fragmentManager: FragmentManager, graphId: Int, tag: String) : NavContainerFragment{
+    var fragment = fragmentManager.findFragmentByTag(tag)
+            as? NavContainerFragment
+    if (fragment == null){
+        fragment = NavContainerFragment.create(graphId)
+    }
+    return fragment
+}
 
 private class NavHostPagerAdapter(
         activity: FragmentActivity,
@@ -74,6 +81,8 @@ private class NavHostPagerAdapter(
         private const val KEY_PREFIX_FRAGMENT = "f"
     }
 
+    val fragmentManager = activity.supportFragmentManager
+
     override fun getItemCount(): Int = navGraphIds.size
 
     override fun getItemId(position: Int): Long {
@@ -81,8 +90,7 @@ private class NavHostPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment{
-        val fragment =
-                NavContainerFragment.create(navGraphIds[position])
+        val fragment = getFragment(fragmentManager, navGraphIds[position], getTag(position))
         // Find or create the Navigation host fragment
         fragment.lifecycle.addObserver(object : LifecycleEventObserver{
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
