@@ -21,21 +21,22 @@ fun ViewPager2.setupWithNavController(
     val navFragmentAdapter = NavHostPagerAdapter(activity, intent, navGraphIds )
 
     val fragmentManager = activity.supportFragmentManager
-
     adapter = navFragmentAdapter
     registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
-            val selectedFragment = getFragment(
-                    fragmentManager,
-                    navGraphIds[position],
-                    navFragmentAdapter.getTag(position))
-            selectedFragment.getNavController()?.let {
-                selectedNavController.value = it
-
+            val navController = navFragmentAdapter.getNavControllerByPosition(position)
+            if (navController != null) {
+                selectedNavController.value = navController
+            } else {
+                navFragmentAdapter.observe(position) {
+                    selectedNavController.value = it
+                }
             }
         }
+
     })
+
 
     // Finally, ensure that we update our BottomNavigationView when the back stack changes
     fragmentManager.addOnBackStackChangedListener {
@@ -61,16 +62,6 @@ private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     return false
 }
 
-private fun getFragment(
-        fragmentManager: FragmentManager, graphId: Int, tag: String) : NavContainerFragment{
-    var fragment = fragmentManager.findFragmentByTag(tag)
-            as? NavContainerFragment
-    if (fragment == null){
-        fragment = NavContainerFragment.create(graphId)
-    }
-    return fragment
-}
-
 private class NavHostPagerAdapter(
         activity: FragmentActivity,
         private val intent: Intent,
@@ -81,6 +72,16 @@ private class NavHostPagerAdapter(
         private const val KEY_PREFIX_FRAGMENT = "f"
     }
 
+    private val actionList = SparseArray<((NavController) -> Unit)?>()
+    private val navControllerList = SparseArray<NavController>()
+
+    fun observe(position: Int, action: (NavController) -> Unit){
+        actionList.append(position, action)
+    }
+
+    fun getNavControllerByPosition(position: Int) =
+        navControllerList.get(position)
+
     val fragmentManager = activity.supportFragmentManager
 
     override fun getItemCount(): Int = navGraphIds.size
@@ -90,15 +91,12 @@ private class NavHostPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment{
-        val fragment = getFragment(fragmentManager, navGraphIds[position], getTag(position))
+        val fragment =  NavContainerFragment.create(navGraphIds[position])
         // Find or create the Navigation host fragment
-        fragment.lifecycle.addObserver(object : LifecycleEventObserver{
-            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-                if (event == Lifecycle.Event.ON_CREATE){
-                    fragment.getNavController()?.handleDeepLink(intent)
-                }
-            }
-
+        fragment.navController.observe(fragment, Observer {
+            it.handleDeepLink(intent)
+            navControllerList.append(position, it)
+            actionList[position]?.invoke(it)
         })
         return fragment
     }
