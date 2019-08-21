@@ -109,6 +109,7 @@ class RecurveAppbarCreator(
             collapsingBinding.collapsingToolbarLayout.setContentScrimColor(
                     collapsingToolbarLayoutExt.contentScrimColorInt)
         }
+
         collapsingBinding.collapsingToolbarLayout.expandedTitleGravity =
                 getFlag(collapsingToolbarLayoutExt.expandedTitleGravity) {
                     getExpandedTitleGravityFlag(it) }
