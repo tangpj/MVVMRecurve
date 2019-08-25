@@ -26,11 +26,14 @@ fun ViewPager2.setupWithNavController(
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             val navController = navFragmentAdapter.getNavControllerByPosition(position)
+          
             if (navController != null) {
                 selectedNavController.value = navController
+                attachNavHostFragment(fragmentManager,navFragmentAdapter.getNavContainerFragmentByPosition(position) )
             } else {
                 navFragmentAdapter.observe(position) {
                     selectedNavController.value = it
+                    attachNavHostFragment(fragmentManager,navFragmentAdapter.getNavContainerFragmentByPosition(position) )
                 }
             }
         }
@@ -51,6 +54,31 @@ fun ViewPager2.setupWithNavController(
     return selectedNavController
 }
 
+private fun detachNavHostFragment(
+        fragmentManager: FragmentManager,
+        fragment: Fragment 
+) {
+    fragmentManager.beginTransaction()
+            .detach(fragment)
+            .commitNow()
+}
+
+private fun attachNavHostFragment(
+        fragmentManager: FragmentManager,
+        navContainerFragment: NavContainerFragment?) {
+    navContainerFragment?: return 
+    val primaryFragment = fragmentManager.primaryNavigationFragment
+    primaryFragment?.let { 
+        detachNavHostFragment(fragmentManager, primaryFragment)
+    }
+    fragmentManager.beginTransaction()
+            .attach(navContainerFragment)
+            .apply {
+                setPrimaryNavigationFragment(navContainerFragment)
+            }
+            .commitNow()
+
+}
 
 private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     val backStackCount = backStackEntryCount
@@ -74,15 +102,18 @@ private class NavHostPagerAdapter(
 
     private val actionList = SparseArray<((NavController) -> Unit)?>()
     private val navControllerList = SparseArray<NavController>()
+    private val fragmentManager = activity.supportFragmentManager
+
+    fun getNavControllerByPosition(position: Int): NavController? =
+        navControllerList.get(position)
+
+    fun getNavContainerFragmentByPosition(position: Int) : NavContainerFragment?{
+        return fragmentManager.findFragmentByTag(getTag(position)) as? NavContainerFragment
+    }
 
     fun observe(position: Int, action: (NavController) -> Unit){
         actionList.append(position, action)
     }
-
-    fun getNavControllerByPosition(position: Int) =
-        navControllerList.get(position)
-
-    val fragmentManager = activity.supportFragmentManager
 
     override fun getItemCount(): Int = navGraphIds.size
 
@@ -93,10 +124,11 @@ private class NavHostPagerAdapter(
     override fun createFragment(position: Int): Fragment{
         val fragment =  NavContainerFragment.create(navGraphIds[position])
         // Find or create the Navigation host fragment
-        fragment.navController.observe(fragment, Observer {
-            it.handleDeepLink(intent)
-            navControllerList.append(position, it)
-            actionList[position]?.invoke(it)
+        fragment.navHostFragment.observe(fragment, Observer {
+            val navController = it.navController
+            navController.handleDeepLink(intent)
+            navControllerList.append(position, navController)
+            actionList[position]?.invoke(navController)
         })
         return fragment
     }
