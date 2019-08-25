@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 
 class NavContainerFragment private constructor(): Fragment(){
 
-    val navController = MutableLiveData<NavController>()
+    var navHostFragment = MutableLiveData<NavHostFragment>()
 
     companion object{
         internal const val KEY_NAV_GRAPH_ID =
@@ -31,7 +31,7 @@ class NavContainerFragment private constructor(): Fragment(){
         val fragment = NavHostFragment.create(graphId)
         childFragmentManager.beginTransaction().add(R.id.nav_container, fragment)
                 .setPrimaryNavigationFragment(fragment).commitNow()
-        navController.value = fragment.navController
+        navHostFragment.value = fragment
         return view
     }
 
