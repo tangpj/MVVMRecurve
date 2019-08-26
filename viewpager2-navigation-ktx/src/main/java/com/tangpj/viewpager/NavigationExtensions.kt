@@ -2,6 +2,8 @@ package com.tangpj.viewpager
 
 import android.content.Intent
 import android.util.SparseArray
+import android.util.SparseIntArray
+import androidx.core.util.forEach
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -26,16 +28,17 @@ fun ViewPager2.setupWithNavController(
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             val navController = navFragmentAdapter.getNavControllerByPosition(position)
-          
-            if (navController != null) {
+            val selectedFragment = navFragmentAdapter.getNavContainerFragmentByPosition(position)
+            if (navController != null && selectedFragment != null) {
                 selectedNavController.value = navController
-                attachNavHostFragment(fragmentManager,navFragmentAdapter.getNavContainerFragmentByPosition(position) )
+                selectFragment(fragmentManager, selectedFragment)
             } else {
-                navFragmentAdapter.observe(position) {
-                    selectedNavController.value = it
-                    attachNavHostFragment(fragmentManager,navFragmentAdapter.getNavContainerFragmentByPosition(position) )
+                navFragmentAdapter.observe(position) { fragment, navController ->
+                    selectedNavController.value = navController
+                    selectFragment(fragmentManager, fragment)
                 }
             }
+
         }
 
     })
@@ -54,32 +57,6 @@ fun ViewPager2.setupWithNavController(
     return selectedNavController
 }
 
-private fun detachNavHostFragment(
-        fragmentManager: FragmentManager,
-        fragment: Fragment 
-) {
-    fragmentManager.beginTransaction()
-            .detach(fragment)
-            .commitNow()
-}
-
-private fun attachNavHostFragment(
-        fragmentManager: FragmentManager,
-        navContainerFragment: NavContainerFragment?) {
-    navContainerFragment?: return 
-    val primaryFragment = fragmentManager.primaryNavigationFragment
-    primaryFragment?.let { 
-        detachNavHostFragment(fragmentManager, primaryFragment)
-    }
-    fragmentManager.beginTransaction()
-            .attach(navContainerFragment)
-            .apply {
-                setPrimaryNavigationFragment(navContainerFragment)
-            }
-            .commitNow()
-
-}
-
 private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     val backStackCount = backStackEntryCount
     for (index in 0 until backStackCount) {
@@ -88,6 +65,17 @@ private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
         }
     }
     return false
+}
+
+private fun selectFragment(
+        fragmentManager: FragmentManager,
+        selectedFragment: Fragment){
+    fragmentManager.beginTransaction()
+            .attach(selectedFragment)
+            .setPrimaryNavigationFragment(selectedFragment)
+            .setReorderingAllowed(true)
+            .commit()
+
 }
 
 private class NavHostPagerAdapter(
@@ -100,8 +88,9 @@ private class NavHostPagerAdapter(
         private const val KEY_PREFIX_FRAGMENT = "f"
     }
 
-    private val actionList = SparseArray<((NavController) -> Unit)?>()
+    private val actionList = SparseArray<((NavContainerFragment, NavController) -> Unit)?>()
     private val navControllerList = SparseArray<NavController>()
+    val createdFragmentPosition = SparseIntArray()
     private val fragmentManager = activity.supportFragmentManager
 
     fun getNavControllerByPosition(position: Int): NavController? =
@@ -111,7 +100,7 @@ private class NavHostPagerAdapter(
         return fragmentManager.findFragmentByTag(getTag(position)) as? NavContainerFragment
     }
 
-    fun observe(position: Int, action: (NavController) -> Unit){
+    fun observe(position: Int, action: (NavContainerFragment, NavController) -> Unit){
         actionList.append(position, action)
     }
 
@@ -128,8 +117,9 @@ private class NavHostPagerAdapter(
             val navController = it.navController
             navController.handleDeepLink(intent)
             navControllerList.append(position, navController)
-            actionList[position]?.invoke(navController)
+            actionList[position]?.invoke(fragment, navController)
         })
+        createdFragmentPosition.append(position, position)
         return fragment
     }
 

@@ -47,8 +47,9 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
     }
 
     override fun setDataList(dataList: List<E>){
-        this.dataList = dataList.toMutableList()
         if (dataList.isNotEmpty()){
+            this.dataList.clear()
+            this.dataList.addAll(dataList)
             adapter.notifyModulesItemSetChange(this)
         }
     }
