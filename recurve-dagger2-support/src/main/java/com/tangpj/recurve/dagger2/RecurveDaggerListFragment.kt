@@ -39,7 +39,7 @@ import javax.inject.Inject
 open class RecurveDaggerListFragment
     : Fragment(), HasSupportFragmentInjector, LoadingCreator by RecurveLoadingCreator(), RecyclerViewInit {
 
-    val adapter = ModulesAdapter()
+    lateinit var adapter : ModulesAdapter
     private var lm: RecyclerView.LayoutManager? = null
 
     lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -47,6 +47,7 @@ open class RecurveDaggerListFragment
     final override fun onCreateView(inflater: LayoutInflater,
                                     container: ViewGroup?,
                                     savedInstanceState: Bundle?): View? {
+        adapter = ModulesAdapter()
         val binding = onCreateBinding(inflater, container, savedInstanceState)
         return binding?.root
     }
