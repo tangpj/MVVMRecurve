@@ -27,13 +27,12 @@ import com.tangpj.recurve.databinding.FragmentRecurveRecyclerViewBinding
 import com.tangpj.recurve.ui.creator.LoadingCreator
 import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
 import com.tangpj.adapter.creator.Creator
-import com.tangpj.adapter.adapter.ModulesAdapter
+import com.tangpj.adapter.ModulesAdapter
 import com.tangpj.recurve.ui.creator.RecyclerViewInit
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
-import javax.inject.Inject
 
 
 open class RecurveDaggerListFragment
@@ -73,11 +72,11 @@ open class RecurveDaggerListFragment
         return binding
     }
 
-    override fun addItemCreator(creator: Creator) {
+    override fun addItemCreator(creator: Creator<*>) {
         adapter.addCreator(creator)
     }
 
-    override fun addItemCreator(index: Int, creator: Creator) {
+    override fun addItemCreator(index: Int, creator: Creator<*>) {
         adapter.addCreator(index, creator)
     }
 

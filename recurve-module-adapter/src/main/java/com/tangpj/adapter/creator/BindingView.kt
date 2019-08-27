@@ -4,7 +4,7 @@ import androidx.databinding.ViewDataBinding
 
 interface BindingView<E, Binding: ViewDataBinding>{
     fun onBindItemView(
-            itemHolder: RecurveViewHolder<Binding>,
-            e: E?,
+            binding: Binding,
+            e: E,
             inCreatorPosition: Int)
 }

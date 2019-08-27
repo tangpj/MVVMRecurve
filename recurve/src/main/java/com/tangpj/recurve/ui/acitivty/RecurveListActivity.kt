@@ -60,11 +60,11 @@ class RecurveListActivity :
     override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
             = contentCreate.initContentBinding(layoutId)
 
-    override fun addItemCreator(creator: Creator) {
+    override fun addItemCreator(creator: Creator<*>) {
         listFragment.addItemCreator(creator)
     }
 
-    override fun addItemCreator(index: Int, creator: Creator) {
+    override fun addItemCreator(index: Int, creator: Creator<*>) {
         listFragment.addItemCreator(index, creator)
     }
 

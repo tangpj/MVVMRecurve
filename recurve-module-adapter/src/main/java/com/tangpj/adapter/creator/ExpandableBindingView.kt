@@ -9,9 +9,9 @@ interface ExpandableBindingView<
         ParentBinding: ViewDataBinding,
         ChildBinding: ViewDataBinding >{
 
-    fun onCreateParentViewHolder(parent: ViewGroup): RecurveViewHolder<*>
+    fun onCreateParentBinding(parent: ViewGroup): ParentBinding
 
-    fun onCreateChildViewHolder(parent: ViewGroup): RecurveViewHolder<*>
+    fun onCreateChildBinding(parent: ViewGroup): ChildBinding
 
     fun onBindParentItemView(parentHolder: RecurveViewHolder<ParentBinding>?, parent: Parent?
                              , parentPosition: Int, creatorPosition: Int)
