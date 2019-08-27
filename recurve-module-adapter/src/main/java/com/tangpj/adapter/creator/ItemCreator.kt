@@ -17,32 +17,37 @@ package com.tangpj.adapter.creator
 
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import com.tangpj.adapter.adapter.ModulesAdapter
-import com.tangpj.adapter.adapter.WRAP
+import com.tangpj.adapter.ModulesAdapter
+import com.tangpj.adapter.WRAP
 import java.lang.IllegalArgumentException
+import java.lang.NullPointerException
 
 /**
  * Created by tang on 2018/3/11.
  * 辅助Adapter创建Item
  */
 abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructor(
-        val adapter: ModulesAdapter, private val creatorType: Int = 0):
-        Creator, DataOperator<E>, BindingView<E, Binding>{
+        private val creatorType: Int = 0):
+        Creator<Binding>, DataOperator<E>, BindingView<E, Binding>{
 
     init {
-        if ((creatorType == ExpandableCreator.ITEM_TYPE_PARENT) ||
-                (creatorType == ExpandableCreator.ITEM_TYPE_PARENT)){
-            throw IllegalArgumentException("creatorType can't equal " +
-                    "ExpandableCreator.ITEM_TYPE_PARENT(1023) " +
-                    "or ExpandableCreator.ITEM_TYPE_PARENT(1024)")
-        }
+        require(!((creatorType == ExpandableCreator.ITEM_TYPE_PARENT) ||
+                (creatorType == ExpandableCreator.ITEM_TYPE_PARENT))) { "creatorType can't equal " +
+                "ExpandableCreator.ITEM_TYPE_PARENT(1023) " +
+                "or ExpandableCreator.ITEM_TYPE_PARENT(1024)" }
     }
+
+    protected lateinit var mAdapter: ModulesAdapter
 
     private var dataList: MutableList<E> = mutableListOf()
 
-    private var itemClickListener: ((view: View, e: E?, creatorPosition: Int) -> Unit)? = null
+    private var itemClickListener: ((view: View, e: E, creatorPosition: Int) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((view: View, e: E?, creatorPosition: Int) -> Unit)){
+    override fun onBindCreator(adapter: ModulesAdapter) {
+        this.mAdapter = adapter
+    }
+
+    fun setOnItemClickListener(listener: ((view: View, e: E, creatorPosition: Int) -> Unit)){
         this.itemClickListener = listener
     }
 
@@ -50,7 +55,7 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
         if (dataList.isNotEmpty()){
             this.dataList.clear()
             this.dataList.addAll(dataList)
-            adapter.notifyModulesItemSetChange(this)
+            mAdapter.notifyModulesItemSetChange(this)
         }
     }
 
@@ -61,7 +66,7 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
     final override fun addItem(e: E): Boolean{
         val isSucceed = dataList.add(e)
         return if (isSucceed){
-            adapter.notifyModulesItemInserted(this,dataList.size - 1)
+            mAdapter.notifyModulesItemInserted(this,dataList.size - 1)
             true
         }else {
             false
@@ -70,19 +75,19 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
 
     override fun addItem(position: Int, e: E) {
         dataList.add(position,e)
-        adapter.notifyModulesItemInserted(this, position)
+        mAdapter.notifyModulesItemInserted(this, position)
     }
 
     override fun addItems(items: List<E>) {
         val notifyStart = dataList.size
         dataList.addAll(items)
-        adapter.notifyModulesItemRangeInserted(this, notifyStart, items.size)
+        mAdapter.notifyModulesItemRangeInserted(this, notifyStart, items.size)
     }
 
     final override fun setItem(position: Int, e: E): E? {
         val result = dataList.set(position,e)
         if (result != null){
-            adapter.notifyModulesItemInserted(this,position)
+            mAdapter.notifyModulesItemInserted(this,position)
         }
         return result
     }
@@ -91,7 +96,7 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
         val removedPosition = dataList.indexOf(e)
         val isSucceed = dataList.remove(e)
         return if (isSucceed){
-            adapter.notifyModulesItemRemoved(this,removedPosition)
+            mAdapter.notifyModulesItemRemoved(this,removedPosition)
             true
         }else{
             false
@@ -101,7 +106,7 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
     final override fun removedItemAt(position: Int): E?{
         val removedItem = dataList.removeAt(position)
         if (removedItem != null){
-            adapter.notifyModulesItemRemoved(this,position)
+            mAdapter.notifyModulesItemRemoved(this,position)
         }
         return removedItem
     }
@@ -123,19 +128,16 @@ abstract class ItemCreator<E, Binding: ViewDataBinding> @JvmOverloads constructo
         if (getItemCount() == 0){
             return
         }
-        val e: E? = if (dataList.size > creatorPosition){
+        val e: E = if (dataList.size > creatorPosition){
             dataList[creatorPosition]
         }else{
-            null
+            throw NullPointerException("can not find node")
         }
         itemClickListener?.let { listener
             -> itemHolder.itemView.setOnClickListener {
             listener.invoke(itemHolder.itemView, e , creatorPosition) } }
 
-        onBindItemView(
-                itemHolder as RecurveViewHolder<Binding>,
-                e,
-                creatorPosition)
+        onBindItemView(itemHolder.binding as Binding, e, creatorPosition)
     }
 
 }

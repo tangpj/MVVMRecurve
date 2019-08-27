@@ -27,7 +27,7 @@ import com.tangpj.recurve.ui.creator.RecyclerViewInit
 import com.tangpj.recurve.ui.creator.LoadingCreator
 import com.tangpj.recurve.ui.creator.RecurveLoadingCreator
 import com.tangpj.adapter.creator.Creator
-import com.tangpj.adapter.adapter.ModulesAdapter
+import com.tangpj.adapter.ModulesAdapter
 
 open class RecurveListFragment
     : Fragment(), LoadingCreator by RecurveLoadingCreator(), RecyclerViewInit{
@@ -58,11 +58,11 @@ open class RecurveListFragment
         return binding
     }
 
-    override fun addItemCreator(creator: Creator) {
+    override fun addItemCreator(creator: Creator<*>) {
         mAdapter.addCreator(creator)
     }
 
-    override fun addItemCreator(index: Int, creator: Creator) {
+    override fun addItemCreator(index: Int, creator: Creator<*>) {
         mAdapter.addCreator(index, creator)
     }
 
