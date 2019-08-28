@@ -3,8 +3,10 @@ package com.tangpj.viewpager
 import android.content.Intent
 import android.util.SparseArray
 import android.util.SparseIntArray
+import androidx.annotation.LayoutRes
 import androidx.core.util.forEach
 import androidx.core.view.ViewCompat
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -16,11 +18,13 @@ import androidx.viewpager2.widget.ViewPager2
 fun ViewPager2.setupWithNavController(
         activity: FragmentActivity,
         navGraphIds :List<Int>,
-        intent: Intent) : LiveData<NavController>{
+        intent: Intent,
+        fragmentCreator: ((position: Int) -> Pair<Int, (ViewDataBinding) -> Unit>?)? = null)
+        : LiveData<NavController> {
 
     id = ViewCompat.generateViewId()
     val selectedNavController = MutableLiveData<NavController>()
-    val navFragmentAdapter = NavHostPagerAdapter(activity, intent, navGraphIds )
+    val navFragmentAdapter = NavHostPagerAdapter(activity, intent, navGraphIds, fragmentCreator)
 
     val fragmentManager = activity.supportFragmentManager
     adapter = navFragmentAdapter
@@ -81,7 +85,8 @@ private fun selectFragment(
 private class NavHostPagerAdapter(
         activity: FragmentActivity,
         private val intent: Intent,
-        private val navGraphIds: List<Int>
+        private val navGraphIds: List<Int>,
+        val fragmentCreator: ((position: Int) -> Pair<Int, (ViewDataBinding) -> Unit>?)? = null
 ) : FragmentStateAdapter(activity){
 
     companion object{
@@ -111,6 +116,7 @@ private class NavHostPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment{
+
         val fragment =  NavContainerFragment.create(navGraphIds[position])
         // Find or create the Navigation host fragment
         fragment.navHostFragment.observe(fragment, Observer {
@@ -119,6 +125,7 @@ private class NavHostPagerAdapter(
             navControllerList.append(position, navController)
             actionList[position]?.invoke(fragment, navController)
         })
+        fragment.initContainer (fragmentCreator?.invoke(position))
         createdFragmentPosition.append(position, position)
         return fragment
     }

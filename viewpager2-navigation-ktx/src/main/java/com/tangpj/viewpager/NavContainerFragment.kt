@@ -5,16 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 
-class NavContainerFragment private constructor(): Fragment(){
+class NavContainerFragment private constructor(): Fragment() {
 
     var navHostFragment = MutableLiveData<NavHostFragment>()
 
-    companion object{
+    var fragmentCreatorPair : Pair<Int, (ViewDataBinding) -> Unit>? = null
+
+    companion object {
         internal const val KEY_NAV_GRAPH_ID =
                 "com.tangpj.viewpager.NavContainerFragment.graphId"
         fun create(@IdRes navGraphId: Int) =
@@ -27,12 +32,21 @@ class NavContainerFragment private constructor(): Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val graphId = arguments?.getInt(KEY_NAV_GRAPH_ID, 0) ?: 0
-        val view = inflater.inflate(R.layout.fragment_nav_container, container, false)
+        val layoutId = fragmentCreatorPair?.first ?: R.layout.fragment_nav_container
+        val action = fragmentCreatorPair?.second
+        val binding =
+                DataBindingUtil.inflate<ViewDataBinding>(inflater, layoutId, container, false)
+        action?.invoke(binding)
         val fragment = NavHostFragment.create(graphId)
         childFragmentManager.beginTransaction().add(R.id.nav_container, fragment)
                 .setPrimaryNavigationFragment(fragment).commitNow()
         navHostFragment.value = fragment
-        return view
+        return binding.root
     }
+
+    fun initContainer(value : Pair<Int, (ViewDataBinding) -> Unit>?){
+        fragmentCreatorPair = value
+    }
+
 
 }
