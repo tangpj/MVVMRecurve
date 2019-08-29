@@ -19,7 +19,6 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.tangpj.adapter.ModulesAdapter
 import com.tangpj.adapter.WRAP
-import java.lang.IllegalArgumentException
 import java.lang.NullPointerException
 
 /**
