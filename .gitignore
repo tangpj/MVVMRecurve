@@ -11,4 +11,5 @@
 .idea/
 gradlew
 gradlew.bat
-
+gradle
+viewpager2-navigation-ktx/build
