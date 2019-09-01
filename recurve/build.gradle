@@ -16,12 +16,6 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
-            }
-        }
-
     }
 
     buildTypes {
@@ -76,7 +70,6 @@ dependencies {
     api deps.rx_android
     api deps.rxjava2
 
-    kapt deps.room.compiler
     kapt deps.lifecycle.compiler
     api project(':recurve-module-adapter')
 
