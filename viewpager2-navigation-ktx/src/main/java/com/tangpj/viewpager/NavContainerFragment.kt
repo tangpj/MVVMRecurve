@@ -13,7 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 
-class NavContainerFragment private constructor(): Fragment() {
+class NavContainerFragment : Fragment() {
 
     var navHostFragment = MutableLiveData<NavHostFragment>()
 

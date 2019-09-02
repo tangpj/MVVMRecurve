@@ -44,10 +44,11 @@ open class RecurveDaggerFragment
         return null
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
+    final override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = onCreateBinding(inflater, container, savedInstanceState)
+        binding?.lifecycleOwner = this
         return binding?.root
     }
 
