@@ -2,9 +2,11 @@ package com.tangpj.viewpager
 
 import android.content.Intent
 import android.util.SparseArray
+import android.util.SparseBooleanArray
 import android.util.SparseIntArray
-import androidx.annotation.LayoutRes
+import androidx.core.util.containsKey
 import androidx.core.util.forEach
+import androidx.core.util.set
 import androidx.core.view.ViewCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -16,25 +18,26 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 
 fun ViewPager2.setupWithNavController(
-        activity: FragmentActivity,
+        fragmentManager: FragmentManager,
+        lifecycle: Lifecycle,
         navGraphIds :List<Int>,
-        intent: Intent,
+        intent: Intent?,
         fragmentCreator: ((position: Int) -> Pair<Int, (ViewDataBinding) -> Unit>?)? = null)
-        : LiveData<NavController> {
+        : LiveData<((firstInit: Boolean, navController: NavController) -> Unit) -> Unit> {
 
     id = ViewCompat.generateViewId()
     val selectedNavController = MutableLiveData<NavController>()
-    val navFragmentAdapter = NavHostPagerAdapter(activity, intent, navGraphIds, fragmentCreator)
+    val navFragmentAdapter = NavHostPagerAdapter(fragmentManager,lifecycle, intent, navGraphIds, fragmentCreator)
+    val firstInitSet = SparseIntArray(navGraphIds.size)
 
-    val fragmentManager = activity.supportFragmentManager
     adapter = navFragmentAdapter
     registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
-            val navController = navFragmentAdapter.getNavControllerByPosition(position)
+            val result = navFragmentAdapter.getNavControllerByPosition(position)
             val selectedFragment = navFragmentAdapter.getNavContainerFragmentByPosition(position)
-            if (navController != null && selectedFragment != null) {
-                selectedNavController.value = navController
+            if (result != null && selectedFragment != null) {
+                selectedNavController.value = result
                 selectFragment(fragmentManager, selectedFragment)
             } else {
                 navFragmentAdapter.observe(position) { fragment, navController ->
@@ -47,8 +50,15 @@ fun ViewPager2.setupWithNavController(
 
     })
 
+    val result  = Transformations.map(selectedNavController){
+        { observerNavController:  (firstInit: Boolean, navController: NavController) -> Unit ->
+            val currentId = it.currentDestination?.id ?: 0
+            observerNavController.invoke(!firstInitSet.containsKey(currentId), it)
+            firstInitSet.put(currentId, currentId)
+        }
+    }
 
-    // Finally, ensure that we update our BottomNavigationView when the back stack changes
+    // Finally, ensure that we update our ViewPager2 when the back stack changes
     fragmentManager.addOnBackStackChangedListener {
         // Reset the graph if the currentDestination is not valid (happens when the back
         // stack is popped after using the back button).
@@ -58,11 +68,25 @@ fun ViewPager2.setupWithNavController(
             }
         }
     }
-    return selectedNavController
+    return result
 }
+
+fun ViewPager2.setupWithNavController(
+        activity: FragmentActivity,
+        navGraphIds :List<Int>,
+        intent: Intent,
+        fragmentCreator: ((position: Int) -> Pair<Int, (ViewDataBinding) -> Unit>?)? = null)
+        : LiveData<((firstInit: Boolean, navController: NavController) -> Unit) -> Unit> =
+        setupWithNavController(
+                activity.supportFragmentManager,
+                activity.lifecycle,
+                navGraphIds,
+                intent,
+                fragmentCreator)
 
 private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     val backStackCount = backStackEntryCount
+
     for (index in 0 until backStackCount) {
         if (getBackStackEntryAt(index).name == backStackName) {
             return true
@@ -82,12 +106,14 @@ private fun selectFragment(
 
 }
 
+
 private class NavHostPagerAdapter(
-        activity: FragmentActivity,
-        private val intent: Intent,
+        val fragmentManager: FragmentManager,
+        lifecycle: Lifecycle,
+        private val intent: Intent?,
         private val navGraphIds: List<Int>,
         val fragmentCreator: ((position: Int) -> Pair<Int, (ViewDataBinding) -> Unit>?)? = null
-) : FragmentStateAdapter(activity){
+) : FragmentStateAdapter(fragmentManager, lifecycle){
 
     companion object{
         private const val KEY_PREFIX_FRAGMENT = "f"
@@ -96,7 +122,6 @@ private class NavHostPagerAdapter(
     private val actionList = SparseArray<((NavContainerFragment, NavController) -> Unit)?>()
     private val navControllerList = SparseArray<NavController>()
     val createdFragmentPosition = SparseIntArray()
-    private val fragmentManager = activity.supportFragmentManager
 
     fun getNavControllerByPosition(position: Int): NavController? =
         navControllerList.get(position)
