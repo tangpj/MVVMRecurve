@@ -12,11 +12,7 @@ android {
 
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation deps.junit
-    androidTestImplementation deps.espresso.core
-    androidTestImplementation deps.ext_junit
 
     implementation deps.androidx.appcompat
     implementation deps.androidx.recyclerView
