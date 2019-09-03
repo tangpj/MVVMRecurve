@@ -36,7 +36,7 @@ class NavContainerFragment : Fragment() {
                 DataBindingUtil.inflate<ViewDataBinding>(inflater, layoutId, container, false)
         action?.invoke(binding)
         val fragment = NavHostFragment.create(graphId)
-        childFragmentManager.beginTransaction().add(R.id.nav_container, fragment)
+        childFragmentManager.beginTransaction().add(R.id.nav_host_container, fragment)
                 .setPrimaryNavigationFragment(fragment).commitNow()
         navHostFragment.value = fragment
         return binding.root
