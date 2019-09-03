@@ -5,19 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 
 class NavContainerFragment : Fragment() {
 
     var navHostFragment = MutableLiveData<NavHostFragment>()
 
-    var fragmentCreatorPair : Pair<Int, (ViewDataBinding) -> Unit>? = null
+    private var fragmentCreatorPair : Pair<Int, (ViewDataBinding) -> Unit>? = null
 
     companion object {
         internal const val KEY_NAV_GRAPH_ID =

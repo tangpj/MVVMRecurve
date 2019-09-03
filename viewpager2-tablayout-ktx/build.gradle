@@ -1,18 +1,7 @@
 apply from: "../support.gradle"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs'
 
-android {
-    dataBinding{
-        enabled true
-    }
-
-    androidExtensions {
-        experimental = true
-    }
-}
 
 
 dependencies {
@@ -20,7 +9,6 @@ dependencies {
     implementation deps.androidx.viewpager2
     implementation deps.kotlin.stdlib_jdk8
     implementation deps.kotlin.ktx
+    implementation deps.androidx.material
 
-    implementation  deps.navigation.fragment
-    implementation deps.navigation.runtime
 }

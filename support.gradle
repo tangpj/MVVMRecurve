@@ -46,6 +46,13 @@ android {
         targetCompatibility 1.8
     }
 
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+        testImplementation deps.junit
+        androidTestImplementation deps.espresso.core
+        androidTestImplementation deps.ext_junit
+    }
 }
 
 
