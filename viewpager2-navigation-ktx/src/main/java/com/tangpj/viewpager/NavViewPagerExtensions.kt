@@ -1,6 +1,7 @@
 package com.tangpj.viewpager
 
 import android.content.Intent
+import android.util.Log
 import android.util.SparseArray
 import android.util.SparseBooleanArray
 import android.util.SparseIntArray
@@ -28,6 +29,8 @@ fun ViewPager2.setupWithNavController(
     id = ViewCompat.generateViewId()
     val selectedNavController = MutableLiveData<NavController>()
     val navFragmentAdapter = NavHostPagerAdapter(fragmentManager,lifecycle, intent, navGraphIds, fragmentCreator)
+
+    //record first init
     val firstInitSet = SparseIntArray(navGraphIds.size)
 
     adapter = navFragmentAdapter
@@ -50,14 +53,6 @@ fun ViewPager2.setupWithNavController(
 
     })
 
-    val result  = Transformations.map(selectedNavController){
-        { observerNavController:  (firstInit: Boolean, navController: NavController) -> Unit ->
-            val currentId = it.currentDestination?.id ?: 0
-            observerNavController.invoke(!firstInitSet.containsKey(currentId), it)
-            firstInitSet.put(currentId, currentId)
-        }
-    }
-
     // Finally, ensure that we update our ViewPager2 when the back stack changes
     fragmentManager.addOnBackStackChangedListener {
         // Reset the graph if the currentDestination is not valid (happens when the back
@@ -68,7 +63,17 @@ fun ViewPager2.setupWithNavController(
             }
         }
     }
-    return result
+    val isFirstInitFun = { graphId: Int -> !firstInitSet.containsKey(graphId) }
+    return Transformations.map(selectedNavController){ navController ->
+        { observerNavController:  (firstInit : Boolean, navController: NavController) -> Unit ->
+            val currentId = navController .currentDestination?.id ?: 0
+            val isFirstInit = isFirstInitFun(currentId)
+            observerNavController.invoke(isFirstInit, navController)
+            Log.d("NavViewPagerExtensions", "isFirstInit = $isFirstInit, destination = ${navController.currentDestination?.label}")
+
+            firstInitSet.put(currentId, currentId)
+        }
+    }
 }
 
 fun ViewPager2.setupWithNavController(
