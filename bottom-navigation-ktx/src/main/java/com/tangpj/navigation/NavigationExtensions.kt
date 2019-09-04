@@ -17,12 +17,16 @@
 package com.tangpj.navigation
 
 import android.content.Intent
+import android.util.Log
 import android.util.SparseArray
+import android.util.SparseIntArray
+import androidx.core.util.containsKey
 import androidx.core.util.forEach
 import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -37,12 +41,16 @@ fun BottomNavigationView.setupWithNavController(
         fragmentManager: FragmentManager,
         containerId: Int,
         intent: Intent
-): LiveData<NavController> {
+): LiveData<((firstInit: Boolean, navController: NavController) -> Unit) -> Unit> {
 
     // Map of tags
     val graphIdToTagMap = SparseArray<String>()
     // Result. Mutable live data with the selected controlled
     val selectedNavController = MutableLiveData<NavController>()
+
+    //record first init
+    val firstInitSet = SparseIntArray(navGraphIds.size)
+
 
     var firstFragmentGraphId = 0
 
@@ -102,13 +110,13 @@ fun BottomNavigationView.setupWithNavController(
                     // Commit a transaction that cleans the back stack and adds the first fragment
                     // to it, creating the fixed started destination.
                     fragmentManager.beginTransaction()
-                            .attach(selectedFragment)
+                            .show(selectedFragment)
                             .setPrimaryNavigationFragment(selectedFragment)
                             .apply {
                                 // Detach all other Fragments
                                 graphIdToTagMap.forEach { _, fragmentTagIter ->
                                     if (fragmentTagIter != newlySelectedItemTag) {
-                                        detach(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
+                                        hide(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
                                     }
                                 }
                             }
@@ -151,7 +159,16 @@ fun BottomNavigationView.setupWithNavController(
             }
         }
     }
-    return selectedNavController
+    val isFirstInitFun = { graphId: Int -> !firstInitSet.containsKey(graphId) }
+    return Transformations.map(selectedNavController){ navController ->
+        { observerNavController:  ( Boolean, navController: NavController) -> Unit ->
+            val currentId = navController .currentDestination?.id ?: 0
+            val isFirstInit = isFirstInitFun(currentId)
+            observerNavController.invoke(isFirstInit, navController)
+            Log.d("NavigationExtensions", "isFirstInit = $isFirstInit, destination = ${navController.currentDestination?.label}")
+            firstInitSet.put(currentId, currentId)
+        }
+    }
 }
 
 private fun BottomNavigationView.setupDeepLinks(
@@ -199,7 +216,7 @@ private fun detachNavHostFragment(
         navHostFragment: NavHostFragment
 ) {
     fragmentManager.beginTransaction()
-            .detach(navHostFragment)
+            .hide(navHostFragment)
             .commitNow()
 }
 
@@ -209,7 +226,7 @@ private fun attachNavHostFragment(
         isPrimaryNavFragment: Boolean
 ) {
     fragmentManager.beginTransaction()
-            .attach(navHostFragment)
+            .show(navHostFragment)
             .apply {
                 if (isPrimaryNavFragment) {
                     setPrimaryNavigationFragment(navHostFragment)
