@@ -10,7 +10,7 @@ abstract class DataBindingAdapter<E, Binding: ViewDataBinding>
 
     private var dataList = mutableListOf<E>()
 
-    var onClickListener : ((View, E, Int) -> Unit)? = null
+    var onItemClickListener : ((View, E, Int) -> Unit)? = null
     
     open fun addItem(item: E){
         dataList.add(item)
@@ -59,7 +59,7 @@ abstract class DataBindingAdapter<E, Binding: ViewDataBinding>
     @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         holder.binding.root.setOnClickListener {
-            onClickListener?.invoke(it, dataList[position], position)
+            onItemClickListener?.invoke(it, dataList[position], position)
         }
         onBindBinding(holder.binding as Binding, dataList[position], position)
     }

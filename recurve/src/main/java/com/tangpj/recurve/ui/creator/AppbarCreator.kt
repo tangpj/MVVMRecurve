@@ -53,8 +53,8 @@ interface AppbarCreator{
             parent: ViewGroup): ToolbarRecurveBinding
 
     fun createCollapsingToolbarLayout(
-            collapsingToolbarLayoutExt: CollapsingToolbarLayoutExt,
+            appbarExt: AppbarExt,
             inflater: LayoutInflater,
             parent: ViewGroup)
-            : ToolbarCollapsingRecurveBinding
+            : ToolbarCollapsingRecurveBinding?
 }

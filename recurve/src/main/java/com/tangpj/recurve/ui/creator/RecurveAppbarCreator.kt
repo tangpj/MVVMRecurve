@@ -44,9 +44,8 @@ class RecurveAppbarCreator(
         init.invoke(appbarExt)
         val inflater = LayoutInflater.from(context)
 
-        val collapsingToolbarLayoutBinding = appbarExt.collapsingToolbarExt?.let {
-            createCollapsingToolbarLayout(it, inflater, activityRecurveBinding.appbarLayout)
-        }
+        val collapsingToolbarLayoutBinding =
+                createCollapsingToolbarLayout(appbarExt, inflater, activityRecurveBinding.appbarLayout)
 
         if (collapsingToolbarLayoutBinding == null) {
             createToolbar(appbarExt, inflater, activityRecurveBinding.appbarLayout)
@@ -76,31 +75,30 @@ class RecurveAppbarCreator(
 
         val toolbarRecurveBinding = ToolbarRecurveBinding.inflate(inflater)
         val toolbar = toolbarRecurveBinding.toolbar
-        val toolbarExt = appbarExt.toolbarExt
-        toolbar.title = if (toolbarExt != null) {
-            toolbarExt.title
-        } else {
-            appbarExt.title
-        }
+        toolbar.title = appbarExt.title
         activityRecurveBinding.appbarLayout.addView(toolbar, 0)
         activity.setSupportActionBar(toolbar)
+        activity.supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(appbarExt.showHomeAsUp)
+        }
         return toolbarRecurveBinding
     }
 
     override fun createCollapsingToolbarLayout(
-            collapsingToolbarLayoutExt: CollapsingToolbarLayoutExt,
+            appbarExt: AppbarExt,
             inflater: LayoutInflater,
             parent: ViewGroup)
-            : ToolbarCollapsingRecurveBinding {
+            : ToolbarCollapsingRecurveBinding? {
+
+        val collapsingToolbarLayoutExt =
+                appbarExt.collapsingToolbarExt ?: return null
 
         val collapsingBinding = ToolbarCollapsingRecurveBinding.inflate(inflater)
 
         val collapsingCreator = collapsingToolbarLayoutExt.collapsingCreator
 
         val toolbar = collapsingBinding.toolbar
-        collapsingToolbarLayoutExt.toolbarExt?.let {
-            toolbar.title = it.title
-        }
+        toolbar.title = appbarExt.title
         if (collapsingToolbarLayoutExt.contentScrimColor != -1) {
             collapsingBinding.collapsingToolbarLayout.setContentScrimColor(
                     activity.resources.getColor(collapsingToolbarLayoutExt.contentScrimColor))
@@ -115,6 +113,7 @@ class RecurveAppbarCreator(
                     getExpandedTitleGravityFlag(it) }
 
         activity.setSupportActionBar(toolbar)
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(appbarExt.showHomeAsUp)
 
         collapsingCreator?.let {
 
@@ -161,7 +160,7 @@ class RecurveAppbarCreator(
 
     private fun getFlag(flagsStr: String?, fragTransformInt: (String) -> Int): Int {
         flagsStr ?: return 0
-        var result: Int
+        val result: Int
         val flagList = flagsStr.trim().split('|')
         result = flagList
                 .map { fragTransformInt.invoke(it) }

@@ -33,18 +33,10 @@ class CollapsingToolbarLayoutExt{
     @ColorInt
     var contentScrimColorInt: Int = -1
 
-    var toolbarExt: ToolbarExt? = null
-
     var expandedTitleGravity: String? = ""
 
     var collapsingCreator
             : ((inflater: LayoutInflater, CollapsingToolbarLayout) -> View)? = null
-
-    fun toolBar(init: ToolbarExt.() -> Unit){
-        val toolbarExt = ToolbarExt()
-        toolbarExt.init()
-        this.toolbarExt = toolbarExt
-    }
 
     fun collapsingView(collapsingCreator
                          : ((inflater: LayoutInflater, CollapsingToolbarLayout) -> View)?){
