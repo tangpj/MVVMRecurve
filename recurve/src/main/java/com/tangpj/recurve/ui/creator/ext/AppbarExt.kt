@@ -25,15 +25,9 @@ class AppbarExt(val context: Context){
 
     var title: String? = null
 
-    var toolbarExt: ToolbarExt? = null
+    var showHomeAsUp: Boolean = false
 
     var collapsingToolbarExt: CollapsingToolbarLayoutExt? = null
-
-    fun toolbar(init: ToolbarExt.() -> Unit){
-        val toolbarExt = ToolbarExt()
-        toolbarExt.init()
-        this.toolbarExt = toolbarExt
-    }
 
     fun collapsingToolbar(init: CollapsingToolbarLayoutExt.() -> Unit){
         val collapsingToolbarLayoutExt = CollapsingToolbarLayoutExt()
