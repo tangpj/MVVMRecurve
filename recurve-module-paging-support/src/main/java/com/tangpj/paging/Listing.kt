@@ -34,5 +34,5 @@ data class Listing<T>(
         val retry: () -> Unit)
 
 interface PageResult<T>{
-    fun asListing(config: PagedList.Config): Listing<T>
+    fun asListing(config: PagedList.Config): LiveData<Listing<T>>
 }
