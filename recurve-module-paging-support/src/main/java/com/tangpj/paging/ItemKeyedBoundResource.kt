@@ -1,6 +1,8 @@
 package com.tangpj.paging
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
@@ -13,7 +15,7 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
 
     private val resultPagedList = MediatorLiveData<PagedList<ResultType>>()
 
-    override fun asListing(config: PagedList.Config): Listing<ResultType> {
+    override fun asListing(config: PagedList.Config): LiveData<Listing<ResultType>> {
         val factory
                 = RecurveItemSourceFactory(this)
         val pagedList = factory.toLiveData(config)
@@ -21,11 +23,13 @@ abstract class ItemKeyedBoundResource<Key, ResultType, RequestType> :
         val pageLoadState = Transformations.switchMap(factory.sourceLiveData) {
             it.pageLoadState
         }
-        return Listing(
+        val result = MediatorLiveData<Listing<ResultType>>()
+        result.value = Listing(
                 pagedList = pagedList,
                 pageLoadState = pageLoadState,
                 retry = { factory.sourceLiveData.value?.retryAllFailed() },
                 refresh = { factory.sourceLiveData.value?.invalidate() })
+        return result
     }
 
 }
