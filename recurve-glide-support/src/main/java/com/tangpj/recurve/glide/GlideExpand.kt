@@ -25,10 +25,17 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 @SuppressLint("CheckResult")
 @JvmOverloads fun RequestOptions
-        .default(placeholderRes: Int = 0
-                 , fallbackRes: Int  = 0
-                 , errorRes: Int = 0): RequestOptions{
+        .default(placeholderRes: Int = 0,
+                 fallbackRes: Int  = 0,
+                 errorRes: Int = 0,
+                 isCircle: Boolean = false,
+                 radius: Int = 0,
+                 radiusMargin: Int = 0
+                 ): RequestOptions{
 
+    if (isCircle){
+        this.circleCrop()
+    }
     if (placeholderRes != 0){
         placeholder(placeholderRes)
     }
@@ -38,24 +45,8 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
     if (errorRes != 0){
         error(errorRes)
     }
-    return this
-}
-
-@SuppressLint("CheckResult")
-@JvmOverloads fun RequestOptions
-        .circle(placeholderRes: Int = 0
-                , fallbackRes: Int = 0
-                , errorRes: Int = 0): RequestOptions{
-
-    this.circleCrop()
-    if (placeholderRes != 0){
-        placeholder(placeholderRes)
-    }
-    if (fallbackRes != 0){
-        fallback(fallbackRes)
-    }
-    if (errorRes != 0){
-        error(errorRes)
+    if (!isCircle && radius > 0){
+        return RequestOptions.bitmapTransform(RoundedCornersTransformation(radius,radiusMargin))
     }
     return this
 }
@@ -78,23 +69,4 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
     return RequestOptions.bitmapTransform(CropSquareTransformation())
 }
 
-@SuppressLint("CheckResult")
-@JvmOverloads fun RequestOptions
-        .rounded(placeholderRes: kotlin.Int = 0
-                 , fallbackRes: kotlin.Int = 0
-                 , errorRes: kotlin.Int = 0
-                 ,radius: Int = 4, margin: Int = 0): RequestOptions{
-
-    if (placeholderRes != 0){
-        placeholder(placeholderRes)
-    }
-    if (fallbackRes != 0){
-        fallback(fallbackRes)
-    }
-    if (errorRes != 0){
-        error(errorRes)
-    }
-
-    return RequestOptions.bitmapTransform(RoundedCornersTransformation(radius,margin))
-}
 

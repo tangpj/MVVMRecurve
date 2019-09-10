@@ -31,18 +31,21 @@ class ImageBindingAdapters constructor(
         , private val fallbackRes: Int = 0
         , private val errorRes: Int = 0) {
 
-    @BindingAdapter("imageUrl")
-    fun bindImage(imageView: ImageView, url: String) {
+    @BindingAdapter(value = ["imageUrl", "isCircle", "radius", "radiusMargin"],requireAll = false)
+    fun ImageView.bindImage(
+            url: String,
+            isCircle: Boolean,
+            radius: Int,
+            radiusMargin: Int) {
         requestManager.load(url)
-                .apply(RequestOptions().default(placeholderRes,fallbackRes,errorRes))
-                .into(imageView)
-    }
-
-    @BindingAdapter("imageCircle")
-    fun bindImageCircle(imageView: ImageView, url: String){
-        requestManager.load(url)
-                .apply(RequestOptions().circle(placeholderRes,fallbackRes,errorRes))
-                .into(imageView)
+                .apply(RequestOptions().default(
+                        placeholderRes = placeholderRes,
+                        fallbackRes = fallbackRes,
+                        errorRes = errorRes,
+                        isCircle = isCircle,
+                        radius = radius,
+                        radiusMargin = radiusMargin))
+                .into(this)
     }
 
     @BindingAdapter("imageSquare")
@@ -52,11 +55,5 @@ class ImageBindingAdapters constructor(
                 .into(imageView)
     }
 
-    @BindingAdapter("imageRounded")
-    fun bindImageRounded(imageView: ImageView, url: String){
-        requestManager.load(url)
-                .apply(RequestOptions().rounded(placeholderRes,fallbackRes,errorRes))
-                .into(imageView)
-    }
 
 }
