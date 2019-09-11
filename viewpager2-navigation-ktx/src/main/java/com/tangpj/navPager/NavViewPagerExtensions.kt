@@ -1,13 +1,10 @@
-package com.tangpj.viewpager
+package com.tangpj.navPager
 
 import android.content.Intent
 import android.util.Log
 import android.util.SparseArray
-import android.util.SparseBooleanArray
 import android.util.SparseIntArray
 import androidx.core.util.containsKey
-import androidx.core.util.forEach
-import androidx.core.util.set
 import androidx.core.view.ViewCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
