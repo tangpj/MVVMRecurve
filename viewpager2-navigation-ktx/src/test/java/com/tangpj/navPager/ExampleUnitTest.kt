@@ -1,4 +1,4 @@
-package com.tangpj.viewpager
+package com.tangpj.navPager
 
 import org.junit.Test
 

@@ -15,9 +15,6 @@ class MainActivity: RecurveActivity(){
             scrollFlags = "scroll|exitUntilCollapsed"
             collapsingToolbar {
                 contentScrimColor = R.color.colorAccent
-                toolBar {
-                    title = "测试测试"
-                }
                 collapsingView { inflater, collapsingToolbarLayout ->
                     val content = CollasingTestBinding.inflate(inflater, collapsingToolbarLayout, false)
                     content.root
