@@ -1,50 +1,19 @@
-apply plugin: 'com.android.library'
+apply from: "../support.gradle"
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs'
 
-
 android {
-    compileSdkVersion build_versions.compile_sdk
-
-    defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
-        versionCode app_versions.code
-        versionName app_versions.name
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
-            }
-        }
-
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
     dataBinding{
         enabled true
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    androidExtensions {
+        experimental = true
     }
-
-    compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
-    }
-
 }
+
 
 dependencies {
     implementation deps.androidx.appcompat

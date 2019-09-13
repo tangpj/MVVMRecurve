@@ -1,4 +1,4 @@
-package com.tangpj.viewpager
+package com.tangpj.navPager
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.recurve_navagation_viewpagger2_ktx.test", appContext.packageName)
+        assertEquals("com.example.viewpager2_tablayout_ktx.test", appContext.packageName)
     }
 }

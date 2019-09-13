@@ -16,11 +16,15 @@
 package com.tangpj.adapter.creator
 
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
+import com.tangpj.adapter.ModulesAdapter
 
 /**
  * Created by tang on 2018/3/11.
  */
-interface Creator{
+interface Creator<Binding: ViewDataBinding>{
+
+    fun onBindCreator(adapter: ModulesAdapter)
 
     fun getItemCount(): Int
 
@@ -32,7 +36,7 @@ interface Creator{
 
     fun getSpan(): Int
 
-    fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecurveViewHolder<*>
+    fun onCreateItemBinding(parent: ViewGroup, viewType: Int): Binding
 
     fun onBindItemView(itemHolder: RecurveViewHolder<*>, creatorPosition: Int)
 }

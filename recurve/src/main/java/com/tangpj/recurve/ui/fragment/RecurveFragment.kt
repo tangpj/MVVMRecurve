@@ -42,6 +42,7 @@ abstract class RecurveFragment
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = this.onCreateBinding(inflater, container, savedInstanceState)
+        binding.lifecycleOwner = this
         return binding.root
     }
 

@@ -76,7 +76,7 @@ object LiveDataApollo {
         return object : LiveData<ApiResponse<T>>() {
             override fun onActive() {
                 super.onActive()
-                call.enqueue(object : ApolloCall.Callback<T>() {
+                call.clone().enqueue(object : ApolloCall.Callback<T>() {
                     override fun onResponse(response: Response<T>) {
                         postValue(create(response))
                     }

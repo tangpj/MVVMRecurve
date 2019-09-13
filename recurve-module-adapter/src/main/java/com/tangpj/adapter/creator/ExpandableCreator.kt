@@ -18,8 +18,8 @@ package com.tangpj.adapter.creator
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import com.tangpj.adapter.adapter.ModulesAdapter
-import com.tangpj.adapter.adapter.WRAP
+import com.tangpj.adapter.ModulesAdapter
+import com.tangpj.adapter.WRAP
 
 /**
  * Created by tang on 2018/3/15.
@@ -28,8 +28,8 @@ import com.tangpj.adapter.adapter.WRAP
 
 abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
         , ChildBinding: ViewDataBinding>
-@JvmOverloads constructor(private val adapter: ModulesAdapter, private val creatorType: Int = 0) :
-        Creator,
+@JvmOverloads constructor(private val creatorType: Int = 0) :
+        Creator<ViewDataBinding>,
         ExpandableDataOperator<Parent, Child>,
         ExpandableBindingView<Parent,Child, ParentBinding, ChildBinding>{
 
@@ -42,6 +42,8 @@ abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
         const val ITEM_TYPE_PARENT = 8
         const val ITEM_TYPE_CHILD = 4
     }
+
+    private lateinit var mAdapter: ModulesAdapter
 
     private var dataMap: LinkedHashMap<Parent,MutableList<Child>> = LinkedHashMap()
 
@@ -61,16 +63,20 @@ abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
         childClickListener = listener
     }
 
+    override fun onBindCreator(adapter: ModulesAdapter) {
+        this.mAdapter = adapter
+    }
+
     override fun setDataList(dataMap: LinkedHashMap<Parent, MutableList<Child>>) {
         this.dataMap = dataMap
-        adapter.notifyModulesItemSetChange(this)
+        mAdapter.notifyModulesItemSetChange(this)
     }
 
     override fun getData(): LinkedHashMap<Parent, MutableList<Child>> = LinkedHashMap(dataMap)
 
     override fun addParentItem(parent: Parent): List<Child>? {
         val child = dataMap.put(parent, mutableListOf())
-        adapter.notifyModulesItemInserted(this, getItemCount() - 1)
+        mAdapter.notifyModulesItemInserted(this, getItemCount() - 1)
         return child
     }
 
@@ -87,7 +93,7 @@ abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
         val aimsStartPosition = getParentPositionInCreator(parent)
         val aimsEnePosition = aimsStartPosition + (childList?.size ?: 0)
         dataMap.remove(parent)
-        adapter.notifyModulesItemRangeRemoved(this,aimsStartPosition,aimsEnePosition)
+        mAdapter.notifyModulesItemRangeRemoved(this,aimsStartPosition,aimsEnePosition)
     }
 
     override fun removedParentItemAt(parentPosition: Int){
@@ -97,68 +103,68 @@ abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
     override fun addChildItem(parent: Parent, child: Child): Boolean
             = operatorChildItemByParent(parent){ it ->
         val result = it.add(child)
-        adapter.notifyModulesItemInserted(this, getChildPositionInCreator(parent,child))
+        mAdapter.notifyModulesItemInserted(this, getChildPositionInCreator(parent,child))
         result
     }
 
     override fun addChildItem(parentPosition: Int, child: Child): Boolean
             = operatorChildItemByParentPosition(parentPosition){ it ->
         val result = it.add(child)
-        adapter.notifyModulesItemInserted(this, getChildPositionInCreatorAt(parentPosition,child))
+        mAdapter.notifyModulesItemInserted(this, getChildPositionInCreatorAt(parentPosition,child))
         result
     }
 
     override fun addChildItem(parent: Parent, childPosition: Int, child: Child)
             = operatorChildItemByParent(parent) { it ->
         it.add(childPosition,child)
-        adapter.notifyModulesItemInserted(this, getChildPositionInCreator(parent,child))
+        mAdapter.notifyModulesItemInserted(this, getChildPositionInCreator(parent,child))
     }
 
     override fun addChildItem(parentPosition: Int, childPosition: Int, child: Child)
             = operatorChildItemByParentPosition(parentPosition){ it ->
         it.add(childPosition,child)
-        adapter.notifyModulesItemInserted(this, getChildPositionInCreatorAt(parentPosition,child))
+        mAdapter.notifyModulesItemInserted(this, getChildPositionInCreatorAt(parentPosition,child))
     }
 
     override fun setChildItem(parent: Parent, childPosition: Int, child: Child): Child
             = operatorChildItemByParent(parent) { it ->
         val result = it.set(childPosition,child)
-        adapter.notifyModulesItemChanged(this, getChildPositionInCreator(parent,childPosition))
+        mAdapter.notifyModulesItemChanged(this, getChildPositionInCreator(parent,childPosition))
         result
     }
 
     override fun setChildItem(parentPosition: Int, childPosition: Int, child: Child): Child
             = operatorChildItemByParentPosition(parentPosition){ it ->
         val result = it.set(childPosition,child)
-        adapter.notifyModulesItemChanged(this, getChildPositionInCreatorAt(parentPosition,childPosition))
+        mAdapter.notifyModulesItemChanged(this, getChildPositionInCreatorAt(parentPosition,childPosition))
         result
     }
 
     override fun removedChildItem(parent: Parent, child: Child): Boolean
             = operatorChildItemByParent(parent){ it ->
         val result = it.remove(child)
-        adapter.notifyModulesItemRemoved(this, getChildPositionInCreator(parent,child))
+        mAdapter.notifyModulesItemRemoved(this, getChildPositionInCreator(parent,child))
         result
     }
 
     override fun removedChildItem(parentPosition: Int, child: Child): Boolean
             = operatorChildItemByParentPosition(parentPosition){ it ->
         val result = it.remove(child)
-        adapter.notifyModulesItemRemoved(this, getChildPositionInCreatorAt(parentPosition, child))
+        mAdapter.notifyModulesItemRemoved(this, getChildPositionInCreatorAt(parentPosition, child))
         result
     }
 
     override fun removedChildItemAt(parent: Parent, childPosition: Int): Child
             = operatorChildItemByParent(parent){ it ->
         val result = it.removeAt(childPosition)
-        adapter.notifyModulesItemRemoved(this, getChildPositionInCreator(parent, childPosition))
+        mAdapter.notifyModulesItemRemoved(this, getChildPositionInCreator(parent, childPosition))
         result
     }
 
     override fun removedChildItemAt(parentPosition: Int, childPosition: Int): Child
             = operatorChildItemByParentPosition(parentPosition){ it ->
         val result = it.removeAt(childPosition)
-        adapter.notifyModulesItemRemoved(this, getChildPositionInCreatorAt(parentPosition, childPosition))
+        mAdapter.notifyModulesItemRemoved(this, getChildPositionInCreatorAt(parentPosition, childPosition))
         result
     }
 
@@ -190,11 +196,11 @@ abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
 
     override fun getSpan(): Int = WRAP
 
-    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecurveViewHolder<*> {
+    override fun onCreateItemBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
         if (viewType / creatorType == ITEM_TYPE_PARENT){
-            return onCreateParentViewHolder(parent)
+            return onCreateParentBinding(parent)
         }
-        return onCreateChildViewHolder(parent)
+        return onCreateChildBinding(parent)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -231,7 +237,7 @@ abstract class ExpandableCreator<Parent,Child, ParentBinding: ViewDataBinding
             throw IndexOutOfBoundsException("Invalid index $parentPosition, size is ${dataMap.size}")
         }
         dataMap = operatorMap
-        adapter.notifyModulesItemInserted(this,getParentPositionInCreator(parent))
+        mAdapter.notifyModulesItemInserted(this,getParentPositionInCreator(parent))
         return result?.toList()
     }
 

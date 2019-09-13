@@ -12,7 +12,7 @@ versions.lifecycle = "2.0.0"
 versions.paging = "2.1.0"
 versions.androidx = "1.0.0"
 versions.room = "2.1.0-alpha06"
-versions.viewpager2 = "1.0.0-beta02"
+versions.viewpager2 = "1.0.0-beta03"
 versions.flexbox_layout = "1.1.0"
 
 versions.dagger = "2.16"
@@ -31,7 +31,7 @@ versions.constraint_layout = "1.1.0"
 versions.glide = "4.9.0"
 versions.glide_transformations = "3.3.0"
 versions.timber = "4.7.1"
-versions.android_gradle_plugin = '3.6.0-alpha06'
+versions.android_gradle_plugin = '3.6.0-alpha11'
 versions.rxjava2 = "2.2.1"
 versions.rx_android = "2.1.0"
 versions.atsl_runner = "1.1.0-alpha1"
@@ -41,7 +41,7 @@ versions.kotlin = "1.3.21"
 versions.kotlinx = "0.10.0"
 versions.kotlinx_coroutines = "1.3.0-RC"
 versions.ktx = "1.0.0-rc02"
-versions.navigation = "2.1.0-beta02"
+versions.navigation = "2.1.0-rc01"
 versions.app_code = 1
 versions.app_name = "1.0"
 versions.databinding_compiler = "3.3.2"
@@ -51,8 +51,11 @@ versions.arouter_api = "1.5.0"
 versions.arouter_compiler = "1.2.2"
 versions.mapstruct = "1.3.0.Final"
 versions.threetenabp = "1.2.0"
-versions.markwon= "4.1.0"
+versions.markdown4j = "2.2-cj-1.1"
 versions.svg = "1.4"
+versions.arrow = "0.10.0-SNAPSHOT"
+versions.calces_screen = "1.3.4-alpha01"
+versions.calces_component = "3.3.0-alpha01"
 deps.versions = versions
 
 def androidx = [:]
@@ -175,20 +178,19 @@ arouter.api = "com.alibaba:arouter-api:$versions.arouter_api"
 arouter.compiler = "com.alibaba:arouter-compiler:$versions.arouter_compiler"
 deps.arouter = arouter
 
-def markwon = [:]
-markwon.core = "io.noties.markwon:core:$versions.markwon"
-markwon.html = "io.noties.markwon:html:$versions.markwon"
-markwon.recycler = "io.noties.markwon:recycler:$versions.markwon"
-markwon.glide = "io.noties.markwon:image-glide:$versions.markwon"
-markwon.image= "io.noties.markwon:image:$versions.markwon"
-markwon.table = "io.noties.markwon:recycler-table:$versions.markwon"
-deps.markwon = markwon
-
 def glide = [:]
 glide.core = "com.github.bumptech.glide:glide:$versions.glide"
 glide.compiler = "com.github.bumptech.glide:compiler:$versions.glide"
 glide.transformations = "jp.wasabeef:glide-transformations:$versions.glide_transformations"
 deps.glide = glide
+
+def arrow = [:]
+arrow.core = "io.arrow-kt:arrow-core:$versions.arrow"
+arrow.fx = "io.arrow-kt:arrow-fx:$versions.arrow"
+arrow.optics = "io.arrow-kt:arrow-optics:$versions.arrow"
+arrow.syntax = "io.arrow-kt:arrow-syntax:$versions.arrow"
+arrow.meta = "io.arrow-kt:arrow-meta:$versions.arrow"
+deps.arrow = arrow
 
 deps.svg = "com.caverock:androidsvg-aar:$versions.svg"
 deps.dexmaker = "com.linkedin.dexmaker:dexmaker-mockito:$versions.dexmaker"
@@ -200,13 +202,17 @@ deps.rxjava2 = "io.reactivex.rxjava2:rxjava:$versions.rxjava2"
 deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
+deps.dataBinding_compiler = "com.android.databinding:compiler:$versions.android_gradle_plugin"
 deps.ext_junit = "androidx.test.ext:junit:$versions.ext_junit"
 deps.threetenabp = "com.jakewharton.threetenabp:threetenabp:$versions.threetenabp"
+deps.markdown4j = "org.commonjava.googlecode.markdown4j:markdown4j:$versions.markdown4j"
+deps.calces = "gradle.plugin.com.tangpj.tools:component:$versions.calces"
+
 
 ext.deps = deps
 
 def build_versions = [:]
-build_versions.min_sdk = 15
+build_versions.min_sdk = 21
 build_versions.compile_sdk = 28
 build_versions.build_tools = "28.0.7"
 ext.build_versions = build_versions
@@ -229,5 +235,7 @@ static def addRepos(RepositoryHandler handler) {
     handler.maven { url 'https://jitpack.io' }
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     handler.maven { url "https://kotlin.bintray.com/kotlinx" }
+    handler.maven { url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+    handler.maven { url "https://plugins.gradle.org/m2/" }
 }
 ext.addRepos = this.&addRepos

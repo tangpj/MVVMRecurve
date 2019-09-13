@@ -1,23 +1,27 @@
 package com.tangpj.paging
 
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.paging.AsyncPagedListDiffer
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
-import com.tangpj.adapter.adapter.ModulesAdapter
-import com.tangpj.adapter.adapter.WRAP
+import com.tangpj.adapter.ModulesAdapter
+import com.tangpj.adapter.WRAP
 import com.tangpj.adapter.creator.*
+import java.lang.NullPointerException
 
 abstract class PagedItemCreator<E, Binding : ViewDataBinding>:
-        Creator,
+        Creator<Binding>,
         BindingView<E, Binding>{
 
-    private val mDiffer: AsyncPagedListDiffer<E>
+    private lateinit var  mDiffer: AsyncPagedListDiffer<E>
     private val creatorType: Int
+    private val diffConfig: AsyncDifferConfig<E>?
+    private val diffCallback: DiffUtil.ItemCallback<E>?
+
+    protected lateinit var mAdapter: ModulesAdapter
 
     private val mListener =
             AsyncPagedListDiffer.PagedListListener<E>{ previousList, currentList ->
@@ -30,17 +34,28 @@ abstract class PagedItemCreator<E, Binding : ViewDataBinding>:
     private var itemClickListener: ((view: View, e: E, creatorPosition: Int) -> Unit)? = null
 
 
-    constructor(aAdapter: ModulesAdapter, aCreatorType: Int = 0, aDiffCallback: DiffUtil.ItemCallback<E>) {
+    constructor(aCreatorType: Int = 0, aDiffCallback: DiffUtil.ItemCallback<E>) {
         creatorType = aCreatorType
-        mDiffer = AsyncPagedListDiffer<E>(aAdapter, aDiffCallback)
-        mDiffer.addPagedListListener(mListener)
+        diffCallback = aDiffCallback
+        diffConfig = null
     }
 
-    constructor(adapter: ModulesAdapter, aCreatorType: Int = 0, config: AsyncDifferConfig<E>) {
+    constructor(aCreatorType: Int = 0, config: AsyncDifferConfig<E>) {
         creatorType = aCreatorType
-        mDiffer = AsyncPagedListDiffer<E>(
-                AdapterListUpdateCallback(adapter), config)
+        diffConfig = config
+        diffCallback = null
+    }
+
+    override fun onBindCreator(adapter: ModulesAdapter) {
+        mAdapter = adapter
+        if (diffConfig != null){
+            mDiffer = AsyncPagedListDiffer<E>(
+                    AdapterListUpdateCallback(mAdapter), diffConfig)
+        }else if (diffCallback != null){
+            mDiffer = AsyncPagedListDiffer<E>(mAdapter, diffCallback)
+        }
         mDiffer.addPagedListListener(mListener)
+
     }
 
     fun setOnItemClickListener(listener: ((view: View, e: E, creatorPosition: Int) -> Unit)){
@@ -63,7 +78,7 @@ abstract class PagedItemCreator<E, Binding : ViewDataBinding>:
         if (getItemCount() == 0){
             return
         }
-        val e: E? = getItem(creatorPosition)
+        val e: E = getItem(creatorPosition) ?: throw NullPointerException("node is null")
         itemClickListener?.let { listener ->
             itemHolder.itemView.setOnClickListener {
                 e ?: return@setOnClickListener
@@ -72,7 +87,7 @@ abstract class PagedItemCreator<E, Binding : ViewDataBinding>:
         }
 
         onBindItemView(
-                itemHolder as RecurveViewHolder<Binding>,
+                itemHolder.binding as Binding,
                 e,
                 creatorPosition)
     }

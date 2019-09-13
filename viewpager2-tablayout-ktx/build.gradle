@@ -1,0 +1,14 @@
+apply from: "../support.gradle"
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+
+
+
+dependencies {
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.viewpager2
+    implementation deps.kotlin.stdlib_jdk8
+    implementation deps.kotlin.ktx
+    implementation deps.androidx.material
+
+}
