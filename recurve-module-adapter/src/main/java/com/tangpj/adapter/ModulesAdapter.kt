@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tangpj.adapter.adapter
+package com.tangpj.adapter
 
 import android.view.ViewGroup
 import androidx.annotation.IntDef
@@ -27,10 +27,10 @@ import com.tangpj.adapter.creator.RecurveViewHolder
 class ModulesAdapter
     : RecyclerView.Adapter<RecurveViewHolder<*>>() {
 
-    private var creatorList: MutableList<Creator>
+    private var creatorList: MutableList<Creator<*>>
             = mutableListOf()
 
-    fun setCreator(creatorList: MutableList<Creator>){
+    fun setCreator(creatorList: MutableList<Creator<*>>){
         checkedViewType {
             it.entries.forEach { entry ->
                 if ( entry.value.size > 1){
@@ -44,7 +44,8 @@ class ModulesAdapter
         notifyDataSetChanged()
     }
 
-    fun addCreator(creator: Creator){
+    fun addCreator(creator: Creator<*>){
+        creator.onBindCreator(this)
         checkedViewType{
             it[creator.getCreatorType()] != null
         }
@@ -52,7 +53,8 @@ class ModulesAdapter
         notifyModulesItemSetChange(creator)
     }
 
-    fun addCreator(index: Int, creator: Creator){
+    fun addCreator(index: Int, creator: Creator<*>){
+        creator.onBindCreator(adapter = this )
         checkedViewType{
             it[creator.getCreatorType()] != null
         }
@@ -62,8 +64,9 @@ class ModulesAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecurveViewHolder<*>{
         val viewTypeList = creatorList.groupBy { it.getCreatorItemViewTypeByViteType(viewType)}[viewType]
-        return viewTypeList?.first()?.onCreateItemViewHolder(parent, viewType)
-                ?: creatorList.first().onCreateItemViewHolder(parent, viewType)
+        val binding = viewTypeList?.first()?.onCreateItemBinding(parent, viewType)
+                ?: creatorList.first().onCreateItemBinding(parent, viewType)
+        return RecurveViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecurveViewHolder<*>, position: Int) {
@@ -85,44 +88,44 @@ class ModulesAdapter
         return -1
     }
 
-    fun notifyModulesItemSetChange(creator: Creator){
+    fun notifyModulesItemSetChange(creator: Creator<*>){
         notifyModulesItemRangeChange(creator ,0,creator.getItemCount())
     }
 
-    fun notifyModulesItemRangeChange(creator: Creator, aimsStartPosition: Int, itemCount: Int){
+    fun notifyModulesItemRangeChange(creator: Creator<*>, aimsStartPosition: Int, itemCount: Int){
         val startPosition = getModulesStartPosition(creator)
         val notifyStartPos = startPosition + aimsStartPosition
         notifyItemRangeChanged(notifyStartPos, notifyStartPos + itemCount)
     }
 
-    fun notifyModulesItemChanged(creator: Creator, aimsPosition: Int){
+    fun notifyModulesItemChanged(creator: Creator<*>, aimsPosition: Int){
         val startPosition = getModulesStartPosition(creator)
         notifyItemChanged(startPosition + aimsPosition)
     }
 
-    fun notifyModulesItemInserted(creator: Creator, aimsPosition: Int){
+    fun notifyModulesItemInserted(creator: Creator<*>, aimsPosition: Int){
         val startPosition = getModulesStartPosition(creator)
         notifyItemInserted(startPosition + aimsPosition)
     }
 
-    fun notifyModulesItemRangeInserted(creator: Creator, aimsStartPosition: Int, itemCount: Int){
+    fun notifyModulesItemRangeInserted(creator: Creator<*>, aimsStartPosition: Int, itemCount: Int){
         val startPosition = getModulesStartPosition(creator)
         val notifyStartPos = startPosition + aimsStartPosition
         notifyItemRangeInserted(notifyStartPos, notifyStartPos + itemCount)
     }
 
-    fun notifyModulesItemRemoved(creator: Creator, aimsPosition: Int){
+    fun notifyModulesItemRemoved(creator: Creator<*>, aimsPosition: Int){
         val startPosition = getModulesStartPosition(creator)
         notifyItemRemoved(startPosition + aimsPosition)
     }
 
-    fun notifyModulesItemRangeRemoved(creator: Creator, aimsStartPosition: Int, aimsEndPosition: Int){
+    fun notifyModulesItemRangeRemoved(creator: Creator<*>, aimsStartPosition: Int, aimsEndPosition: Int){
         val startPosition = getModulesStartPosition(creator)
         notifyItemRangeRemoved(startPosition + aimsStartPosition
                 , startPosition + aimsEndPosition)
     }
 
-    private fun getModulesStartPosition(creator: Creator): Int{
+    private fun getModulesStartPosition(creator: Creator<*>): Int{
         val creatorPosition = creatorList.indexOf(creator)
         var startPosition = 0
         creatorList.forEachIndexed { index, iCreator ->
@@ -159,11 +162,9 @@ class ModulesAdapter
         return resultPosition
     }
 
-    private fun  checkedViewType(checkFun: (Map<Int, List<Creator>>) -> Boolean){
+    private fun  checkedViewType(checkFun: (Map<Int, List<Creator<*>>>) -> Boolean){
         val creatorMap = creatorList.groupBy { it.getCreatorType() }
-        if(checkFun.invoke(creatorMap)){
-            throw IllegalArgumentException("Creator CreatorType can't not equal")
-        }
+        require(!checkFun.invoke(creatorMap)) { "Creator CreatorType can't not equal" }
     }
 
 }

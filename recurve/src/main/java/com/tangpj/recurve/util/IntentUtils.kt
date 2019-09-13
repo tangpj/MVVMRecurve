@@ -29,7 +29,7 @@ fun openInCustomTabOrBrowser(context: Context?, uri: Uri) {
     context?.let {
         val pkg = CustomTabsHelper.getPackageNameToUse(it)
         if (pkg != null) {
-            val color = resolveColor(it, R.attr.colorPrimary)
+            val color = getColorByAttr(it, R.attr.colorPrimary)
             val i = CustomTabsIntent.Builder()
                     .setToolbarColor(color)
                     .build()

@@ -15,48 +15,53 @@
  */
 package com.tangpj.recurve.glide
 
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.RequestManager
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import jp.wasabeef.glide.transformations.CropSquareTransformation
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 
 /**
  * Created by tang on 2018/3/7.
  * Binding adapters that work with a fragment instance.
  */
-class ImageBindingAdapters constructor(
-        private val requestManager: RequestManager
-        , private val placeholderRes: Int = 0
-        , private val fallbackRes: Int = 0
-        , private val errorRes: Int = 0) {
-
-    @BindingAdapter("imageUrl")
-    fun bindImage(imageView: ImageView, url: String) {
-        requestManager.load(url)
-                .apply(RequestOptions().default(placeholderRes,fallbackRes,errorRes))
-                .into(imageView)
-    }
-
-    @BindingAdapter("imageCircle")
-    fun bindImageCircle(imageView: ImageView, url: String){
-        requestManager.load(url)
-                .apply(RequestOptions().circle(placeholderRes,fallbackRes,errorRes))
-                .into(imageView)
-    }
-
-    @BindingAdapter("imageSquare")
-    fun bindImageSquare(imageView: ImageView, url: String){
-        requestManager.load(url)
-                .apply(RequestOptions().square(placeholderRes,fallbackRes,errorRes))
-                .into(imageView)
-    }
-
-    @BindingAdapter("imageRounded")
-    fun bindImageRounded(imageView: ImageView, url: String){
-        requestManager.load(url)
-                .apply(RequestOptions().rounded(placeholderRes,fallbackRes,errorRes))
-                .into(imageView)
-    }
-
+@BindingAdapter(value = [
+    "imageUrl",
+    "shape",
+    "radius",
+    "radiusMargin",
+    "placeHolderSrc", "fallbackSrc", "errorSrc"],requireAll = false)
+fun ImageView.bindImage(
+        url: String?,
+        shape: String?,
+        radius: Int,
+        radiusMargin: Int,
+        placeholderRes: Drawable?,
+        fallbackRes: Drawable?,
+        errorRes: Drawable?) {
+    Glide.with(this).load(url).apply {
+        apply(RequestOptions().apply {
+            placeholder(placeholderRes)
+            fallback(fallbackRes)
+            error(errorRes)
+          
+        })
+        if (radius > 0){
+            apply(RequestOptions.bitmapTransform(RoundedCornersTransformation(radius,radiusMargin)))
+        }
+        if(shape == Shape.SQUARE.value){
+            apply(RequestOptions.bitmapTransform(CropSquareTransformation()))
+        }
+    }.into(this)
 }
+
+enum class Shape(val value: String){
+    CIRCLE("circle"),
+    SQUARE("square"),
+    Normal("normal")
+}
+
+

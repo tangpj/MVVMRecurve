@@ -36,7 +36,7 @@ interface RecyclerViewInit{
      * @createTime: 2019/1/17 21:07
      * @param creator Item内容创建器
      */
-    fun addItemCreator(creator: Creator)
+    fun addItemCreator(creator: Creator<*>)
 
     /**
      * 添加内容创建器到指定位置
@@ -45,7 +45,7 @@ interface RecyclerViewInit{
      * @author: tpj
      * @createTime: 2019/1/17 21:08
      */
-    fun addItemCreator(index: Int, creator: Creator)
+    fun addItemCreator(index: Int, creator: Creator<*>)
 
     fun setLayoutManager(lm: RecyclerView.LayoutManager)
 

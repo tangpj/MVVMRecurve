@@ -29,7 +29,6 @@ dependencies {
 
     kapt deps.dagger.compiler
     kapt deps.dagger.android_support_compiler
-
 }
 repositories {
     mavenCentral()

@@ -21,7 +21,7 @@ import androidx.annotation.ColorInt
 
 
 @ColorInt
-fun resolveColor(context: Context, @AttrRes styledAttributeId: Int): Int {
+fun getColorByAttr(context: Context, @AttrRes styledAttributeId: Int): Int {
     val a = context.obtainStyledAttributes(intArrayOf(styledAttributeId))
     val color = a.getColor(0, 0)
     a.recycle()

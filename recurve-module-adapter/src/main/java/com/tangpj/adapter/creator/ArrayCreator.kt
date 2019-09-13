@@ -23,7 +23,6 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.tangpj.adapter.R
-import com.tangpj.adapter.adapter.ModulesAdapter
 import com.tangpj.adapter.databinding.ItemTextBinding
 
 /**
@@ -37,33 +36,29 @@ import com.tangpj.adapter.databinding.ItemTextBinding
  * @param creatorType adapter中Item的类型
  * 当T的toString不满足需求时可以通过转换器来定义转换规则
  */
-class ArrayCreator<E>(adapter: ModulesAdapter
-                      , @LayoutRes private val layoutId: Int = R.layout.item_text
-                      , @IdRes private val viewId: Int = R.id.text1
-                      , creatorType: Int = 0
-                      , private val stringConverter: ((E) -> String)? = null)
-    : ItemCreator<E, ViewDataBinding>(adapter,creatorType) {
+class ArrayCreator<E>(
+        @LayoutRes private val layoutId: Int = R.layout.item_text,
+        @IdRes private val viewId: Int = R.id.text1,
+        creatorType: Int = 0,
+        private val stringConverter: ((E) -> String)? = null)
+    : ItemCreator<E, ViewDataBinding>(creatorType) {
 
-    override fun onCreateItemViewHolder(parent: ViewGroup, viewType: Int): RecurveViewHolder<*> {
+    override fun onCreateItemBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
         val inflater =  LayoutInflater.from((parent.context))
         val binding = DataBindingUtil.bind<ViewDataBinding>(
                 inflater.inflate(layoutId, parent, false))
-        return if (binding != null)
-            RecurveViewHolder(binding)
-        else
-            //找不到直接创建默认ViewBinding
-            RecurveViewHolder(ItemTextBinding.inflate(inflater, parent, false))
+        return binding ?: ItemTextBinding.inflate(inflater, parent, false)
     }
 
     override fun onBindItemView(
-            itemHolder: RecurveViewHolder<ViewDataBinding>, e: E?, inCreatorPosition: Int) {
+            binding: ViewDataBinding, e: E, inCreatorPosition: Int) {
         e?.let { val text = stringConverter?.invoke(it) ?: it.toString()
-            itemHolder.itemView.findViewById<TextView>(viewId)?.text = text
+            binding.root.findViewById<TextView>(viewId)?.text = text
         }
     }
 
 }
 
-fun stringCreator(adapter: ModulesAdapter,creatorType: Int = 0): ArrayCreator<String>{
-    return ArrayCreator(adapter, creatorType = creatorType)
+fun stringCreator(creatorType: Int = 0): ArrayCreator<String>{
+    return ArrayCreator(creatorType = creatorType)
 }
