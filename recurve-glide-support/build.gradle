@@ -18,4 +18,6 @@ dependencies {
         exclude group: 'com.android.support'
     }
 
+    kapt deps.dataBinding_compiler
+
 }
