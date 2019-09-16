@@ -35,12 +35,41 @@ class CollapsingToolbarLayoutExt{
 
     var expandedTitleGravity: String? = ""
 
+    var expandedTitleMargin = 0F
+    var expandedTitleMarginStart = 0F
+    var expandedTitleMarginTop = 0F
+    var expandedTitleMarginEnd = 0F
+    var expandedTitleMarginBottom = 0F
+
     var collapsingCreator
             : ((inflater: LayoutInflater, CollapsingToolbarLayout) -> View)? = null
 
     fun collapsingView(collapsingCreator
                          : ((inflater: LayoutInflater, CollapsingToolbarLayout) -> View)?){
         this.collapsingCreator = collapsingCreator
+    }
+
+    internal fun configExpandedTitleMargin(collapsingToolbarLayout: CollapsingToolbarLayout){
+        when{
+            expandedTitleMargin > 0 -> collapsingToolbarLayout.setExpandedTitleMargin(
+                    expandedTitleMargin.toInt(),
+                    expandedTitleMargin.toInt(),
+                    expandedTitleMargin.toInt(),
+                    expandedTitleMargin.toInt()
+            )
+
+            expandedTitleMarginStart > 0 ->
+                collapsingToolbarLayout.expandedTitleMarginStart = expandedTitleMarginStart.toInt()
+
+            expandedTitleMarginTop > 0 ->
+                collapsingToolbarLayout.expandedTitleMarginTop = expandedTitleMarginTop.toInt()
+
+            expandedTitleMarginEnd > 0 ->
+                collapsingToolbarLayout.expandedTitleMarginEnd = expandedTitleMarginEnd.toInt()
+
+            expandedTitleMarginBottom > 0 ->
+                collapsingToolbarLayout.expandedTitleMarginBottom = expandedTitleMarginBottom.toInt()
+        }
     }
 
 }

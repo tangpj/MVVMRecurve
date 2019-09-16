@@ -19,12 +19,9 @@ import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.NavigationRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
-import androidx.navigation.createGraph
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.tangpj.recurve.R
 import com.tangpj.recurve.databinding.ActivityRecurveBinding
@@ -36,7 +33,6 @@ import com.tangpj.recurve.ui.creator.RecurveAppbarCreator
 import com.tangpj.recurve.ui.creator.RecurveContentCreate
 import com.tangpj.recurve.ui.creator.ext.AppbarExt
 import dagger.android.support.DaggerAppCompatActivity
-import java.lang.NullPointerException
 
 abstract class RecurveDaggerActivity:
         DaggerAppCompatActivity(), ContentCreate {
@@ -50,13 +46,13 @@ abstract class RecurveDaggerActivity:
         super.onCreate(savedInstanceState)
         activityRecurveBinding = DataBindingUtil
                 .setContentView(this, R.layout.activity_recurve)
+        activityRecurveBinding.lifecycleOwner = this
         contentCreate = RecurveContentCreate(activityRecurveBinding)
         appbarCreator = RecurveAppbarCreator(this, activityRecurveBinding)
     }
 
-    final override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
+    override fun <Binding : ViewDataBinding> initContentBinding(@LayoutRes layoutId: Int): Binding
             = contentCreate.initContentBinding(layoutId)
-
 
     @JvmOverloads
     fun initContentFragment(
@@ -64,7 +60,6 @@ abstract class RecurveDaggerActivity:
             @LayoutRes layoutId: Int = R.layout.fragment_navigation,
             @IdRes resId: Int = R.id.fragment_container): NavController =
             initContentFragment<FragmentNavigationBinding>(graphResId, layoutId, resId, null)
-
 
     fun <Binding : ViewDataBinding> initContentFragment(
             @NavigationRes graphResId: Int,
@@ -75,7 +70,7 @@ abstract class RecurveDaggerActivity:
         val binding: Binding = initContentBinding(layoutId)
         initBinding?.invoke(binding)
         val fragment = NavHostFragment.create(graphResId)
-        supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commitNow()
+        supportFragmentManager.beginTransaction().add(resId, fragment).commitNow()
         return fragment.navController
 
     }

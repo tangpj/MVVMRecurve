@@ -112,6 +112,9 @@ class RecurveAppbarCreator(
                 getFlag(collapsingToolbarLayoutExt.expandedTitleGravity) {
                     getExpandedTitleGravityFlag(it) }
 
+        collapsingToolbarLayoutExt.configExpandedTitleMargin(
+                collapsingBinding.collapsingToolbarLayout)
+
         activity.setSupportActionBar(toolbar)
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(appbarExt.showHomeAsUp)
 
