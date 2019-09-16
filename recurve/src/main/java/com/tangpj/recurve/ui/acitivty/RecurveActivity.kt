@@ -48,6 +48,7 @@ abstract class RecurveActivity:
         super.onCreate(savedInstanceState)
         activityRecurveBinding = DataBindingUtil
                 .setContentView(this, R.layout.activity_recurve)
+        activityRecurveBinding.lifecycleOwner = this
         contentCreate = RecurveContentCreate(activityRecurveBinding)
         appbarCreator = RecurveAppbarCreator(this, activityRecurveBinding)
     }
@@ -61,19 +62,19 @@ abstract class RecurveActivity:
             @NavigationRes graphResId: Int,
             @LayoutRes layoutId: Int = R.layout.fragment_navigation,
             @IdRes resId: Int = R.id.fragment_container): NavController =
-            initContentFragment<ViewDataBinding>(graphResId, layoutId, null)
-
+            initContentFragment<FragmentNavigationBinding>(graphResId, layoutId, resId, null)
 
     fun <Binding : ViewDataBinding> initContentFragment(
             @NavigationRes graphResId: Int,
             @LayoutRes layoutId: Int = R.layout.fragment_navigation,
-            initBinding: ((Binding) -> Unit)? = null ): NavController{
+            @IdRes resId: Int = R.id.fragment_container,
+            initBinding: ((Binding) -> Unit)? = null ): NavController {
 
         val binding: Binding = initContentBinding(layoutId)
         initBinding?.invoke(binding)
         val fragment = NavHostFragment.create(graphResId)
+        supportFragmentManager.beginTransaction().add(resId, fragment).commitNow()
         return fragment.navController
-
     }
 
     fun appbar(init: AppbarExt.() -> Unit){

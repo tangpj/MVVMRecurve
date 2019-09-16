@@ -17,6 +17,7 @@ package com.tangpj.recurve.glide
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -39,15 +40,21 @@ fun ImageView.bindImage(
         shape: String?,
         radius: Int,
         radiusMargin: Int,
-        placeholderRes: Drawable?,
-        fallbackRes: Drawable?,
-        errorRes: Drawable?) {
+        @DrawableRes
+        placeholderRes: Int?,
+        @DrawableRes
+        fallbackRes: Int?,
+        @DrawableRes
+        errorRes: Int?) {
     Glide.with(this).load(url).apply {
         apply(RequestOptions().apply {
-            placeholder(placeholderRes)
-            fallback(fallbackRes)
-            error(errorRes)
-          
+            when{
+                placeholderRes != null -> placeholder(context.getDrawable(placeholderRes))
+                fallbackRes != null -> fallback(context.getDrawable(fallbackRes))
+                errorRes != null -> error(context.getDrawable(errorRes))
+            }
+
+
         })
         if (radius > 0){
             apply(RequestOptions.bitmapTransform(RoundedCornersTransformation(radius,radiusMargin)))
