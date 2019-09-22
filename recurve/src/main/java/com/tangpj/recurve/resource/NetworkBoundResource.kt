@@ -19,9 +19,9 @@ import androidx.lifecycle.LiveData
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MediatorLiveData
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.tangpj.recurve.util.io
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  *
@@ -61,7 +61,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
         }
     }
 
-    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
+    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) = runBlocking{
         val apiResponse = createCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         result.addSource(dbSource) { newData ->
@@ -72,25 +72,15 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             result.removeSource(dbSource)
             when (response) {
                 is ApiSuccessResponse -> {
-
-                    Observable.just(response)
-                            .map { saveCallResult(processResponse(it)) }
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                result.addSource(loadFromDb()) { newData
-                                    -> setValue(Resource.success(newData))
-                                }
-                            }
+                    io({ saveCallResult(processResponse(response)) })
+                    result.addSource(loadFromDb()){
+                        setValue(Resource.success(it))
+                    }
                 }
                 is ApiEmptyResponse -> {
-                    Observable.just(response)
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                result.addSource(loadFromDb()) { newData
-                                    -> setValue(Resource.success(newData))
-                                }
-                            }
+                    result.addSource(loadFromDb()) { newData
+                        -> setValue(Resource.success(newData))
+                    }
                 }
                 is ApiErrorResponse -> {
                     onFetchFailed()
