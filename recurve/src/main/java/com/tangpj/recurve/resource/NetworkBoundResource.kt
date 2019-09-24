@@ -72,10 +72,11 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             result.removeSource(dbSource)
             when (response) {
                 is ApiSuccessResponse -> {
-                    io({ saveCallResult(processResponse(response)) })
                     result.addSource(loadFromDb()){
                         setValue(Resource.success(it))
                     }
+                    io({ saveCallResult(processResponse(response)) })
+
                 }
                 is ApiEmptyResponse -> {
                     result.addSource(loadFromDb()) { newData
