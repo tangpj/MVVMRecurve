@@ -13,7 +13,7 @@ import kotlinx.coroutines.*
 fun<R> io(action: () -> R, result: ((R) -> Unit)? = null) = runBlocking{
     GlobalScope.launch(Dispatchers.Main){
         val r = GlobalScope.async(Dispatchers.IO) {
-            return@async action.invoke()
+            return@async action()
         }.await()
         result?.invoke(r)
     }

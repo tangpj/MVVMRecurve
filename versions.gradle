@@ -11,7 +11,7 @@ versions.arch_core = "2.0.0-alpha1"
 versions.lifecycle = "2.0.0"
 versions.paging = "2.1.0"
 versions.androidx = "1.0.0"
-versions.room = "2.1.0-alpha06"
+versions.room = "2.2.0-rc01"
 versions.viewpager2 = "1.0.0-beta03"
 versions.flexbox_layout = "1.1.0"
 
