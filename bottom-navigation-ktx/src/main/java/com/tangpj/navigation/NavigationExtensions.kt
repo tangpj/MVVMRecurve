@@ -23,6 +23,8 @@ import android.util.SparseIntArray
 import androidx.core.util.containsKey
 import androidx.core.util.forEach
 import androidx.core.util.set
+import androidx.core.view.forEach
+import androidx.core.view.forEachIndexed
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -48,11 +50,15 @@ fun BottomNavigationView.setupWithNavController(
     // Result. Mutable live data with the selected controlled
     val selectedNavController = MutableLiveData<NavController>()
 
+    val itemIdToGraphId = SparseIntArray()
+
     //record first init
     val firstInitSet = SparseIntArray(navGraphIds.size)
 
 
     var firstFragmentGraphId = 0
+
+    menu.forEachIndexed { index, item ->  itemIdToGraphId[item.itemId] = navGraphIds[index]}
 
     // First create a NavHostFragment for each NavGraph ID
     navGraphIds.forEachIndexed { index, navGraphId ->
@@ -97,7 +103,7 @@ fun BottomNavigationView.setupWithNavController(
         if (fragmentManager.isStateSaved) {
             false
         } else {
-            val newlySelectedItemTag = graphIdToTagMap[item.itemId]
+            val newlySelectedItemTag = graphIdToTagMap[itemIdToGraphId[item.itemId]]
             if (selectedItemTag != newlySelectedItemTag) {
                 // Pop everything above the first fragment (the "fixed start destination")
                 fragmentManager.popBackStack(firstFragmentTag,
@@ -140,7 +146,7 @@ fun BottomNavigationView.setupWithNavController(
     }
 
     // Optional: on item reselected, pop back stack to the destination of the graph
-    setupItemReselected(graphIdToTagMap, fragmentManager)
+    setupItemReselected(graphIdToTagMap, itemIdToGraphId, fragmentManager)
 
     // Handle deep link
     setupDeepLinks(navGraphIds, fragmentManager, containerId, intent)
@@ -197,10 +203,11 @@ private fun BottomNavigationView.setupDeepLinks(
 
 private fun BottomNavigationView.setupItemReselected(
         graphIdToTagMap: SparseArray<String>,
+        itemIdToGraphId: SparseIntArray,
         fragmentManager: FragmentManager
 ) {
     setOnNavigationItemReselectedListener { item ->
-        val newlySelectedItemTag = graphIdToTagMap[item.itemId]
+        val newlySelectedItemTag = graphIdToTagMap[itemIdToGraphId[item.itemId]]
         val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
                 as NavHostFragment
         val navController = selectedFragment.navController
