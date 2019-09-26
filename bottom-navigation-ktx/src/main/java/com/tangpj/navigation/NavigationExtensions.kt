@@ -58,8 +58,6 @@ fun BottomNavigationView.setupWithNavController(
 
     var firstFragmentGraphId = 0
 
-    menu.forEachIndexed { index, item ->  itemIdToGraphId[item.itemId] = navGraphIds[index]}
-
     // First create a NavHostFragment for each NavGraph ID
     navGraphIds.forEachIndexed { index, navGraphId ->
         val fragmentTag = getFragmentTag(index)
@@ -72,8 +70,11 @@ fun BottomNavigationView.setupWithNavController(
                 containerId
         )
 
+
         // Obtain its id
         val graphId = navHostFragment.navController.graph.id
+        itemIdToGraphId[menu.getItem(index).itemId] = graphId
+
 
         if (index == 0) {
             firstFragmentGraphId = graphId
@@ -83,7 +84,7 @@ fun BottomNavigationView.setupWithNavController(
         graphIdToTagMap[graphId] = fragmentTag
 
         // Attach or detach nav host fragment depending on whether it's the selected item.
-        if (this.selectedItemId == graphId) {
+        if (itemIdToGraphId[this.selectedItemId] == graphId) {
             // Update livedata with the selected graph
             selectedNavController.value = navHostFragment.navController
             attachNavHostFragment(fragmentManager, navHostFragment, index == 0)
@@ -93,7 +94,7 @@ fun BottomNavigationView.setupWithNavController(
     }
 
     // Now connect selecting an item with swapping Fragments
-    var selectedItemTag = graphIdToTagMap[this.selectedItemId]
+    var selectedItemTag = graphIdToTagMap[itemIdToGraphId[this.selectedItemId]]
     val firstFragmentTag = graphIdToTagMap[firstFragmentGraphId]
     var isOnFirstFragment = selectedItemTag == firstFragmentTag
 
@@ -149,12 +150,12 @@ fun BottomNavigationView.setupWithNavController(
     setupItemReselected(graphIdToTagMap, itemIdToGraphId, fragmentManager)
 
     // Handle deep link
-    setupDeepLinks(navGraphIds, fragmentManager, containerId, intent)
+    setupDeepLinks(navGraphIds, itemIdToGraphId, fragmentManager, containerId, intent)
 
     // Finally, ensure that we update our BottomNavigationView when the back stack changes
     fragmentManager.addOnBackStackChangedListener {
         if (!isOnFirstFragment && !fragmentManager.isOnBackStack(firstFragmentTag)) {
-            this.selectedItemId = firstFragmentGraphId
+            itemIdToGraphId[this.selectedItemId] = firstFragmentGraphId
         }
 
         // Reset the graph if the currentDestination is not valid (happens when the back
@@ -179,6 +180,7 @@ fun BottomNavigationView.setupWithNavController(
 
 private fun BottomNavigationView.setupDeepLinks(
         navGraphIds: List<Int>,
+        itemIdToGraphId: SparseIntArray,
         fragmentManager: FragmentManager,
         containerId: Int,
         intent: Intent
@@ -196,7 +198,7 @@ private fun BottomNavigationView.setupDeepLinks(
         // Handle Intent
         if (navHostFragment.navController.handleDeepLink(intent)
                 && selectedItemId != navHostFragment.navController.graph.id) {
-            this.selectedItemId = navHostFragment.navController.graph.id
+            itemIdToGraphId[this.selectedItemId] = navHostFragment.navController.graph.id
         }
     }
 }
