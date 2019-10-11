@@ -20,4 +20,9 @@ dependencies {
 
     kapt deps.dataBinding_compiler
 
+    androidTestImplementation deps.junit
+    androidTestImplementation deps.atsl.runner
+    androidTestImplementation deps.espresso.core
+    androidTestImplementation deps.ext_junit
+
 }
