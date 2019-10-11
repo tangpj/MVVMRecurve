@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tangpj.recurve.retrofit2" />
+<manifest package="com.recurve.retrofit2" />

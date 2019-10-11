@@ -79,7 +79,10 @@ dependencies {
     kapt deps.room.compiler
     kapt deps.lifecycle.compiler
     api project(':recurve-module-adapter')
-
+    androidTestImplementation deps.junit
+    androidTestImplementation deps.atsl.runner
+    androidTestImplementation deps.espresso.core
+    androidTestImplementation deps.ext_junit
 
 }
 repositories {
