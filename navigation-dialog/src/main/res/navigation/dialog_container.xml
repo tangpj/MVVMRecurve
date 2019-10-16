@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/dialog_refs"
+    android:id="@+id/nav_dialog"
+    tools:ignore="UnusedNavigation">
+
+
+    <dialog android:id="@+id/dialog_refs"
+        android:name="com.recurve.navigation.dialog.WrapperDialogFragment"
+        >
+
+        <argument android:name="graphId"
+            app:argType="integer"/>
+
+        <argument android:name="width"
+            android:defaultValue="0"
+            app:argType="integer"
+            />
+
+        <argument android:name="height"
+            android:defaultValue="0"
+            app:argType="integer"
+            />
+
+        <argument android:name="args"
+            app:argType="android.os.Bundle"
+            app:nullable="true"
+            android:defaultValue="@null"
+            />
+
+    </dialog>
+
+</navigation>
