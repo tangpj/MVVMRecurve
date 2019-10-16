@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tangpj.adapter" />
+<manifest package="com.recurve.adapter" />
