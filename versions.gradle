@@ -11,7 +11,7 @@ versions.arch_core = "2.0.0-alpha1"
 versions.lifecycle = "2.0.0"
 versions.paging = "2.1.0"
 versions.androidx = "1.0.0"
-versions.room = "2.1.0-alpha06"
+versions.room = "2.2.0-rc01"
 versions.viewpager2 = "1.0.0-beta03"
 versions.flexbox_layout = "1.1.0"
 
@@ -31,7 +31,7 @@ versions.constraint_layout = "1.1.0"
 versions.glide = "4.9.0"
 versions.glide_transformations = "3.3.0"
 versions.timber = "4.7.1"
-versions.android_gradle_plugin = '3.6.0-alpha11'
+versions.android_gradle_plugin = '3.6.0-beta01'
 versions.rxjava2 = "2.2.1"
 versions.rx_android = "2.1.0"
 versions.atsl_runner = "1.1.0-alpha1"
@@ -212,7 +212,7 @@ deps.calces = "gradle.plugin.com.tangpj.tools:component:$versions.calces"
 ext.deps = deps
 
 def build_versions = [:]
-build_versions.min_sdk = 21
+build_versions.min_sdk = 15
 build_versions.compile_sdk = 28
 build_versions.build_tools = "28.0.7"
 ext.build_versions = build_versions
