@@ -26,16 +26,17 @@ import com.recurve.core.ui.creator.LoadingCreator
 import com.recurve.core.ui.creator.RecurveLoadingCreator
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
 
 open class RecurveDaggerFragment
-    :  Fragment(), HasSupportFragmentInjector, LoadingCreator by RecurveLoadingCreator() {
+    :  Fragment(), HasAndroidInjector, LoadingCreator by RecurveLoadingCreator() {
+
 
     @Inject
-    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Any>
 
     open fun onCreateBinding(inflater: LayoutInflater,
                                  container: ViewGroup?,
@@ -59,5 +60,6 @@ open class RecurveDaggerFragment
 
 
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment>? = childFragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> = childFragmentInjector
+
 }

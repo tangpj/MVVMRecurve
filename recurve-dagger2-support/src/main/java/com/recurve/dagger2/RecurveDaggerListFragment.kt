@@ -31,17 +31,16 @@ import com.recurve.core.ui.creator.RecurveLoadingCreator
 import com.recurve.core.ui.creator.RecyclerViewInit
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
-
 
 open class RecurveDaggerListFragment
-    : Fragment(), HasSupportFragmentInjector, LoadingCreator by RecurveLoadingCreator(), RecyclerViewInit {
+    : Fragment(), HasAndroidInjector, LoadingCreator by RecurveLoadingCreator(), RecyclerViewInit {
 
     lateinit var adapter : ModulesAdapter
     private var lm: RecyclerView.LayoutManager? = null
 
-    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Any>
 
     final override fun onCreateView(inflater: LayoutInflater,
                                     container: ViewGroup?,
@@ -85,6 +84,5 @@ open class RecurveDaggerListFragment
         this.lm = lm
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
-
+    override fun androidInjector(): AndroidInjector<Any> = childFragmentInjector
 }
