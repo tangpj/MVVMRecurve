@@ -14,6 +14,7 @@ class WrapperDialogFragment : DialogFragment(){
 
     private var navHostFragment = MutableLiveData<NavHostFragment>()
     private lateinit var arg : WrapperDialogFragmentArgs
+    private var currentNavId = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         arguments?.let {
@@ -22,9 +23,9 @@ class WrapperDialogFragment : DialogFragment(){
             val binding =
                     DataBindingUtil.inflate<ViewDataBinding>(inflater, layoutId, container, false)
             val fragment = NavHostFragment.create(arg.graphId, arg.args)
+
             childFragmentManager.beginTransaction().add(R.id.nav_host_container, fragment)
                     .setPrimaryNavigationFragment(fragment).commitNow()
-            navHostFragment.value = fragment
             return binding.root
         }
         return super.onCreateView(inflater, container, savedInstanceState)
