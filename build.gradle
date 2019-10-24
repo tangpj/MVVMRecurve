@@ -13,13 +13,16 @@ buildscript {
         classpath deps.kotlin.plugin
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         classpath deps.navigation.safe_args_plugin
-
+        classpath 'com.novoda:bintray-release:0.9'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$deps.versions.kotlin"
     }
 
+}
 
+plugins {
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 allprojects {
@@ -31,8 +34,22 @@ allprojects {
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
     }
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        options.addStringOption('charSet', 'UTF-8')
+    }
+
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext{
+    libraryName = 'MvvmRecurve'
+    artifact = 'recurve.core'
+    bintrayName = 'recurve.core'
+    libraryDescription = 'android mvvm development framework, recurve core'
+
 }

@@ -1,0 +1,38 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+version = "1.0.0-alpha01"
+
+
+ext {
+    bintrayRepo = 'Recurve'
+
+    publishedGroupId = 'com.recurve'
+
+    siteUrl = 'https://github.com/Tangpj/MVVMRecurve'
+    gitUrl = 'https://github.com/Tangpj/MVVMRecurve'
+
+    libraryVersion = this.version
+
+    developerId = 'tangpj'
+    developerName = 'tangpj'
+    developerEmail = 'developertpj@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: '../install.gradle'
+apply from: '../publish.gradle'
+
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        //author true
+        version true
+        title 'A LibSDK Support For Android'
+    }
+}
+
