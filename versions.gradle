@@ -7,6 +7,7 @@ ext.deps = [:]
 def deps = [:]
 
 def versions = [:]
+versions.recurve = "1.0.0-alpha01"
 versions.arch_core = "2.0.0-alpha1"
 versions.lifecycle = "2.0.0"
 versions.paging = "2.1.0"
@@ -31,7 +32,7 @@ versions.constraint_layout = "1.1.0"
 versions.glide = "4.9.0"
 versions.glide_transformations = "3.3.0"
 versions.timber = "4.7.1"
-versions.android_gradle_plugin = '3.6.0-beta01'
+versions.android_gradle_plugin = '3.6.0-beta02'
 versions.rxjava2 = "2.2.1"
 versions.rx_android = "2.1.0"
 versions.atsl_runner = "1.1.0-alpha1"
