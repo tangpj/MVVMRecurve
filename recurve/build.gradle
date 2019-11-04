@@ -80,7 +80,7 @@ dependencies {
     kapt deps.room.compiler
     kapt deps.lifecycle.compiler
     api project(':recurve-module-adapter')
-    androidTestImplementation deps.junit
+    testImplementation deps.junit
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.espresso.core
     androidTestImplementation deps.ext_junit
@@ -92,16 +92,10 @@ publish {
     groupId = 'com.recurve'
     artifactId = 'recurve.core'
     publishVersion = deps.versions.recurve
-    desc = 'An android mvvm development framework'
+    desc = 'android mvvm development framework, recurve core'
     website = 'https://github.com/Tangpj/MVVMRecurve'
 }
 
 repositories {
     mavenCentral()
-}
-ext{
-    libraryName = 'MvvmRecurve'
-    artifact = 'recurve.core'
-    bintrayName = 'recurve.core'
-    libraryDescription = 'android mvvm development framework, recurve core'
 }

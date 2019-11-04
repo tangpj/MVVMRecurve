@@ -2,6 +2,7 @@ apply from: "../support.gradle"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
 
@@ -20,4 +21,13 @@ dependencies {
     implementation deps.androidx.appcompat
     implementation deps.androidx.recyclerView
     implementation deps.kotlin.stdlib_jdk8
+}
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'recurve-module-adapter'
+    publishVersion = deps.versions.recurve
+    desc = 'modules recycler adapter'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }

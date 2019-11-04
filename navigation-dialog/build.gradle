@@ -1,6 +1,9 @@
 apply from: "../support.gradle"
-apply plugin: 'kotlin-android'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.novoda.bintray-release'
 
 android{
     dataBinding{
@@ -17,4 +20,13 @@ dependencies {
     implementation  deps.navigation.fragment
     implementation deps.navigation.runtime
     implementation deps.navigation.ui_ktx
+}
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'navigation-dialog'
+    publishVersion = deps.versions.recurve
+    desc = 'navigation dialog container'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }

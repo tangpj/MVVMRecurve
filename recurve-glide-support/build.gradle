@@ -1,6 +1,7 @@
 apply from: "../support.gradle"
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     dataBinding{
@@ -25,4 +26,13 @@ dependencies {
     androidTestImplementation deps.espresso.core
     androidTestImplementation deps.ext_junit
 
+}
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'recurve-glide-support'
+    publishVersion = deps.versions.recurve
+    desc = 'recurve glide support'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }

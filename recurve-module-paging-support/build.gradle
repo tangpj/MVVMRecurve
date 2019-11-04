@@ -2,6 +2,7 @@ apply from: "../support.gradle"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
 
@@ -13,7 +14,6 @@ android {
 
 dependencies {
 
-
     implementation deps.androidx.appcompat
     implementation deps.androidx.recyclerView
     implementation deps.paging.runtime
@@ -22,4 +22,13 @@ dependencies {
     implementation deps.kotlin.ktx
     implementation project(":recurve")
     implementation project(":recurve-module-adapter")
+}
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'recurve-module-paging-support'
+    publishVersion = deps.versions.recurve
+    desc = 'recurve paging support'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }

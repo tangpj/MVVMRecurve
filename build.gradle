@@ -21,10 +21,6 @@ buildscript {
 
 }
 
-plugins {
-    id "com.jfrog.bintray" version "1.8.4"
-}
-
 allprojects {
     addRepos(repositories)
     repositories {
@@ -44,12 +40,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext{
-    libraryName = 'MvvmRecurve'
-    artifact = 'recurve.core'
-    bintrayName = 'recurve.core'
-    libraryDescription = 'android mvvm development framework, recurve core'
-
 }
