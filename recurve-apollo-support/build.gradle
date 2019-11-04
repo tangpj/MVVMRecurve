@@ -16,6 +16,8 @@
 apply from: "../support.gradle"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.novoda.bintray-release'
+
 
 dependencies {
     implementation deps.kotlin.stdlib_jdk8
@@ -26,4 +28,13 @@ dependencies {
 }
 repositories {
     mavenCentral()
+}
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'recurve-apollo-support'
+    publishVersion = deps.versions.recurve
+    desc = 'recurve apoolo support'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }

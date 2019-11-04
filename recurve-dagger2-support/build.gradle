@@ -17,6 +17,7 @@ apply from: "../support.gradle"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
 
@@ -32,4 +33,13 @@ dependencies {
 }
 repositories {
     mavenCentral()
+}
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'recurve-dagger2-support'
+    publishVersion = deps.versions.recurve
+    desc = 'recurve dagger2 support'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }
