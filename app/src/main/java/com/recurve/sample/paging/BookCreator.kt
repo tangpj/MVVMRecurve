@@ -3,11 +3,12 @@ package com.recurve.mvvmrecurve.paging
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.recurve.adapter.ModulesAdapter
-import com.recurve.adapter.creator.ItemCreator
+import androidx.recyclerview.widget.DiffUtil
+import com.recurve.paging.PagedItemCreator
 import com.recurve.sample.databinding.BookItemBinding
 
-class BookCreator(adapter: ModulesAdapter) : ItemCreator<Book, BookItemBinding>(2){
+class BookCreator(diff: DiffUtil.ItemCallback<Book>)
+    : PagedItemCreator<Book, BookItemBinding>(2, diff){
     override fun onBindItemView(binding: BookItemBinding, e: Book, inCreatorPosition: Int) {
         binding.book = e
         Log.d("BookCreator", e.toString())

@@ -18,17 +18,18 @@ package com.recurve.sample.paging
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
+import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
+import com.recurve.adapter.ModulesAdapter
 import com.recurve.adapter.creator.RecurveViewHolder
-import com.recurve.mvvmrecurve.paging.Book
-import com.recurve.mvvmrecurve.paging.BookViewModel
-import com.recurve.mvvmrecurve.paging.Cheese
-import com.recurve.mvvmrecurve.paging.CheeseViewModel
+import com.recurve.mvvmrecurve.paging.*
 import com.recurve.sample.R
 import com.recurve.sample.databinding.CheeseItemBinding
 import kotlinx.android.synthetic.main.activity_paged.*
@@ -82,22 +83,22 @@ class PagedActivity : AppCompatActivity() {
         setContentView(R.layout.activity_paged)
 
         // Create adapter for the RecyclerView
-//        val adapter = ModulesAdapter()
-//        val creator =
-//                adapter.addPagedCreator(CheeseCreator(adapter), diffCallback)
-//        val bookCreator =
-//                adapter.addPagedCreator(BookCreator(adapter), bookDiffCallback)
-//        cheeseList.adapter = adapter
-//
-//        cheeseViewModel.allCheeses.observe(this,Observer<PagedList<Cheese>> {
-//            Log.d( TAG,"load cheese size = ${it.size}")
-//            creator.submitList(it)
-//        })
-//
-//        bookViewModel.allBooks.observe(this,Observer<PagedList<Book>> {
-//            Log.d( TAG, "load book size = ${it.size}")
-//            bookCreator.submitList(it)
-//        })
+        val adapter = ModulesAdapter()
+        val creator = CheeseCreator( diffCallback)
+        adapter.addCreator(creator)
+        val bookCreator = BookCreator( bookDiffCallback)
+        adapter.addCreator(bookCreator)
+        cheeseList.adapter = adapter
+
+        cheeseViewModel.allCheeses.observe(this, Observer<PagedList<Cheese>> {
+            Log.d( TAG,"load cheese size = ${it.size}")
+            creator.submitList(it)
+        })
+
+        bookViewModel.allBooks.observe(this,Observer<PagedList<Book>> {
+            Log.d( TAG, "load book size = ${it.size}")
+            bookCreator.submitList(it)
+        })
 
 
         // Subscribe the adapter to the ViewModel, so the items in the adapter are refreshed
