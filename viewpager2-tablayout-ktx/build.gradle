@@ -1,7 +1,7 @@
 apply from: "../support.gradle"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-
+apply plugin: 'com.novoda.bintray-release'
 
 
 dependencies {
@@ -11,4 +11,12 @@ dependencies {
     implementation deps.kotlin.ktx
     implementation deps.androidx.material
 
+}
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'viewpager2-tablayout-ktx'
+    publishVersion = deps.versions.recurve
+    desc = 'viewpage2 tablayout ktx'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }

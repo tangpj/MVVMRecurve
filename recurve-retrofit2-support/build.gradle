@@ -1,6 +1,7 @@
 apply from: "../support.gradle"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -9,5 +10,11 @@ dependencies {
     implementation project(":recurve")
 }
 
-
-
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'recurve-retrofit2-support'
+    publishVersion = deps.versions.recurve
+    desc = 'retrofit2 support'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
+}

@@ -1,6 +1,8 @@
 apply from: "../support.gradle"
-apply plugin: 'kotlin-android'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.novoda.bintray-release'
 
 
 dependencies {
@@ -12,4 +14,13 @@ dependencies {
     implementation  deps.navigation.fragment
     implementation deps.navigation.runtime
     implementation deps.navigation.ui_ktx
+}
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'bottom-navigation-ktx'
+    publishVersion = deps.versions.recurve
+    desc = 'recurve bottom navigation support'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }
