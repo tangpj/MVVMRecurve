@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'com.novoda.bintray-release'
 
 
 android {
@@ -72,12 +73,22 @@ dependencies {
 
     kapt deps.lifecycle.compiler
     api project(':recurve-module-adapter')
-    androidTestImplementation deps.junit
+    testImplementation deps.junit
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.espresso.core
     androidTestImplementation deps.ext_junit
 
 }
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'recurve.core'
+    publishVersion = deps.versions.recurve
+    desc = 'android mvvm development framework, recurve core'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
+}
+
 repositories {
     mavenCentral()
 }

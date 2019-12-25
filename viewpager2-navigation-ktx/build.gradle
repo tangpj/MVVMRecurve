@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     dataBinding{
@@ -23,4 +24,13 @@ dependencies {
 
     implementation  deps.navigation.fragment
     implementation deps.navigation.runtime
+}
+
+publish {
+    userOrg = 'tangpj'
+    groupId = 'com.recurve'
+    artifactId = 'viewpager2-navigation-ktx'
+    publishVersion = deps.versions.recurve
+    desc = 'viewpager navigtaion support'
+    website = 'https://github.com/Tangpj/MVVMRecurve'
 }

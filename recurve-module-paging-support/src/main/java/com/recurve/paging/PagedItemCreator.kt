@@ -92,6 +92,7 @@ abstract class PagedItemCreator<E, Binding : ViewDataBinding>:
                 creatorPosition)
     }
 
+    fun getPageList() = mDiffer.currentList?.toList()
 
     fun setCurrentListChangedCallback(
             currentListChangeCallback: (previousList: PagedList<E>?, currentList: PagedList<E>?)
