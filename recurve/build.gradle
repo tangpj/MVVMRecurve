@@ -43,29 +43,29 @@ android {
 group = "com.github.tangpj"
 
 dependencies {
-    api deps.androidx.appcompat
-    api deps.androidx.recyclerView
-    api deps.kotlin.stdlib_jdk8
-    api deps.kotlin.ktx
-    api deps.kotlinx.coroutines
-    api deps.kotlinx.android
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.recyclerView
+    implementation deps.kotlin.stdlib_jdk8
+    implementation deps.kotlin.ktx
+    implementation deps.kotlinx.coroutines
+    implementation deps.kotlinx.android
 
-    api deps.navigation.fragment_ktx
-    api deps.navigation.fragment
-    api deps.navigation.runtime
+    implementation deps.navigation.fragment_ktx
+    implementation deps.navigation.fragment
+    implementation deps.navigation.runtime
 
-    api deps.okhttp.okhttp3
+    implementation deps.okhttp.okhttp3
 
-    api deps.androidx.material
-    api deps.androidx.customtabs
-    api deps.androidx.annotations
+    implementation deps.androidx.material
+    implementation deps.androidx.customtabs
+    implementation deps.androidx.annotations
 
-    api deps.lifecycle.runtime
-    api deps.lifecycle.extensions
-    api deps.lifecycle.viewmodel
-    api deps.lifecycle.livedata
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.viewmodel
+    implementation deps.lifecycle.livedata
 
-    api deps.timber
+    implementation deps.timber
 
     // RxJava
     api deps.rx_android
