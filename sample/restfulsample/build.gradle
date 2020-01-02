@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+
+
+    defaultConfig {
+        applicationId "com.example.restfulsample"
+        minSdkVersion 15
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api deps.constraint_layout
+    api deps.androidx.appcompat
+    implementation deps.room.runtime
+    implementation deps.paging.runtime
+    kapt deps.room.compiler
+    androidTestImplementation deps.atsl.runner
+    androidTestImplementation deps.espresso.core
+    androidTestImplementation deps.ext_junit
+    implementation project(":recurve")
+    implementation project(":recurve-retrofit2-support")
+    implementation project(":recurve-module-adapter")
+    implementation project(":recurve-module-paging-support")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation deps.junit
+    androidTestImplementation deps.espresso.core
+}
