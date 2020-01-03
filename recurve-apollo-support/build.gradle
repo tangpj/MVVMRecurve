@@ -22,6 +22,8 @@ apply plugin: 'com.novoda.bintray-release'
 dependencies {
     implementation deps.kotlin.stdlib_jdk8
     implementation project(":recurve")
+    implementation deps.lifecycle.livedata
+    implementation deps.lifecycle.viewmodel
 
     api deps.apollo.runtime
     api deps.apollo.android_support

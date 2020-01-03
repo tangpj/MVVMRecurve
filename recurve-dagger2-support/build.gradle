@@ -22,11 +22,18 @@ apply plugin: 'com.novoda.bintray-release'
 dependencies {
 
     implementation deps.kotlin.stdlib_jdk8
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.material
+
     implementation project(":recurve")
 
     implementation deps.dagger.runtime
     implementation deps.dagger.android
     implementation deps.dagger.android_support
+
+    implementation deps.navigation.fragment_ktx
+    implementation deps.navigation.fragment
+    implementation deps.navigation.runtime
 
     kapt deps.dagger.compiler
     kapt deps.dagger.android_support_compiler

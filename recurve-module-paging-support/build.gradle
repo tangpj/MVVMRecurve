@@ -20,6 +20,7 @@ dependencies {
     implementation deps.paging.common
     implementation deps.kotlin.stdlib_jdk8
     implementation deps.kotlin.ktx
+    implementation deps.timber
     implementation project(":recurve")
     implementation project(":recurve-module-adapter")
 }
