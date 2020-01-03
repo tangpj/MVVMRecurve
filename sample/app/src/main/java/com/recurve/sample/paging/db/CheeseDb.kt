@@ -1,4 +1,4 @@
-package com.recurve.mvvmrecurve.paging
+package com.recurve.sample.paging.db
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -19,6 +19,9 @@ package com.recurve.mvvmrecurve.paging
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.room.*
 import android.content.Context
+import com.recurve.core.util.io
+import com.recurve.mvvmrecurve.paging.Book
+import com.recurve.mvvmrecurve.paging.Cheese
 
 /**
  * Singleton database object. Note that for a real app, you should probably use a Dependency
@@ -51,12 +54,12 @@ abstract class CheeseDb : RoomDatabase() {
          */
         private fun fillInDb(context: Context) {
             // inserts in Room are executed on the current thread, so we insert in the background
-            ioThread {
+            io {
                 get(context).cheeseDao().insert(
                         CHEESE_DATA.map { Cheese(id = 0, name = it) })
             }
 
-            ioThread {
+            io{
                 get(context).bookDao().insert(
                         BOOK_DATA.map { Book(id = 0, name = it) }
                 )

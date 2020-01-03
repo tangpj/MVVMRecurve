@@ -1,4 +1,4 @@
-package com.recurve.mvvmrecurve.paging
+package com.recurve.sample.paging.db
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -21,6 +21,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.recurve.mvvmrecurve.paging.Cheese
 
 /**
  * Database Access Object for the Cheese database.
