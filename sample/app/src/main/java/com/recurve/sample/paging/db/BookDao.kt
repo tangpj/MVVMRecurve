@@ -1,10 +1,11 @@
-package com.recurve.mvvmrecurve.paging
+package com.recurve.sample.paging.db
 
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.recurve.mvvmrecurve.paging.Book
 
 @Dao
 interface BookDao{

@@ -1,9 +1,12 @@
-package com.recurve.mvvmrecurve.paging
+package com.recurve.sample.paging
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.paging.Config
 import androidx.paging.toLiveData
+import com.recurve.core.util.io
+import com.recurve.mvvmrecurve.paging.Book
+import com.recurve.sample.paging.db.CheeseDb
 
 class BookViewModel(app: Application) : AndroidViewModel(app){
     private val dao = CheeseDb.get(app).bookDao()
@@ -41,11 +44,11 @@ class BookViewModel(app: Application) : AndroidViewModel(app){
              */
             maxSize = 200))
 
-    fun insert(text: CharSequence) = ioThread {
+    fun insert(text: CharSequence) = io{
         dao.insert(Book(id = 0, name = text.toString()))
     }
 
-    fun remove(book: Book) = ioThread {
+    fun remove(book: Book) = io{
         dao.delete(book)
     }
 }

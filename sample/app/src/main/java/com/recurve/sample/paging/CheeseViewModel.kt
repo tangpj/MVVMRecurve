@@ -20,6 +20,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.paging.Config
 import androidx.paging.toLiveData
+import com.recurve.core.util.io
+import com.recurve.sample.paging.db.CheeseDb
 
 /**
  * A simple ViewModel that provides a paged list of delicious Cheeses.
@@ -60,11 +62,11 @@ class CheeseViewModel(app: Application) : AndroidViewModel(app) {
              */
             maxSize = 200))
 
-    fun insert(text: CharSequence) = ioThread {
+    fun insert(text: CharSequence) = io {
         dao.insert(Cheese(id = 0, name = text.toString()))
     }
 
-    fun remove(cheese: Cheese) = ioThread {
+    fun remove(cheese: Cheese) = io {
         dao.delete(cheese)
     }
 }
