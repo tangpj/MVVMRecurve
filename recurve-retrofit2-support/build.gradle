@@ -6,6 +6,7 @@ apply plugin: 'com.novoda.bintray-release'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.retrofit.runtime
+    implementation deps.lifecycle.livedata
     implementation deps.kotlin.stdlib_jdk8
     implementation project(":recurve")
 }

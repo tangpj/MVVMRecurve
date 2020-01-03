@@ -56,14 +56,16 @@ dependencies {
 
     implementation deps.okhttp.okhttp3
 
-    implementation deps.androidx.material
     implementation deps.androidx.customtabs
     implementation deps.androidx.annotations
 
-    implementation deps.lifecycle.runtime
-    implementation deps.lifecycle.extensions
-    implementation deps.lifecycle.viewmodel
-    implementation deps.lifecycle.livedata
+    //基本的MVVM库
+    api deps.lifecycle.runtime
+    api deps.lifecycle.extensions
+
+    api deps.androidx.material
+    api deps.lifecycle.viewmodel
+    api deps.lifecycle.livedata
 
     implementation deps.timber
 
