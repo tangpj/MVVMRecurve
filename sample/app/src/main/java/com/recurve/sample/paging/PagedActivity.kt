@@ -29,8 +29,10 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
 import com.recurve.adapter.ModulesAdapter
 import com.recurve.adapter.creator.RecurveViewHolder
+import com.recurve.core.ui.acitivty.RecurveActivity
 import com.recurve.mvvmrecurve.paging.*
 import com.recurve.sample.R
+import com.recurve.sample.databinding.ActivityPagedBinding
 import com.recurve.sample.databinding.CheeseItemBinding
 import kotlinx.android.synthetic.main.activity_paged.*
 
@@ -41,7 +43,7 @@ import kotlinx.android.synthetic.main.activity_paged.*
  * Cheeses are stored in a database, so swipes and additions edit the database directly, and the UI
  * is updated automatically using paging components.
  */
-class PagedActivity : AppCompatActivity() {
+class PagedActivity : RecurveActivity() {
 
     private val TAG = "PagedActivity"
 
@@ -80,8 +82,13 @@ class PagedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_paged)
+        initContentBinding<ActivityPagedBinding>(R.layout.activity_paged)
 
+        appbar {
+            scrollEnable = true
+            scrollFlags = "scroll|exitUntilCollapsed"
+            title = "paging"
+        }
         // Create adapter for the RecyclerView
         val adapter = ModulesAdapter()
         val creator = CheeseCreator( diffCallback)
