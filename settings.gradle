@@ -1,3 +1,4 @@
+include ':coroutines-ktx'
 include ':recurve-dagger2-support', ':restfulsample'
 include':recurve'
 include':recurve-retrofit2-support'

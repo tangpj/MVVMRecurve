@@ -48,7 +48,7 @@ dependencies {
     implementation deps.kotlin.stdlib_jdk8
     implementation deps.kotlin.ktx
     implementation deps.kotlinx.coroutines
-    implementation deps.kotlinx.android
+    implementation deps.kotlinx.coroutines_android
 
     implementation deps.navigation.fragment_ktx
     implementation deps.navigation.fragment
@@ -74,7 +74,10 @@ dependencies {
     api deps.rxjava2
 
     kapt deps.lifecycle.compiler
+
     api project(':recurve-module-adapter')
+    implementation project(':coroutines-ktx')
+
     testImplementation deps.junit
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.espresso.core

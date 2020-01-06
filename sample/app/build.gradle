@@ -47,6 +47,8 @@ dependencies {
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.espresso.core
     androidTestImplementation deps.ext_junit
+
+    implementation project(':coroutines-ktx')
     implementation project(":recurve")
     implementation project(":recurve-apollo-support")
     implementation project(":recurve-retrofit2-support")
