@@ -147,7 +147,7 @@ deps.kotlin = kotlin
 def kotlinx = [:]
 kotlinx.serialization = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$versions.kotlinx"
 kotlinx.coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinx_coroutines"
-kotlinx.android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinx_coroutines"
+kotlinx.coroutines_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinx_coroutines"
 deps.kotlinx = kotlinx
 
 deps.paging_ktx = "androidx.paging:paging-runtime-ktx:$versions.paging"
