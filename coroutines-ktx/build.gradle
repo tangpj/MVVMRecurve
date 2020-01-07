@@ -16,6 +16,7 @@
 apply from: "../support.gradle"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.novoda.bintray-release'
 
 
@@ -24,6 +25,7 @@ dependencies {
     implementation deps.kotlinx.coroutines
     implementation deps.kotlinx.coroutines_android
 }
+
 repositories {
     mavenCentral()
 }
