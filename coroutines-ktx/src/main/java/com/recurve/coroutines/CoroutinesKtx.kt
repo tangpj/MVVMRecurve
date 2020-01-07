@@ -16,40 +16,26 @@ import kotlinx.coroutines.*
 
 fun<R> io(delay: Long = 0, action: () -> R) : ((result: ( R ) -> Unit) -> Unit ){
 
-    var rListener: ((R) -> Unit)? = null
-
     /**
-     * listening to coroutines execution results
+     * coroutine asynchronous tasks
      */
-    val taskResult: (R) -> Unit = { r ->
-        rListener?.invoke(r)
+    val ioDeferred= GlobalScope.async(Dispatchers.IO) {
+            delay(delay)
+            return@async action()
     }
 
     /**
      * listening callback method settings
      */
-
     val resultCallback : ((result: ( R ) -> Unit) -> Unit) = {
-        rListener = resultListener(it)
-    }
-
-    val result: ((result: ( R ) -> Unit) -> Unit ) = {
-        resultCallback(it)
-    }
-
-    /**
-     * coroutine asynchronous tasks
-     */
-    runBlocking {
-        GlobalScope.launch(Dispatchers.Main) {
-            val r = GlobalScope.async(Dispatchers.IO) {
-                delay(delay)
-                return@async action()
-            }.await()
-            taskResult(r)
+        GlobalScope.launch(Dispatchers.Main){
+            it(ioDeferred.await())
         }
     }
-    return result
+
+    return {
+        resultCallback(it)
+    }
 }
 
 /**

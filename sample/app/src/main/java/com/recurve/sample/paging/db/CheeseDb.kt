@@ -59,7 +59,7 @@ abstract class CheeseDb : RoomDatabase() {
             // inserts in Room are executed on the current thread, so we insert in the background
             Log.d(TAG, "insert start")
 
-            val insertCheeseResult = io {
+            io {
                 Log.d(TAG, "insert cheese start")
                 get(context).cheeseDao().insert(
                         CHEESE_DATA.map { Cheese(id = 0, name = it) })
@@ -70,7 +70,8 @@ abstract class CheeseDb : RoomDatabase() {
                 Log.d(TAG, "insert book start")
                 get(context).bookDao().insert(
                         BOOK_DATA.map { Book(id = 0, name = it) })
-                BOOK_DATA.size + 100
+                //test code, callback insert size
+                BOOK_DATA.size
             }
             insertBookResult{
                 Log.d(TAG, "insert book success, size = $it")
