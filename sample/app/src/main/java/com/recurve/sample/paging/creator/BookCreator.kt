@@ -1,9 +1,10 @@
-package com.recurve.mvvmrecurve.paging
+package com.recurve.sample.paging.creator
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import com.recurve.mvvmrecurve.paging.Book
 import com.recurve.paging.PagedItemCreator
 import com.recurve.sample.databinding.BookItemBinding
 

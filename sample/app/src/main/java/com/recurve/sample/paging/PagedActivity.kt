@@ -19,7 +19,6 @@ package com.recurve.sample.paging
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.KeyEvent
@@ -34,6 +33,8 @@ import com.recurve.mvvmrecurve.paging.*
 import com.recurve.sample.R
 import com.recurve.sample.databinding.ActivityPagedBinding
 import com.recurve.sample.databinding.CheeseItemBinding
+import com.recurve.sample.paging.creator.BookCreator
+import com.recurve.sample.paging.creator.CheeseCreator
 import kotlinx.android.synthetic.main.activity_paged.*
 
 

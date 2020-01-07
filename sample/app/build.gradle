@@ -39,8 +39,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api deps.constraint_layout
-    api deps.androidx.appcompat
+    implementation deps.constraint_layout
+    implementation deps.androidx.appcompat
     implementation deps.room.runtime
     implementation deps.paging.runtime
     kapt deps.room.compiler
