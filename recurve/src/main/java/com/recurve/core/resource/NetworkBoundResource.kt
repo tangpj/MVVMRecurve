@@ -19,7 +19,7 @@ import androidx.lifecycle.LiveData
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MediatorLiveData
-import com.recurve.core.util.io
+import com.recurve.coroutines.io
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -71,7 +71,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             result.removeSource(dbSource)
             when (response) {
                 is ApiSuccessResponse -> {
-                    val ioResult = io { saveCallResult(processResponse(response)) }
+                    val ioResult = com.recurve.coroutines.io { saveCallResult(processResponse(response)) }
                     ioResult{
                         result.addSource(loadFromDb()){
                             setValue(Resource.success(it))
