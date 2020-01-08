@@ -1,4 +1,4 @@
-package com.recurve.mvvmrecurve.paging
+package com.recurve.sample.paging.vo
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
