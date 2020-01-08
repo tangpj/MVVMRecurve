@@ -4,8 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.recurve.adapter.creator.ItemCreator
-import com.recurve.mvvmrecurve.paging.Cheese
+import com.recurve.sample.paging.vo.Cheese
 import com.recurve.paging.PagedItemCreator
 import com.recurve.sample.databinding.CheeseItemBinding
 

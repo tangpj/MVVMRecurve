@@ -5,7 +5,7 @@
     <data>
         <variable
             name="book"
-            type="com.recurve.sample.retrofit.vo.Book" />
+            type="com.recurve.sample.paging.vo.Book" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"

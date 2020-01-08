@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.recurve.sample.retrofit.vo.Book
+import com.recurve.sample.paging.vo.Book
 
 @Dao
 interface BookDao{
