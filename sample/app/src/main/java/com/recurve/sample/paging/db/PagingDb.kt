@@ -21,7 +21,7 @@ import androidx.room.*
 import android.content.Context
 import android.util.Log
 import com.recurve.coroutines.io
-import com.recurve.mvvmrecurve.paging.Book
+import com.recurve.sample.retrofit.vo.Book
 import com.recurve.mvvmrecurve.paging.Cheese
 
 /**
