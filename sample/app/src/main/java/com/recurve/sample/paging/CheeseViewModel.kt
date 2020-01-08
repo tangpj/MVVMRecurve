@@ -1,4 +1,4 @@
-package com.recurve.mvvmrecurve.paging
+package com.recurve.sample.paging
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -20,7 +20,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.paging.Config
 import androidx.paging.toLiveData
-import com.recurve.core.util.io
+import com.recurve.mvvmrecurve.paging.Cheese
 import com.recurve.sample.paging.db.CheeseDb
 
 /**
@@ -62,11 +62,11 @@ class CheeseViewModel(app: Application) : AndroidViewModel(app) {
              */
             maxSize = 200))
 
-    fun insert(text: CharSequence) = io {
+    fun insert(text: CharSequence) = com.recurve.coroutines.io {
         dao.insert(Cheese(id = 0, name = text.toString()))
     }
 
-    fun remove(cheese: Cheese) = io {
+    fun remove(cheese: Cheese) = com.recurve.coroutines.io {
         dao.delete(cheese)
     }
 }

@@ -19,7 +19,8 @@ package com.recurve.sample.paging.db
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.room.*
 import android.content.Context
-import com.recurve.core.util.io
+import android.util.Log
+import com.recurve.coroutines.io
 import com.recurve.mvvmrecurve.paging.Book
 import com.recurve.mvvmrecurve.paging.Cheese
 
@@ -35,6 +36,8 @@ abstract class CheeseDb : RoomDatabase() {
 
     companion object {
         private var instance: CheeseDb? = null
+        const val TAG = "CheeseDb"
+
         @Synchronized
         fun get(context: Context): CheeseDb {
             if (instance == null) {
@@ -54,15 +57,24 @@ abstract class CheeseDb : RoomDatabase() {
          */
         private fun fillInDb(context: Context) {
             // inserts in Room are executed on the current thread, so we insert in the background
+            Log.d(TAG, "insert start")
+
             io {
+                Log.d(TAG, "insert cheese start")
                 get(context).cheeseDao().insert(
                         CHEESE_DATA.map { Cheese(id = 0, name = it) })
+                CHEESE_DATA.size
             }
 
-            io{
+            val insertBookResult = io {
+                Log.d(TAG, "insert book start")
                 get(context).bookDao().insert(
-                        BOOK_DATA.map { Book(id = 0, name = it) }
-                )
+                        BOOK_DATA.map { Book(id = 0, name = it) })
+                //test code, callback insert size
+                BOOK_DATA.size
+            }
+            insertBookResult{
+                Log.d(TAG, "insert book success, size = $it")
             }
         }
     }

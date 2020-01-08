@@ -1,5 +1,6 @@
-package com.recurve.sample.paging
+package com.recurve.sample.paging.creator
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +13,7 @@ class CheeseCreator(diff: DiffUtil.ItemCallback<Cheese>)
     : PagedItemCreator<Cheese, CheeseItemBinding>(aDiffCallback = diff ){
     override fun onBindItemView(binding: CheeseItemBinding, e: Cheese, inCreatorPosition: Int) {
          binding.cheese = e
-
+        Log.d("CheeseCreator", e.toString())
     }
 
     override fun onCreateItemBinding(parent: ViewGroup, viewType: Int): CheeseItemBinding {
