@@ -1,4 +1,4 @@
-package com.recurve.mvvmrecurve.paging
+package com.recurve.sample.retrofit.vo
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

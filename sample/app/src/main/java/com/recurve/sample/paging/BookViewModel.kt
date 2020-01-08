@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.paging.Config
 import androidx.paging.toLiveData
 import com.recurve.coroutines.io
-import com.recurve.mvvmrecurve.paging.Book
+import com.recurve.sample.retrofit.vo.Book
 import com.recurve.sample.paging.db.CheeseDb
 
 class BookViewModel(app: Application) : AndroidViewModel(app){

@@ -35,6 +35,7 @@ import com.recurve.sample.databinding.ActivityPagedBinding
 import com.recurve.sample.databinding.CheeseItemBinding
 import com.recurve.sample.paging.creator.BookCreator
 import com.recurve.sample.paging.creator.CheeseCreator
+import com.recurve.sample.retrofit.vo.Book
 import kotlinx.android.synthetic.main.activity_paged.*
 
 
