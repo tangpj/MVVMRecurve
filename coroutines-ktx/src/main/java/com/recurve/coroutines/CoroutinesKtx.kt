@@ -37,17 +37,3 @@ fun<R> io(delay: Long = 0, action: () -> R) : ((result: ( R ) -> Unit) -> Unit )
         resultCallback(it)
     }
 }
-
-/**
- * task execution result assisted monitoring method
- *
- * @method: [io]
- * @author create by Tang
- * @createTime: 2020/1/6 7:30 PM
- */
-private fun <R> resultListener(action: ( R )-> Unit) : (R) -> Unit{
-    return {
-        action(it)
-    }
-}
-
