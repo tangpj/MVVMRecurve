@@ -6,6 +6,7 @@ import com.recurve.core.ui.acitivty.RecurveActivity
 import com.recurve.sample.databinding.ContentMainBinding
 import com.recurve.sample.databinding.ContentTestBinding
 import com.recurve.sample.paging.PagedActivity
+import com.recurve.sample.retrofit.ui.search.SearchRepoActivity
 
 class MainActivity: RecurveActivity(){
 
@@ -23,6 +24,10 @@ class MainActivity: RecurveActivity(){
 
         binding.btnRecurve.setOnClickListener {
             startActivity(Intent(this@MainActivity, RecurveDemoActivity::class.java))
+        }
+
+        binding.btnRetrofit.setOnClickListener {
+            startActivity(Intent(this@MainActivity, SearchRepoActivity::class.java))
         }
     }
 }

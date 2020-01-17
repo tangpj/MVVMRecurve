@@ -22,6 +22,14 @@
             android:text="Paging + Room"
             tools:ignore="HardcodedText" />
 
+
+        <Button
+            android:id="@+id/btn_retrofit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="retrofit"
+            tools:ignore="HardcodedText" />
+
     </LinearLayout>
 
 </layout>

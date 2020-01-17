@@ -19,6 +19,7 @@
 
         <activity android:name=".RecurveDemoActivity"/>
         <activity android:name=".paging.PagedActivity"/>
+        <activity android:name=".retrofit.ui.search.SearchRepoActivity"/>
 
 </application>
 

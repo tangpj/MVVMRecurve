@@ -6,13 +6,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.recurve.core.ui.fragment.RecurveFragment
+import com.recurve.core.viewmodel.RecurevViewModelFactory
 import com.recurve.sample.R
 import com.recurve.sample.databinding.FragmentSearchRepoBinding
 
 class SearchRepoFragment : RecurveFragment(){
 
     private lateinit var binding: FragmentSearchRepoBinding
+//    private val viewModelFactory: ViewModelProvider.Factory = RecurevViewModelFactory()
     private lateinit var searchViewModel: ViewModel
 
     override fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): ViewDataBinding {
