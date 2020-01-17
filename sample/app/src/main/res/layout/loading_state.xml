@@ -42,7 +42,7 @@
         android:layout_height="wrap_content">
 
         <ProgressBar
-            app:visibleGone="@{resource.networkState == Status.LOADING}"
+            app:visibleGone="@{resource.networkState.status == Status.LOADING}"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,14 +55,14 @@
             android:text="@string/retry"
             android:id="@+id/retry"
             android:onClick="@{() -> callback.invoke()}"
-            app:visibleGone="@{resource.networkState == Status.ERROR}" />
+            app:visibleGone="@{resource.networkState.status == Status.ERROR}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/error_msg"
             android:text="@{resource.networkState.msg ?? @string/unknown_error}"
-            app:visibleGone="@{resource.networkState == Status.ERROR}" />
+            app:visibleGone="@{resource.networkState.status == Status.ERROR}" />
     </LinearLayout>
 </layout>
 

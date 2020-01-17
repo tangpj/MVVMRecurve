@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:text="@{@string/empty_search_result(query)}"
             android:id="@+id/no_results_text"
-            app:visibleGone="@{searchResult.networkState == Status.SUCCESS &amp;&amp; searchResult.data.size == 0}"
+            app:visibleGone="@{searchResult.networkState.status == Status.SUCCESS &amp;&amp; searchResult.data.size == 0}"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
