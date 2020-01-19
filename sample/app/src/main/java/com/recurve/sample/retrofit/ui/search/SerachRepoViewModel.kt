@@ -8,8 +8,11 @@ import com.recurve.core.resource.Resource
 import com.recurve.sample.retrofit.repository.RepoRepository
 import com.recurve.sample.retrofit.vo.Repo
 import com.recurve.sample.util.AbsentLiveData
+import java.util.*
 
-class SerachRepoViewModel (repoRepository: RepoRepository) : ViewModel(){
+class SerachRepoViewModel constructor () : ViewModel(){
+
+    var repoRepository: RepoRepository? = null
 
     private val _query = MutableLiveData<String>()
     val query : LiveData<String> = _query
@@ -19,8 +22,15 @@ class SerachRepoViewModel (repoRepository: RepoRepository) : ViewModel(){
                 if (search.isNullOrBlank()) {
                     AbsentLiveData.create()
                 } else {
-                    repoRepository.search(search)
+                    repoRepository?.search(search)
                 }
             }
 
+    fun setQuery(originalInput: String) {
+        val input = originalInput.toLowerCase(Locale.getDefault()).trim()
+        if (input == _query.value) {
+            return
+        }
+        _query.value = input
+    }
 }

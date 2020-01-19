@@ -14,7 +14,6 @@ import com.recurve.sample.util.AbsentLiveData
 
 class RepoRepository constructor(
         private val db: GithubDb,
-        private val repoDao: RepoDao,
         private val githubService: GithubService
 ) {
 
@@ -31,19 +30,19 @@ class RepoRepository constructor(
                         next = item.nextPage
                 )
                 db.runInTransaction {
-                    repoDao.insertRepos(item.items)
-                    repoDao.insert(repoSearchResult)
+                    db.repoDao().insertRepos(item.items)
+                    db.repoDao().insert(repoSearchResult)
                 }
             }
 
             override fun shouldFetch(data: List<Repo>?) = data == null
 
             override fun loadFromDb(): LiveData<List<Repo>> {
-                return Transformations.switchMap(repoDao.search(query)) { searchData ->
+                return Transformations.switchMap(db.repoDao().search(query)) { searchData ->
                     if (searchData == null) {
                         AbsentLiveData.create()
                     } else {
-                        repoDao.loadOrdered(searchData.repoIds)
+                        db.repoDao().loadOrdered(searchData.repoIds)
                     }
                 }
             }
