@@ -1,4 +1,3 @@
-package com.recurve.sample.paging.vo
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -15,12 +14,23 @@ package com.recurve.sample.paging.vo
  * limitations under the License.
  */
 
+package com.recurve.sample.retrofit.api
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+
+import com.google.gson.annotations.SerializedName
+import com.recurve.sample.retrofit.vo.Repo
 
 /**
- * Data class that represents our items.
+ * Simple object to hold repo search responses. This is different from the Entity in the database
+ * because we are keeping a search result in 1 row and denormalizing list of results into a single
+ * column.
  */
-@Entity
-data class Cheese(@PrimaryKey(autoGenerate = true) val id: Int, val name: String)
+data class RepoSearchResponse(
+    @SerializedName("total_count")
+    val total: Int = 0,
+    @SerializedName("items")
+    val items: List<Repo>
+) {
+    //Not currently supported
+    var nextPage: Int? = null
+}

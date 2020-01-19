@@ -29,12 +29,13 @@ import androidx.recyclerview.widget.DiffUtil
 import com.recurve.adapter.ModulesAdapter
 import com.recurve.adapter.creator.RecurveViewHolder
 import com.recurve.core.ui.acitivty.RecurveActivity
-import com.recurve.mvvmrecurve.paging.*
 import com.recurve.sample.R
 import com.recurve.sample.databinding.ActivityPagedBinding
 import com.recurve.sample.databinding.CheeseItemBinding
 import com.recurve.sample.paging.creator.BookCreator
 import com.recurve.sample.paging.creator.CheeseCreator
+import com.recurve.sample.paging.vo.Book
+import com.recurve.sample.paging.vo.Cheese
 import kotlinx.android.synthetic.main.activity_paged.*
 
 

@@ -1,4 +1,3 @@
-package com.recurve.sample.paging.vo
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -15,12 +14,16 @@ package com.recurve.sample.paging.vo
  * limitations under the License.
  */
 
+package com.recurve.sample.retrofit.api
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.lifecycle.LiveData
+import com.recurve.core.resource.ApiResponse
+import retrofit2.http.GET
+import retrofit2.http.Query
 
-/**
- * Data class that represents our items.
- */
-@Entity
-data class Cheese(@PrimaryKey(autoGenerate = true) val id: Int, val name: String)
+interface GithubService {
+
+    @GET("search/repositories")
+    fun searchRepos(@Query("q") query: String): LiveData<ApiResponse<RepoSearchResponse>>
+
+}

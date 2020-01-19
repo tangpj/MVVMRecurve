@@ -21,8 +21,8 @@ import androidx.room.*
 import android.content.Context
 import android.util.Log
 import com.recurve.coroutines.io
-import com.recurve.mvvmrecurve.paging.Book
-import com.recurve.mvvmrecurve.paging.Cheese
+import com.recurve.sample.paging.vo.Book
+import com.recurve.sample.paging.vo.Cheese
 
 /**
  * Singleton database object. Note that for a real app, you should probably use a Dependency

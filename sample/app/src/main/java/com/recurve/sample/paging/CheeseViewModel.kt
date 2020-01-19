@@ -20,7 +20,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.paging.Config
 import androidx.paging.toLiveData
-import com.recurve.mvvmrecurve.paging.Cheese
+import com.recurve.sample.paging.vo.Cheese
 import com.recurve.sample.paging.db.CheeseDb
 
 /**

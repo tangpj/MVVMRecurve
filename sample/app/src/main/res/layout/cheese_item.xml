@@ -20,7 +20,7 @@
     <data>
         <variable
             name="cheese"
-            type="com.recurve.mvvmrecurve.paging.Cheese" />
+            type="com.recurve.sample.paging.vo.Cheese" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"

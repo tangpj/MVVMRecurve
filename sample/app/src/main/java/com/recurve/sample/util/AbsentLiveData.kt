@@ -1,4 +1,3 @@
-package com.recurve.sample.paging.vo
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -15,12 +14,30 @@ package com.recurve.sample.paging.vo
  * limitations under the License.
  */
 
+package com.recurve.sample.util
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.lifecycle.LiveData
 
 /**
- * Data class that represents our items.
+ * A LiveData class that has `null` value.
  */
-@Entity
-data class Cheese(@PrimaryKey(autoGenerate = true) val id: Int, val name: String)
+class AbsentLiveData<T : Any?> private constructor(): LiveData<T>() {
+    init {
+        // use post instead of set since this can be created on any thread
+        postValue(null)
+    }
+
+    companion object {
+        fun <T> create(): LiveData<T> {
+            return AbsentLiveData()
+        }
+    }
+}
+
+fun <T: Any?> AbsentLiveData<T>.form(value: T?){
+    if (value == null){
+        AbsentLiveData.create<T>()
+    }else{
+
+    }
+}

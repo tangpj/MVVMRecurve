@@ -1,4 +1,3 @@
-package com.recurve.sample.paging.vo
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -15,12 +14,24 @@ package com.recurve.sample.paging.vo
  * limitations under the License.
  */
 
+package com.recurve.sample.retrofit.db
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import com.recurve.sample.retrofit.vo.Repo
+import com.recurve.sample.retrofit.vo.RepoSearchResult
 
 /**
- * Data class that represents our items.
+ * Main database description.
  */
-@Entity
-data class Cheese(@PrimaryKey(autoGenerate = true) val id: Int, val name: String)
+@Database(
+    entities = [
+        Repo::class,
+        RepoSearchResult::class],
+    version = 3,
+    exportSchema = false
+)
+abstract class GithubDb : RoomDatabase() {
+    abstract fun repoDao(): RepoDao
+}

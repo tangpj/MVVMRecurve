@@ -21,7 +21,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.recurve.mvvmrecurve.paging.Cheese
+import com.recurve.sample.paging.vo.Cheese
 
 /**
  * Database Access Object for the Cheese database.
