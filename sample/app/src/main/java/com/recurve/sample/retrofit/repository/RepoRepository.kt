@@ -4,19 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.recurve.core.resource.NetworkBoundResource
 import com.recurve.core.resource.Resource
+import com.recurve.core.util.RateLimiter
 import com.recurve.sample.retrofit.api.GithubService
 import com.recurve.sample.retrofit.api.RepoSearchResponse
 import com.recurve.sample.retrofit.db.GithubDb
-import com.recurve.sample.retrofit.db.RepoDao
 import com.recurve.sample.retrofit.vo.Repo
 import com.recurve.sample.retrofit.vo.RepoSearchResult
 import com.recurve.sample.util.AbsentLiveData
+import java.util.concurrent.TimeUnit
 
 class RepoRepository constructor(
         private val db: GithubDb,
-        private val githubService: GithubService
-) {
+        private val githubService: GithubService) {
 
+    val repoRateLimiter = RateLimiter<String>(15, TimeUnit.SECONDS)
 
     fun search(query: String): LiveData<Resource<List<Repo>>> {
         return object : NetworkBoundResource<List<Repo>, RepoSearchResponse>() {
@@ -35,7 +36,8 @@ class RepoRepository constructor(
                 }
             }
 
-            override fun shouldFetch(data: List<Repo>?) = data == null
+            override fun shouldFetch(data: List<Repo>?) =
+                    data == null && repoRateLimiter.shouldFetch(query)
 
             override fun loadFromDb(): LiveData<List<Repo>> {
                 return Transformations.switchMap(db.repoDao().search(query)) { searchData ->

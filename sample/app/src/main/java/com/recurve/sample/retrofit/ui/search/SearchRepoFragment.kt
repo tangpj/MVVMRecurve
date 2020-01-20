@@ -24,7 +24,7 @@ import com.recurve.sample.util.createGithubService
 class SearchRepoFragment : RecurveListFragment(){
 
     private lateinit var binding: FragmentSearchRepoBinding
-    private val searchViewModel by lazy { ViewModelProviders.of(this).get(SerachRepoViewModel::class.java)}
+    private val searchViewModel by lazy { ViewModelProviders.of(this).get(SearchRepoViewModel::class.java)}
     private lateinit var creator: SearchRepoCreator
 
     override fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): ViewDataBinding {
