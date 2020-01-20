@@ -45,9 +45,113 @@ implementation "com.recurve:navigation-dialog:$recurve_version"
 
 
 
-## 快速实现一个MVVM项目
+## 示例代码
 
 一个最简单的MVVM项目应该包含：MVVM架构，网络，缓存功能。所以有两个库recureve库是必须要依赖的,分别是：recurve.core（依赖了recurve.module_adapter库）、recurve.retrofit2。然后在配合Jetpack相关的库就能快速开发一个MVVM架构的项目了。
+
+### Repository
+
+```kotlin
+class RepoRepository constructor(
+        private val db: GithubDb,
+        private val githubService: GithubService) {
+
+    val repoRateLimiter = RateLimiter<String>(15, TimeUnit.SECONDS)
+
+    fun search(query: String): LiveData<Resource<List<Repo>>> {
+        return object : NetworkBoundResource<List<Repo>, RepoSearchResponse>() {
+
+            override fun saveCallResult(item: RepoSearchResponse) {
+                val repoIds = item.items.map { it.id }
+                val repoSearchResult = RepoSearchResult(
+                        query = query,
+                        repoIds = repoIds,
+                        totalCount = item.total,
+                        next = item.nextPage
+                )
+                db.runInTransaction {
+                    db.repoDao().insertRepos(item.items)
+                    db.repoDao().insert(repoSearchResult)
+                }
+            }
+
+            override fun shouldFetch(data: List<Repo>?) =
+                    data == null && repoRateLimiter.shouldFetch(query)
+
+            override fun loadFromDb(): LiveData<List<Repo>> {
+                return Transformations.switchMap(db.repoDao().search(query)) { searchData ->
+                    if (searchData == null) {
+                        AbsentLiveData.create()
+                    } else {
+                        db.repoDao().loadOrdered(searchData.repoIds)
+                    }
+                }
+            }
+
+            override fun createCall() = githubService.searchRepos(query)
+
+        }.asLiveData()
+    }
+}
+
+```
+
+
+
+### ViewModel
+
+```kotlin
+class SearchRepoViewModel : ViewModel(){
+
+    var repoRepository: RepoRepository? = null
+
+    private val _query = MutableLiveData<String>()
+    val query : LiveData<String> = _query
+
+    val results = Transformations
+            .switchMap<String, Resource<List<Repo>>>(_query) { search ->
+                if (search.isNullOrBlank()) {
+                    AbsentLiveData.create()
+                } else {
+                    repoRepository?.search(search)
+                }
+            }
+
+    fun setQuery(originalInput: String) {
+        val input = originalInput.toLowerCase(Locale.getDefault()).trim()
+        if (input == _query.value) {
+            return
+        }
+        _query.value = input
+    }
+}
+```
+
+### View
+
+具体的Activit或者Fragment，view层只提供关键示例代码
+
+```kotlin
+//query
+searchViewModel.setQuery(query)
+
+//result callback
+searchViewModel.results.observe(viewLifecycleOwner, Observer { result ->
+            result?.data?.let {
+                creator.setDataList(it)
+            }
+        })
+```
+
+
+
+## 更多实战
+
+sample能的例子比较简单，如果想体验实战系列的代码的话，欢迎关注[GithubRecurve]。该项目有较多的应用场景，该项目主要是用来演示MVVMRecurve的，还在不断的完善中。
+
+
+
+## 引用的开源项目
 
 
 

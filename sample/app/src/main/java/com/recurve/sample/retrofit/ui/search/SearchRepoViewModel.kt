@@ -10,7 +10,7 @@ import com.recurve.sample.retrofit.vo.Repo
 import com.recurve.sample.util.AbsentLiveData
 import java.util.*
 
-class SearchRepoViewModel constructor () : ViewModel(){
+class SearchRepoViewModel : ViewModel(){
 
     var repoRepository: RepoRepository? = null
 
