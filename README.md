@@ -1,4 +1,19 @@
-## MVVM Android开发框架
+<p align-"center">
+<img src="https://raw.githubusercontent.com/Tangpj/MarkdownRes/master/recurve/mvvm_recurve_cover.jpeg" alt="Material Render Phone">
+
+
+
+<h1 align="center"><a href="http://tangpj.dev/" target="_blank">MVVMRecurve</a></h1>
+
+> 🍡Android MVVM快速开发架构，致力于打造一个合理的Android开发架构 。
+
+<p align="center">
+<a href="https://bintray.com/tangpj/maven"><img alt="MVVMRecurve version" src="https://img.shields.io/badge/MVVMRecurve-1.0.0-brightgreen.svg"/></a>
+<a href="http://tangpj.dev"><img alt="Author" src="https://img.shields.io/badge/author-Tangpj-ff69b4.svg"/></a>
+<a href="https://kotlinlang.org/"><img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-1.3.61-orange.svg"/></a>
+<a href="https://kotlinlang.org"><img alt="kotlinx" src="https://img.shields.io/badge/kotlinx-0.14.1-blue.svg"/></a>
+<a href="https://developer.android.com/studio/releases/gradle-plugin"><img alt="Gradle" src="https://img.shields.io/badge/Android build gradle-3.5.3-green.svg"/></a>
+</p>
 
 这是一个基于MVVM架构的Android快速开发框架,主要作用是帮助开发者搭建一个合理的MVVM架构的应用。
 这个架构支持RestFul风格的Api和GraphQL，你可以根据自身需求添加recurve-retrofit2-support库（RestFul）或recurve-apollo-support库（GraphQL）实现相应的支持。
@@ -145,17 +160,22 @@ searchViewModel.results.observe(viewLifecycleOwner, Observer { result ->
 
 
 
-## 更多实战
+## 更多
 
-sample能的例子比较简单，如果想体验实战系列的代码的话，欢迎关注[GithubRecurve]。该项目有较多的应用场景，该项目主要是用来演示MVVMRecurve的，还在不断的完善中。
-
-
-
-## 引用的开源项目
+sample能的例子比较简单，如果想体验更真实的应用场景的话，欢迎关注[GithubRecurve](https://github.com/Tangpj/GitHubRecurve)。这是一个使用MvvmRecurve实现的开源Github户端，该项目主要是用来演示MVVMRecurve的，目前只完成了认证，仓库组件（尚未完成），还在不断的完善中。
 
 
 
+## 鸣谢
 
+开发这个框架的初衷是整合Android中的一些优秀的开源库，提供一套合理的Android开发方法论。目前还在不断完善中。本框架参照了大量开源项目的优秀代码，也引用了大量开源项目，可以说是站在了巨人的肩膀上。参照/引用的开源项目主要如下：
+
+- [architecture-samples](https://github.com/android/architecture-samples)
+- [architecture-components-samples](https://github.com/android/architecture-components-samples)
+- [apollo-client](https://github.com/apollographql/apollo-client)
+- [dagger](https://github.com/google/dagger)
+
+因为篇幅关系，其它的开源库就暂不列出了。
 
 ## License
 
