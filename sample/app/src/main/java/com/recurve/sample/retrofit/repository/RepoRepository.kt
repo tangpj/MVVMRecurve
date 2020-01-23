@@ -37,7 +37,7 @@ class RepoRepository constructor(
             }
 
             override fun shouldFetch(data: List<Repo>?) =
-                    data == null && repoRateLimiter.shouldFetch(query)
+                    data == null || repoRateLimiter.shouldFetch(query)
 
             override fun loadFromDb(): LiveData<List<Repo>> {
                 return Transformations.switchMap(db.repoDao().search(query)) { searchData ->
